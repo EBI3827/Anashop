@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link href="image/favicon.png" rel="icon" />
+<title>مارکت شاپ - قالب HTML فروشگاهی</title>
+<meta name="description" content="Responsive and clean html template design for any kind of ecommerce webshop">
+<!-- CSS Part Start-->
+<link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap/css/bootstrap.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap/css/bootstrap-rtl.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/stylesheet.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/owl.carousel.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/owl.transitions.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/responsive.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/stylesheet-rtl.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/responsive-rtl.css' %}" />
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans' type='text/css'>
+<!-- CSS Part End-->
+</head>
+
+<body>
+
+{% if messages %}
+<div>
+    <strong>Messages:</strong>
+    <ul>
+    {% for message in messages %}
+    <li>{{message}}</li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% block body%}
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block extra_body %}
+{% endblock %}
+
+{% include 'includes/footer.html' %}
+<!-- JS Part Start-->
+<script type="text/javascript" src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.easing-1.3.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.dcjqaccordion.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+<!-- JS Part End-->  
+</body>
+
+</html>
