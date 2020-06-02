@@ -2,6 +2,10 @@ from django.db import models
 
 # Create your models here.
 
+LABEL_CHOICES = (
+    ('موجود', 'موجود'),
+    ('ناموجود', 'ناموجود'),
+)
 
 class Category(models.Model):
     title = models.CharField(max_length=200)
@@ -26,7 +30,10 @@ class Product (models.Model):
     discount_price = models.IntegerField(null=True, blank=True)
     miniimage = models.ImageField(upload_to='products/', null=True, blank=True)
     subcategory = models.ForeignKey(
-        Subcategory, on_delete=models.CASCADE,null=True, related_name='product')
+        Subcategory, on_delete=models.CASCADE,null=True, related_name='products')
+    label = models.CharField(choices=LABEL_CHOICES, default='M',max_length=8)
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE,null=True, related_name='products')
 
     def __str__(self):
         return self.name
@@ -36,3 +43,16 @@ class Product (models.Model):
             saving = int(((self.price - self.discount_price)/self.price) * 100)
             return saving
         return 0
+
+    def get_label_color (self):
+        if self.label=='موجود':
+            return 'instock'
+        else:
+            return 'nostock'
+    
+    def featured(self):
+        save=self.save_percent()
+        if save >= 5 :
+            return True
+        else:
+            return False

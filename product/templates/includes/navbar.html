@@ -7,9 +7,7 @@
           <div class="pull-left flip left-top">
             <div class="links">
               <ul>
-                <li class="mobile"><i class="fa fa-phone"></i>+98 9918797376</li>
-                <li class="email"><a href="mailto:ebrahimarvan71@gmail.com"><i class="fa fa-envelope"></i>ebrahimarvan71@gmail.com</a></li>
-                <li class="wrap_custom_block hidden-sm hidden-xs"><a>بلاک سفارشی<b></b></a>
+                <li class="wrap_custom_block hidden-sm hidden-xs"><a>وبلاگ<b></b></a>
                   <div class="dropdown-menu custom_block">
                     <ul>
                       <li>
@@ -39,31 +37,6 @@
                 </li>
                 <li><a href="#">لیست علاقه مندی (0)</a></li>
                 <li><a href="checkout.html">تسویه حساب</a></li>
-              </ul>
-            </div>
-            <div id="language" class="btn-group">
-              <button class="btn-link dropdown-toggle" data-toggle="dropdown"> <span> <img src="static/image/flags/gb.png" alt="انگلیسی" title="انگلیسی">انگلیسی <i class="fa fa-caret-down"></i></span></button>
-              <ul class="dropdown-menu">
-                <li>
-                  <button class="btn btn-link btn-block language-select" type="button" name="GB"><img src="static/image/flags/gb.png" alt="انگلیسی" title="انگلیسی" /> انگلیسی</button>
-                </li>
-                <li>
-                  <button class="btn btn-link btn-block language-select" type="button" name="GB"><img src="static/image/flags/ar.png" alt="عربی" title="عربی" /> عربی</button>
-                </li>
-              </ul>
-            </div>
-            <div id="currency" class="btn-group">
-              <button class="btn-link dropdown-toggle" data-toggle="dropdown"> <span> تومان <i class="fa fa-caret-down"></i></span></button>
-              <ul class="dropdown-menu">
-                <li>
-                  <button class="currency-select btn btn-link btn-block" type="button" name="EUR">€ Euro</button>
-                </li>
-                <li>
-                  <button class="currency-select btn btn-link btn-block" type="button" name="GBP">£ Pound Sterling</button>
-                </li>
-                <li>
-                  <button class="currency-select btn btn-link btn-block" type="button" name="USD">$ USD</button>
-                </li>
               </ul>
             </div>
           </div>
@@ -164,13 +137,15 @@
         <div class="navbar-header"> <span class="visible-xs visible-sm"> منو <b></b></span></div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
-            <li><a class="home_link" title="خانه" href="index.html"><span>خانه</span></a></li>
+            <li><a class="home_link" title="خانه" href="/"><span>خانه</span></a></li>
             <li class="mega-menu dropdown"><a>دسته ها</a>
               <div class="dropdown-menu">
-                <div class="column col-lg-2 col-md-3"><a href="category.html">محصولات کشاورزی</a>
+                {% for category in categories %}
+                <div class="column col-lg-2 col-md-3"><a href="{% url 'product:products' %}">{{ category.title }}</a>
                   <div>
                     <ul>
-                      <li><a href="category.html">میوه <span>&rsaquo;</span></a>
+                      {% for sub in category.subcategory.all %}
+                      <li><a href="category.html">{{ sub.title }}<span>&rsaquo;</span></a>
                         <div class="dropdown-menu">
                           <ul>
                             <li><a href="category.html">زیردسته ها</a></li>
@@ -181,128 +156,11 @@
                           </ul>
                         </div>
                       </li>
-                      <li><a href="category.html" >صیفی جات و سبزیجات</a> </li>
-                      <li><a href="category.html">خشکبار<span>&rsaquo;</span></a>
-                        <div class="dropdown-menu">
-                          <ul>
-                            <li><a href="category.html">زیردسته ها </a></li>
-                            <li><a href="category.html">زیردسته جدید</a></li>
-                            <li><a href="category.html">زیردسته جدید</a></li>
-                          </ul>
-                        </div>
-                      </li>
-                      <li><a href="category.html">گل و گیاه</a></li>
-                      <li><a href="category.html">خیارشور و ترشیجات خانگی</a></li>
-                      <li><a href="category.html">مربا و شیره خانگی <span>&rsaquo;</span></a>
-                        <div class="dropdown-menu">
-                          <ul>
-                            <li><a href="category.html">زیردسته های جدید</a></li>
-                          </ul>
-                        </div>
-                      </li>
-                      <li><a href="category.html">لواشک و ترشک <span>&rsaquo;</span></a>
-                        <div class="dropdown-menu">
-                          <ul>
-                            <li><a href="category.html">زیردسته های جدید</a></li>
-                          </ul>
-                        </div>
-                      </li>
-                      <li><a href="category.html">لبنیات <span>&rsaquo;</span></a>
-                        <div class="dropdown-menu">
-                          <ul>
-                            <li><a href="category.html">زیردسته های جدید</a></li>
-                          </ul>
-                        </div>
-                      </li>
-                      <li><a href="category.html">نان محلی</a></li>
+                      {% endfor %}
                     </ul>
                   </div>
                 </div>
-                <div class="column col-lg-2 col-md-3"> <a href="category.html">صنایع دستی سنتی</a>
-                  <div>
-                    <ul>
-                      <li> <a href="category.html">لپ تاپ <span>&rsaquo;</span></a>
-                        <div class="dropdown-menu">
-                          <ul>
-                            <li> <a href="category.html">زیردسته های جدید </a> </li>
-                            <li> <a href="category.html">زیردسته های جدید </a> </li>
-                            <li> <a href="category.html">زیردسته جدید </a> </li>
-                          </ul>
-                        </div>
-                      </li>
-                      <li> <a href="category.html">رومیزی <span>&rsaquo;</span></a>
-                        <div class="dropdown-menu">
-                          <ul>
-                            <li> <a href="category.html">زیردسته های جدید </a> </li>
-                            <li> <a href="category.html">زیردسته جدید </a> </li>
-                            <li> <a href="category.html">زیردسته جدید </a> </li>
-                          </ul>
-                        </div>
-                      </li>
-                      <li> <a href="category.html">دوربین <span>&rsaquo;</span></a>
-                        <div class="dropdown-menu">
-                          <ul>
-                            <li> <a href="category.html">زیردسته های جدید</a></li>
-                          </ul>
-                        </div>
-                      </li>
-                      <li><a href="category.html">موبایل و تبلت <span>&rsaquo;</span></a>
-                        <div class="dropdown-menu">
-                          <ul>
-                            <li><a href="category.html">زیردسته های جدید</a></li>
-                            <li><a href="category.html">زیردسته های جدید</a></li>
-                          </ul>
-                        </div>
-                      </li>
-                      <li><a href="category.html">صوتی و تصویری <span>&rsaquo;</span></a>
-                        <div class="dropdown-menu">
-                          <ul>
-                            <li><a href="category.html">زیردسته های جدید </a> </li>
-                            <li><a href="category.html">زیردسته جدید </a> </li>
-                          </ul>
-                        </div>
-                      </li>
-                      <li><a href="category.html">لوازم خانگی</a> </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="column col-lg-2 col-md-3"><a href="category.html">فرآورده های روستایی</a>
-                  <div>
-                    <ul>
-                      <li><a href="category.html">آقایان</a> </li>
-                      <li><a href="category.html">بانوان <span>&rsaquo;</span></a>
-                        <div class="dropdown-menu">
-                          <ul>
-                            <li><a href="category.html">زیردسته های جدید </a> </li>
-                            <li><a href="category.html">زیردسته ها </a> </li>
-                          </ul>
-                        </div>
-                      </li>
-                      <li><a href="category.html">دخترانه</a> </li>
-                      <li><a href="category.html">پسرانه</a> </li>
-                      <li><a href="category.html">نوزاد</a> </li>
-                      <li><a href="category.html">لوازم <span>&rsaquo;</span></a>
-                        <div class="dropdown-menu">
-                          <ul>
-                            <li><a href="category.html">زیردسته های جدید</a></li>
-                            <li><a href="category.html">زیردسته های جدید</a></li>
-                            <li><a href="category.html">زیردسته ها</a></li>
-                          </ul>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="column col-lg-2 col-md-3"> <a href="category.html">ساعت</a>
-                  <div>
-                    <ul>
-                      <li> <a href="category.html">ساعت مردانه</a></li>
-                      <li> <a href="category.html">ساعت زنانه</a></li>
-                      <li> <a href="category.html">ساعت بچگانه</a></li>
-                      <li> <a href="category.html">لوازم</a></li>
-                    </ul>
-                  </div>
-                </div>
+                {% endfor %}
               </div>
             </li>
             <li class="menu_brands dropdown"><a href="#">برند ها</a>
@@ -311,7 +169,7 @@
               </div>
             </li>
             <li class="custom-link"><a href="#">لینک های دلخواه</a></li>
-            <li class="dropdown wrap_custom_block hidden-sm hidden-xs"><a>بلاک سفارشی</a>
+            <li class="dropdown wrap_custom_block hidden-sm hidden-xs"><a>وبلاگ</a>
               <div class="dropdown-menu custom_block">
                 <ul>
                   <li>

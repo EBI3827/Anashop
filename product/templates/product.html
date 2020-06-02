@@ -26,10 +26,8 @@
               </div>
               <div class="col-sm-6">
                 <ul class="list-unstyled description">
-                  <li><b>برند :</b> <a href="#"><span itemprop="brand">اپل</span></a></li>
-                  <li><b>کد محصول :</b> <span itemprop="mpn">محصولات 17</span></li>
-                  <li><b>امتیازات خرید:</b> 700</li>
-                  <li><b>وضعیت موجودی :</b> <span class="instock">موجود</span></li>
+                  <li><b>کد محصول :</b> <span itemprop="mpn">{{ object.id }}</span></li>
+                  <li><b>وضعیت موجودی :</b><span class="{{object.get_label_color}}">{{ object.label }}</span></li>
                 </ul>
                 <ul class="price-box">
                   {% if product.discount_price %}
@@ -37,10 +35,8 @@
                     <span class="price-old">{{object.price}} تومان</span> 
                     <span itemprop="price">{{object.discount_price}} تومان<span itemprop="availability" content="موجود"></span></span>
                   </li>
-                  <li>بدون مالیات : 9 میلیون تومان</li>
                   {% else %}
                   <li><span class="price">{{product.price}} تومان</span></li>
-                  <li>بدون مالیات : 9 میلیون تومان</li>
                   {% endif %}
                 </ul>
                 <div id="product">

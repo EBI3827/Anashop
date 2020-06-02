@@ -3,9 +3,11 @@
     <h3 class="subtitle">دسته ها</h3>
     <div class="box-category">
         <ul id="cat_accordion">
-        <li><a href="{% url 'product:products' %}">محصولات کشاورزی</a> <span class="down"></span>
+        {% for category in categories %}
+        <li><a href="{% url 'product:products' %}">{{ category.title }}</a> <span class="down"></span>
             <ul>
-            <li><a href="category.html">آقایان</a> <span class="down"></span>
+            {% for sub in category.subcategory.all %}
+            <li><a href="category.html">{{ sub.title }}</a> <span class="down"></span>
                 <ul>
                 <li><a href="category.html">زیردسته ها</a></li>
                 <li><a href="category.html">زیردسته ها</a></li>
@@ -14,88 +16,10 @@
                 <li><a href="category.html">زیردسته جدید</a></li>
                 </ul>
             </li>
-            <li><a href="category.html">بانوان</a></li>
-            <li><a href="category.html">دخترانه</a> <span class="down"></span>
-                <ul>
-                <li><a href="category.html">زیردسته ها</a></li>
-                <li><a href="category.html">زیردسته جدید</a></li>
-                <li><a href="category.html">زیردسته جدید</a></li>
-                </ul>
-            </li>
-            <li><a href="category.html">پسرانه</a></li>
-            <li><a href="category.html">نوزاد</a></li>
-            <li><a href="category.html">لوازم</a> <span class="down"></span>
-                <ul>
-                <li><a href="category.html">زیردسته های جدید</a></li>
-                </ul>
-            </li>
+            {% endfor %}
             </ul>
         </li>
-        <li><a href="category.html">الکترونیکی</a> <span class="down"></span>
-            <ul>
-            <li><a href="category.html">لپ تاپ</a> <span class="down"></span>
-                <ul>
-                <li><a href="category.html">زیردسته های جدید</a></li>
-                <li><a href="category.html">زیردسته های جدید</a></li>
-                <li><a href="category.html">زیردسته جدید</a></li>
-                </ul>
-            </li>
-            <li class="custom_id68"><a href="category.html">رومیزی</a> <span class="down"></span>
-                <ul>
-                <li><a href="category.html">زیردسته های جدید</a></li>
-                <li><a href="category.html">زیردسته جدید</a></li>
-                <li><a href="category.html">زیردسته جدید</a></li>
-                </ul>
-            </li>
-            <li><a href="category.html">دوربین</a> <span class="down"></span>
-                <ul>
-                <li><a href="category.html">زیردسته های جدید</a></li>
-                </ul>
-            </li>
-            <li><a href="category.html">موبایل و تبلت</a> <span class="down"></span>
-                <ul>
-                <li><a href="category.html">زیردسته های جدید</a></li>
-                <li><a href="category.html">زیردسته های جدید</a></li>
-                </ul>
-            </li>
-            <li><a href="category.html">صوتی و تصویری</a> <span class="down"></span>
-                <ul>
-                <li><a href="category.html">زیردسته های جدید</a></li>
-                <li><a href="category.html">زیردسته جدید</a></li>
-                </ul>
-            </li>
-            <li><a href="category.html">لوازم خانگی</a></li>
-            </ul>
-        </li>
-        <li><a href="category.html">کفش</a> <span class="down"></span>
-            <ul>
-            <li><a href="category.html">آقایان</a></li>
-            <li><a href="category.html">بانوان</a> <span class="down"></span>
-                <ul>
-                <li><a href="category.html">زیردسته های جدید</a></li>
-                <li><a href="category.html">زیردسته ها</a></li>
-                </ul>
-            </li>
-            <li><a href="category.html">دخترانه</a></li>
-            <li><a href="category.html">پسرانه</a></li>
-            <li><a href="category.html">نوزاد</a></li>
-            <li><a href="category.html">لوازم</a><span class="down"></span>
-                <ul>
-                <li><a href="category.html">زیردسته های جدید</a></li>
-                <li><a href="category.html">زیردسته های جدید</a></li>
-                <li><a href="category.html">زیردسته ها</a></li>
-                </ul>
-            </li>
-            </ul>
-        </li>
-        <li><a href="category.html">ساعت</a> <span class="down"></span>
-            <ul>
-            <li><a href="category.html">ساعت مردانه</a></li>
-            <li><a href="category.html">ساعت زنانه</a></li>
-            <li><a href="category.html">ساعت بچگانه</a></li>
-            <li><a href="category.html">لوازم</a></li>
-            </ul>
-        </li>
+        {% endfor %}
         </ul>
     </div>
     <h3 class="subtitle">پرفروش ها</h3>
@@ -110,13 +34,30 @@
     </div>
     <h3 class="subtitle">ویژه</h3>
     <div class="side-item">
+        {% for product in products %}
+        {% if product.featured %}
         <div class="product-thumb clearfix">
-        <div class="image"><a href="product.html"><img src="static/image/product/macbook_pro_1-50x50.jpg" alt=" کتاب آموزش باغبانی " title=" کتاب آموزش باغبانی " class="img-responsive" /></a></div>
-        <div class="caption">
-            <h4><a href="product.html">کتاب آموزش باغبانی</a></h4>
-            <p class="price"> <span class="price-new">98000 تومان</span> <span class="price-old">120000 تومان</span> <span class="saving">-26%</span> </p>
+          <div class="image"><a href="/product/{{ product.id }}"><img src="{{product.miniimage.url}}" alt="تی شرت کتان مردانه" title="تی شرت کتان مردانه" class="img-responsive" /></a></div>
+          <div class="caption">
+            <h4><a href="/product/{{ product.id }}"> کد محصول : {{product.id}} </a></h4>
+            <h4><a href="/product/{{ product.id }}"> نام محصول : {{product.name}} </a></h4>
+            <p class="price">
+              {% if product.discount_price %}
+              <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.discount_price}} تومان</span></li>
+              <li style="list-style-type: none;"><span class="price-old">قیمت :{{product.price}} تومان<span class="saving">
+                {{ product.save_percent }}%
+                </span>
+                </span>
+                </li>
+              {% else %}
+              <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.price}} تومان</span></li>
+              <li style="list-style-type: none;"><br></li>
+              {% endif %}
+            </p>
+          </div>
         </div>
-        </div>
+        {% endif %}
+        {% endfor %}
     </div>
     <div class="list-group">
         <h3 class="subtitle">محتوای سفارشی</h3>
