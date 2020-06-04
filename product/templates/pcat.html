@@ -1,3 +1,4 @@
+
 {% extends 'base1.html' %}
 {% load static %}
 
@@ -9,7 +10,7 @@
       <!-- Breadcrumb Start-->
       <ul class="breadcrumb">
         <li><a href="/"><i class="fa fa-home"></i></a></li>
-        <li><a href="{% url 'product:products' %}">همه محصولات</a></li>
+        <li><a href="{% url 'product:category' pk=category.id %}">{{ category.title }}</a></li>
       </ul>
       <!-- Breadcrumb End-->
       <div class="row">
@@ -18,7 +19,7 @@
         <!--Left Part End -->
         <!--Middle Part Start-->
         <div id="content" class="col-sm-9">
-          <h1 class="title">همه محصولات</h1>
+          <h1 class="title">{{category.title}}</h1>
           <hr>
           <!-- <h3 class="subtitle">بهبود جستجو</h3>
           <div class="category-list-thumb row">
@@ -64,24 +65,24 @@
           </div>
           <br />
           <div class="row products-category">
-            {% for product in products%}
+            {% for item in category.products.all %}
             <div class="product-layout product-list col-xs-12">
               <div class="product-thumb">
-                <div class="image"><a href="/product/{{ product.id }}"><img src="{{ product.miniimage.url }}" alt="{{product.name}}" title="{{product.name}}" class="img-responsive" /></a></div>
+                <div class="image"><a href="/product/{{ item.id }}"><img src="{{ item.miniimage.url }}" alt="{{product.name}}" title="{{product.name}}" class="img-responsive" /></a></div>
                 <div>
                   <div class="caption">
-                    <h4><a href="/product/{{ product.id }}"> کد محصول : {{product.id}}</a></h4>
-                    <h4><a href="/product/{{ product.id }}"> نام محصول : {{product.name}} </a></h4>
-                    <p class="description"> توضیحات : {{ product.description }}</p>
+                    <h4><a href="/product/{{ item.id }}"> کد محصول : {{item.id}}</a></h4>
+                    <h4><a href="/product/{{ item.id }}"> نام محصول : {{item.name}} </a></h4>
+                    <p class="description"> توضیحات : {{ item.description }}</p>
                     <p class="price">
-                      {% if product.discount_price %}
-                      <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.discount_price}} تومان</span></li>
-                      <li style="list-style-type: none;"><span class="price-old">قیمت :{{product.price}} تومان</span></li>
+                      {% if item.discount_price %}
+                      <li style="list-style-type: none;"><span class="price-new">قیمت :{{item.discount_price}} تومان</span></li>
+                      <li style="list-style-type: none;"><span class="price-old">قیمت :{{item.price}} تومان</span></li>
                       <span class="saving">
-                      {{ product.save_percent }}%
+                      {{ item.save_percent }}%
                       </span>
                       {% else %}
-                      <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.price}} تومان</span></li>
+                      <li style="list-style-type: none;"><span class="price-new">قیمت :{{item.price}} تومان</span></li>
                       <li style="list-style-type: none;"><br></li>
                       {% endif %}
                       <span class="price-tax">بدون مالیات : 90000 تومان</span>

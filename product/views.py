@@ -6,7 +6,7 @@ from .models import Product, Category
 
 
 def home(request):
-    products = Product.objects.all()
+    products = Product.objects.all().order_by('-added_date')
     categories = Category.objects.all()
     context = {
         'products': products,
@@ -15,7 +15,7 @@ def home(request):
     return render(request, 'index.html', context)
 
 def productlist (request):
-    products = Product.objects.all()
+    products = Product.objects.all().order_by('-added_date')
     categories = Category.objects.all()
     context = {
         'products': products,
@@ -35,3 +35,31 @@ class ProductDetailView(DetailView):
 def contact(request):
     return render(request, 'contact-us.html', {})
 
+def product_category(request, pk):
+    qs=Category.objects.get(id=pk)
+    products = Product.objects.all()
+    categories = Category.objects.all()
+    context = {
+        'category': qs,
+        'products': products,
+        'categories': categories,
+    }
+    return render(request, 'pcat.html', context)
+
+def checkout(request):
+    return render(request, 'checkout.html', {})
+
+def cart(request):
+    return render(request, 'cart.html', {})
+
+def about_us(request):
+    return render(request, 'about-us.html', {})
+
+def compare(request):
+    return render(request, 'compare.html', {})
+
+def search(request):
+    return render(request, 'search.html', {})
+
+def wishlist(request):
+    return render(request, 'wishlist.html', {})

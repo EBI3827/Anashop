@@ -4,18 +4,10 @@
     <div class="box-category">
         <ul id="cat_accordion">
         {% for category in categories %}
-        <li><a href="{% url 'product:products' %}">{{ category.title }}</a> <span class="down"></span>
+        <li><a href="{% url 'product:category' pk=category.id %}">{{ category.title }}</a> <span class="down" ></span>
             <ul>
             {% for sub in category.subcategory.all %}
-            <li><a href="category.html">{{ sub.title }}</a> <span class="down"></span>
-                <ul>
-                <li><a href="category.html">زیردسته ها</a></li>
-                <li><a href="category.html">زیردسته ها</a></li>
-                <li><a href="category.html">زیردسته ها</a></li>
-                <li><a href="category.html">زیردسته ها</a></li>
-                <li><a href="category.html">زیردسته جدید</a></li>
-                </ul>
-            </li>
+            <li><a href="category.html">{{ sub.title }}</a></li>
             {% endfor %}
             </ul>
         </li>
@@ -71,14 +63,20 @@
     </div>
     <h3 class="subtitle">جدیدترین</h3>
     <div class="side-item">
+        {{products.count}}
+
+        {% for product in products %}
+
         <div class="product-thumb clearfix">
-        <div class="image"><a href="product.html"><img src="static/image/product/iphone_6-50x50.jpg" alt="کرم مو آقایان" title="کرم مو آقایان" class="img-responsive" /></a></div>
+        <div class="image"><a href="product.html"><img src="{{ product.miniimage.url }}" alt="کرم مو آقایان" title="کرم مو آقایان" class="img-responsive" /></a></div>
         <div class="caption">
-            <h4><a href="product.html">کرم مو آقایان</a></h4>
-            <p class="price"> 42300 تومان </p>
+            <h4><a href="product.html">{{product.name}}</a></h4>
+            <p class="price"> {{product.price}} تومان </p>
             <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
         </div>
         </div>
+        {% endfor %}
+
     </div>
     </aside>
     <!-- Left Part End-->

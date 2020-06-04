@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime  
 
 # Create your models here.
 
@@ -34,6 +35,7 @@ class Product (models.Model):
     label = models.CharField(choices=LABEL_CHOICES, default='M',max_length=8)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE,null=True, related_name='products')
+    added_date=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
@@ -56,3 +58,4 @@ class Product (models.Model):
             return True
         else:
             return False
+    

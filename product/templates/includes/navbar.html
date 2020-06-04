@@ -35,8 +35,11 @@
                     </ul>
                   </div>
                 </li>
+                {% if user.is_authenticated %}
                 <li><a href="#">لیست علاقه مندی (0)</a></li>
-                <li><a href="checkout.html">تسویه حساب</a></li>
+                <li><a href="{% url 'product:cart' %}">سبد خرید</a></li>
+                <li><a href="{% url 'product:checkout' %}">تسویه حساب</a></li>
+                {% endif %}
               </ul>
             </div>
           </div>
@@ -112,7 +115,7 @@
                         </tr>
                       </tbody>
                     </table>
-                    <p class="checkout"><a href="cart.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> مشاهده سبد</a>&nbsp;&nbsp;&nbsp;<a href="checkout.html" class="btn btn-primary"><i class="fa fa-share"></i> تسویه حساب</a></p>
+                    <p class="checkout"><a href="{% url 'product:cart' %}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> مشاهده سبد</a>&nbsp;&nbsp;&nbsp;<a href="{% url 'product:checkout' %}" class="btn btn-primary"><i class="fa fa-share"></i> تسویه حساب</a></p>
                   </div>
                 </li>
               </ul>
@@ -141,21 +144,11 @@
             <li class="mega-menu dropdown"><a>دسته ها</a>
               <div class="dropdown-menu">
                 {% for category in categories %}
-                <div class="column col-lg-2 col-md-3"><a href="{% url 'product:products' %}">{{ category.title }}</a>
+                <div class="column col-lg-2 col-md-3"><a href="{% url 'product:category' pk=category.id %}">{{ category.title }}</a>
                   <div>
                     <ul>
                       {% for sub in category.subcategory.all %}
-                      <li><a href="category.html">{{ sub.title }}<span>&rsaquo;</span></a>
-                        <div class="dropdown-menu">
-                          <ul>
-                            <li><a href="category.html">زیردسته ها</a></li>
-                            <li><a href="category.html">زیردسته ها</a></li>
-                            <li><a href="category.html">زیردسته ها</a></li>
-                            <li><a href="category.html">زیردسته ها</a></li>
-                            <li><a href="category.html">زیردسته جدید</a></li>
-                          </ul>
-                        </div>
-                      </li>
+                      <li><a href="category.html">{{ sub.title }}</a></li>
                       {% endfor %}
                     </ul>
                   </div>
@@ -224,8 +217,8 @@
                 </ul>
               </div>
             </li>
-            <li class="contact-link"><a href="contact-us.html">تماس با ما</a></li>
-            <li class="custom-link-right"><a href="#" target="_blank"> همین حالا بخرید!</a></li>
+            <li class="contact-link"><a href="{% url 'product:contact-us' %}">تماس با ما</a></li>
+            <li class="custom-link-right"><a href="{% url 'product:products' %}"> همین حالا بخرید!</a></li>
           </ul>
         </div>
       </nav>

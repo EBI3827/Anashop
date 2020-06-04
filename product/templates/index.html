@@ -1,4 +1,6 @@
 {% extends 'base1.html' %} {% load static %} {% block body %}
+
+
 <div id="container">
     <!-- Feature Box Start-->
     <div class="container">
@@ -38,13 +40,13 @@
                 <!-- Slideshow Start-->
                 <div class="slideshow single-slider owl-carousel">
                     <div class="item">
-                        <a href="{% url 'product:products' %}"><img class="img-responsive" src="static/image/slider/k.jpg" alt="banner 1" /></a>
+                        <a href="{% url 'product:category' pk=1 %}"><img class="img-responsive" src="static/image/slider/k.jpg" alt="banner 1" /></a>
                     </div>
                     <div class="item">
-                        <a href="{% url 'product:products' %}"><img class="img-responsive" src="static/image/slider/f.jpg" alt="banner 2" /></a>
+                        <a href="{% url 'product:category' pk=2 %}"><img class="img-responsive" src="static/image/slider/s.jpg" alt="banner 3" /></a>
                     </div>
                     <div class="item">
-                        <a href="{% url 'product:products' %}"><img class="img-responsive" src="static/image/slider/s.jpg" alt="banner 3" /></a>
+                        <a href="{% url 'product:category' pk=3 %}"><img class="img-responsive" src="static/image/slider/f.jpg" alt="banner 2" /></a>
                     </div>
                 </div>
                 <!-- Slideshow End-->
@@ -100,7 +102,7 @@
                 <!-- Banner End-->
                 <!-- دسته ها محصولات Slider Start-->
                 {% for category in categories %}
-                <h3 class="subtitle"> {{ category.title }}- <a class="viewall" href="{% url 'product:products' %}">نمایش همه</a></h3>
+                <h3 class="subtitle"> {{ category.title }}- <a class="viewall" href="{% url 'product:category' pk=category.id %}">نمایش همه</a></h3>
                 <div class="owl-carousel latest_category_carousel">
                     {% for product in category.products.all %}
 
