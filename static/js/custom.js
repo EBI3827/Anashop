@@ -273,34 +273,34 @@ $('#list-view').on("click", function() {
    Product Grid
 ----------------------------------------------------- */
 $(document).on('click', '#grid-view', function(e){
-	$('#content .product-layout').attr('class', 'product-layout product-grid col-lg-5ths col-md-5ths col-sm-3 col-xs-12');
+	$('#content .product-layout').attr('class', 'product-layout product-grid col-lg-3 col-md-3 col-sm-4 col-xs-12');
 		
 $screensize = $(window).width();
     if ($screensize > 1199) {
 		$(".products-category > .clearfix").remove();
-        $('.product-grid:nth-child(5n)').after('<span class="clearfix visible-lg-block"></span>');
+        $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block"></span>');
     }
     if ($screensize < 1199) {
 		$(".products-category > .clearfix").remove();
-        $('.product-grid:nth-child(5n)').after('<span class="clearfix visible-lg-block visible-md-block"></span>');
+        $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-md-block"></span>');
     }
 	if ($screensize < 991) {
 		$(".products-category > .clearfix").remove();
-        $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-sm-block"></span>');
+        $('.product-grid:nth-child(3n)').after('<span class="clearfix visible-lg-block visible-sm-block"></span>');
     }
 $( window ).resize(function() {
     $screensize = $(window).width();
     if ($screensize > 1199) {
         $(".products-category > .clearfix").remove();
-        $('.product-grid:nth-child(5n)').after('<span class="clearfix visible-lg-block"></span>');
+        $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block"></span>');
     } 
     if ($screensize < 1199) {
         $(".products-category > .clearfix").remove();
-        $('.product-grid:nth-child(5n)').after('<span class="clearfix visible-lg-block visible-md-block"></span>');
+        $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-md-block"></span>');
     }
 	if ($screensize < 991) {
         $(".products-category > .clearfix").remove();
-        $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-sm-block"></span>');
+        $('.product-grid:nth-child(3n)').after('<span class="clearfix visible-lg-block visible-sm-block"></span>');
     }
 	if ($screensize < 767) {
         $(".products-category > .clearfix").remove();
@@ -399,6 +399,7 @@ $(function(){
   });
 
 /*---------------------------------------------------
+
    Custom Side Block
 ----------------------------------------------------- */
 $(function(){        

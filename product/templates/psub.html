@@ -11,6 +11,7 @@
       <ul class="breadcrumb">
         <li><a href="/"><i class="fa fa-home"></i></a></li>
         <li><a href="{% url 'product:category' pk=category.id %}">{{ category.title }}</a></li>
+        <li><a href="{% url 'product:subcategory' pk=subcategory.id %}">{{ subcategory.title }}</a></li>
       </ul>
       <!-- Breadcrumb End-->
       <div class="row">
@@ -19,7 +20,7 @@
         <!--Left Part End -->
         <!--Middle Part Start-->
         <div id="content" class="col-sm-9">
-          <h1 class="title">{{category.title}}</h1>
+          <h1 class="title">{{subcategory.title}}</h1>
           <hr>
           <!-- <h3 class="subtitle">بهبود جستجو</h3>
           <div class="category-list-thumb row">
@@ -65,7 +66,7 @@
           </div>
           <br />
           <div class="row products-category">
-            {% for item in category.products.all %}
+            {% for item in subcategory.products.all %}
             <div class="product-layout product-list col-xs-12">
               <div class="product-thumb">
                 <div class="image"><a href="/product/{{ item.id }}"><img src="{{ item.miniimage.url }}" alt="{{product.name}}" title="{{product.name}}" class="img-responsive" /></a></div>

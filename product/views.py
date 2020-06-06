@@ -1,32 +1,17 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
-from .models import Product, Category
+from django.views.generic import DetailView
+from .models import Product, Category,Subcategory
 
 # Create your views here.
 
 
 def home(request):
-    products = Product.objects.all().order_by('-added_date')
-    categories = Category.objects.all()
-    context = {
-        'products': products,
-        'categories': categories,
-    }
-    return render(request, 'index.html', context)
+    latest=Product.objects.all().order_by('-added_date')[:8]
+    return render(request, 'index.html', {'latest' : latest})
 
 def productlist (request):
-    products = Product.objects.all().order_by('-added_date')
-    categories = Category.objects.all()
-    context = {
-        'products': products,
-        'categories': categories,
-    }
-    return render(request, 'category.html', context)
-
-# class ProductListView(ListView):
-#     model = [Product,Category]
-#     template_name = 'category.html'
-
+    latest=Product.objects.all().order_by('-added_date')[:8]
+    return render(request, 'category.html', {'latest' : latest})
 
 class ProductDetailView(DetailView):
     model = Product
@@ -37,14 +22,23 @@ def contact(request):
 
 def product_category(request, pk):
     qs=Category.objects.get(id=pk)
-    products = Product.objects.all()
-    categories = Category.objects.all()
+    latest=Product.objects.all().order_by('-added_date')[:8]
     context = {
         'category': qs,
-        'products': products,
-        'categories': categories,
+        'latest' : latest,
     }
     return render(request, 'pcat.html', context)
+
+def product_subcategory(request, pk):
+    qs=Subcategory.objects.get(id=pk)
+    cqs=Category.objects.get(subcategory=qs)
+    latest=Product.objects.all().order_by('-added_date')[:8]
+    context = {
+        'category': cqs,
+        'subcategory': qs,
+        'latest' : latest,
+    }
+    return render(request, 'psub.html', context)
 
 def checkout(request):
     return render(request, 'checkout.html', {})

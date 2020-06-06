@@ -148,7 +148,7 @@
                   <div>
                     <ul>
                       {% for sub in category.subcategory.all %}
-                      <li><a href="category.html">{{ sub.title }}</a></li>
+                      <li><a href="{% url 'product:subcategory' pk=sub.id %}">{{ sub.title }}</a></li>
                       {% endfor %}
                     </ul>
                   </div>

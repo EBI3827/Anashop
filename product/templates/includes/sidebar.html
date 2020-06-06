@@ -7,7 +7,7 @@
         <li><a href="{% url 'product:category' pk=category.id %}">{{ category.title }}</a> <span class="down" ></span>
             <ul>
             {% for sub in category.subcategory.all %}
-            <li><a href="category.html">{{ sub.title }}</a></li>
+            <li><a href="{% url 'product:subcategory' pk=sub.id %}">{{ sub.title }}</a></li>
             {% endfor %}
             </ul>
         </li>
@@ -57,16 +57,9 @@
         <p> در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد. </p>
         <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p>
     </div>
-    <div class="banner owl-carousel">
-        <div class="item"> <a href="#"><img src="static/image/banner/small-banner1-265x350.jpg" alt="small banner" class="img-responsive" /></a> </div>
-        <div class="item"> <a href="#"><img src="static/image/banner/small-banner-265x350.jpg" alt="small banner1" class="img-responsive" /></a> </div>
-    </div>
     <h3 class="subtitle">جدیدترین</h3>
     <div class="side-item">
-        {{products.count}}
-
-        {% for product in products %}
-
+        {% for product in latest %}
         <div class="product-thumb clearfix">
         <div class="image"><a href="product.html"><img src="{{ product.miniimage.url }}" alt="کرم مو آقایان" title="کرم مو آقایان" class="img-responsive" /></a></div>
         <div class="caption">

@@ -58,4 +58,8 @@ class Product (models.Model):
             return True
         else:
             return False
+
+class Images (models.Model):
+    product = models.ForeignKey(Product, default=None, on_delete=models.CASCADE, related_name='images')
+    miniimage = models.ImageField(upload_to='products/', blank=True)
     
