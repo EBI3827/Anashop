@@ -1,4 +1,6 @@
 {% load static %}
+{% load cart_tag %}
+{% load wishlist_tag %}
 <div id="header">
     <!-- Top Bar Start-->
     <nav id="top" class="htop">
@@ -36,8 +38,8 @@
                   </div>
                 </li>
                 {% if user.is_authenticated %}
-                <li><a href="#">لیست علاقه مندی (0)</a></li>
-                <li><a href="{% url 'product:cart' %}">سبد خرید</a></li>
+                <li><a href="{% url 'product:wishlist' %}">لیست علاقه مندی ( {{ request.user | wishlist_product_count }})</a></li>
+                <li><a href="{% url 'cart:cart' %}">سبد خرید</a></li>
                 <li><a href="{% url 'product:checkout' %}">تسویه حساب</a></li>
                 {% endif %}
               </ul>
@@ -49,7 +51,11 @@
               <li><a href="{% url 'account_login' %}">ورود</a></li>
               <li><a href="{% url 'account_signup' %}">ثبت نام</a></li>
               {% else %}
-              <li><a href="{% url 'account_logout' %}">خروج از حساب کاربری</a></li>
+              <li><a data-toggle="modal" data-target="#logoutmodal">
+                خروج از حساب کاربری 
+              </a></li>
+              
+              <!-- <li><a href="{% url 'account_logout' %}">خروج از حساب کاربری</a></li> -->
               {% endif %}
             </ul>
           </div>
@@ -69,27 +75,35 @@
           <!-- Mini Cart Start-->
           <div class="col-table-cell col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div id="cart">
+
               <button type="button" data-toggle="dropdown" data-loading-text="Loading..." class="heading dropdown-toggle">
               <span class="cart-icon pull-left flip"></span>
-              <span id="cart-total">2 آیتم - 132000 تومان</span></button>
+              <span id="cart-total">
+                {{ request.user | cart_product_count }} آیتم -                              
+                {% if object.get_total %}
+                {{ object.get_total }} تومان
+                {% endif %}
+              </span></button>
+              {% if user.is_authenticated %}
               <ul class="dropdown-menu">
                 <li>
                   <table class="table">
                     <tbody>
+                      {% for order_item in object.products.all %}
                       <tr>
-                        <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="کفش راحتی مردانه" alt="کفش راحتی مردانه" src="static/image/product/sony_vaio_1-50x50.jpg"></a></td>
-                        <td class="text-left"><a href="product.html">کفش راحتی مردانه</a></td>
-                        <td class="text-right">x 1</td>
-                        <td class="text-right">32000 تومان</td>
+                        <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="کفش راحتی مردانه" alt="کفش راحتی مردانه" src="{{ order_item.product.miniimage.url }}"></a></td>
+                        <td class="text-left"><a href="product.html">{{ order_item.product.name }}</a></td>
+                        <td class="text-right">x {{ order_item.quantity }}</td>
+                        <td class="text-right">   
+                          {% if order_item.product.discount_price %}
+                          {{ order_item.get_total_product_discount_price }} تومان
+                          {% else %}
+                          {{ order_item.get_total_product_price }} تومان
+                          {% endif %}
+                        </td>
                         <td class="text-center"><button class="btn btn-danger btn-xs remove" title="حذف" onClick="" type="button"><i class="fa fa-times"></i></button></td>
                       </tr>
-                      <tr>
-                        <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="تبلت ایسر" alt="تبلت ایسر" src="static/image/product/samsung_tab_1-50x50.jpg"></a></td>
-                        <td class="text-left"><a href="product.html">تبلت ایسر</a></td>
-                        <td class="text-right">x 1</td>
-                        <td class="text-right">98000 تومان</td>
-                        <td class="text-center"><button class="btn btn-danger btn-xs remove" title="حذف" onClick="" type="button"><i class="fa fa-times"></i></button></td>
-                      </tr>
+                      {% endfor %}
                     </tbody>
                   </table>
                 </li>
@@ -99,26 +113,35 @@
                       <tbody>
                         <tr>
                           <td class="text-right"><strong>جمع کل</strong></td>
-                          <td class="text-right">132000 تومان</td>
+                          <td class="text-right">
+                            {% if object.get_total %}
+                            {{ object.get_total }} تومان
+                            {% endif %}
+                          </td>
                         </tr>
                         <tr>
                           <td class="text-right"><strong>کسر هدیه</strong></td>
-                          <td class="text-right">4000 تومان</td>
+                          <td class="text-right">0 تومان</td>
                         </tr>
                         <tr>
                           <td class="text-right"><strong>مالیات</strong></td>
-                          <td class="text-right">11880 تومان</td>
+                          <td class="text-right">0 تومان</td>
                         </tr>
                         <tr>
                           <td class="text-right"><strong>قابل پرداخت</strong></td>
-                          <td class="text-right">139880 تومان</td>
+                          <td class="text-right"> 
+                            {% if object.get_total %}
+                            {{ object.get_total }} تومان
+                            {% endif %}
+                          </td>
                         </tr>
                       </tbody>
                     </table>
-                    <p class="checkout"><a href="{% url 'product:cart' %}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> مشاهده سبد</a>&nbsp;&nbsp;&nbsp;<a href="{% url 'product:checkout' %}" class="btn btn-primary"><i class="fa fa-share"></i> تسویه حساب</a></p>
+                    <p class="checkout"><a href="{% url 'cart:cart' %}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> مشاهده سبد</a>&nbsp;&nbsp;&nbsp;<a href="{% url 'product:checkout' %}" class="btn btn-primary"><i class="fa fa-share"></i> تسویه حساب</a></p>
                   </div>
                 </li>
               </ul>
+              {% endif %}
             </div>
           </div>
           <!-- Mini Cart End-->
@@ -144,11 +167,11 @@
             <li class="mega-menu dropdown"><a>دسته ها</a>
               <div class="dropdown-menu">
                 {% for category in categories %}
-                <div class="column col-lg-2 col-md-3"><a href="{% url 'product:category' pk=category.id %}">{{ category.title }}</a>
+                <div class="column col-lg-2 col-md-3"><a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
                   <div>
                     <ul>
                       {% for sub in category.subcategory.all %}
-                      <li><a href="{% url 'product:subcategory' pk=sub.id %}">{{ sub.title }}</a></li>
+                      <li><a href="{{ sub.get_absolute_url }}">{{ sub.title }}</a></li>
                       {% endfor %}
                     </ul>
                   </div>
@@ -156,12 +179,11 @@
                 {% endfor %}
               </div>
             </li>
-            <li class="menu_brands dropdown"><a href="#">برند ها</a>
+            <li class="menu_brands dropdown"><a href="#">عرضه کنندگان</a>
               <div class="dropdown-menu">
                 <div class="col-lg-1 col-md-2 col-sm-3 col-xs-6"><a href="#"><img src="image/product/apple_logo-60x60.jpg" title="اپل" alt="اپل" /></a><a href="#">اپل</a></div>
               </div>
             </li>
-            <li class="custom-link"><a href="#">لینک های دلخواه</a></li>
             <li class="dropdown wrap_custom_block hidden-sm hidden-xs"><a>وبلاگ</a>
               <div class="dropdown-menu custom_block">
                 <ul>
@@ -191,29 +213,6 @@
                       </tbody>
                     </table>
                   </li>
-                </ul>
-              </div>
-            </li>
-            <li class="dropdown information-link"><a>برگه ها</a>
-              <div class="dropdown-menu">
-                <ul>
-                  <li><a href="login.html">ورود</a></li>
-                  <li><a href="register.html">ثبت نام</a></li>
-                  <li><a href="category.html">دسته بندی (شبکه/لیست)</a></li>
-                  <li><a href="product.html">محصولات</a></li>
-                  <li><a href="cart.html">سبد خرید</a></li>
-                  <li><a href="checkout.html">تسویه حساب</a></li>
-                  <li><a href="compare.html">مقایسه</a></li>
-                  <li><a href="wishlist.html">لیست آرزو</a></li>
-                  <li><a href="search.html">جستجو</a></li>
-                </ul>
-                <ul>
-                  <li><a href="about-us.html">درباره ما</a></li>
-                  <li><a href="404.html">404</a></li>
-                  <li><a href="elements.html">عناصر</a></li>
-                  <li><a href="faq.html">سوالات متداول</a></li>
-                  <li><a href="sitemap.html">نقشه سایت</a></li>
-                  <li><a href="contact-us.html">تماس با ما</a></li>
                 </ul>
               </div>
             </li>

@@ -13,8 +13,12 @@ SECRET_KEY = 'qh^txo(p4_4@bp=&qxm1#*f)4_1ji&&e1w&lm^tl_)hf$@bkwb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+        '127.0.0.1:8001',
+        '*',
+    ]
 
 
 # Application definition
@@ -32,18 +36,26 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'crispy_forms',
+    'rest_framework',
+
 
     'product',
+    'cart',
+    'api',
+    'whitenoise',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+
 ]
 
 ROOT_URLCONF = 'tpshop.urls'
@@ -60,6 +72,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'product.context_processors.nav',
+                # 'product.context_processors.get',
+
 
             ],
         },
@@ -122,6 +136,15 @@ AUTHENTICATION_BACKENDS = (
 
 )
 
+ACCOUNT_AUTHENTICATION_METHOD= ('username')
+
+ACCOUNT_FORMS = {
+'login': 'product.forms.CustomLoginForm',
+'signup':'product.forms.CustomSignupForm',
+'reset_password':'product.forms.CustomResetPasswordForm',
+
+}
+ACCOUNT_EMAIL_REQUIRED=True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -147,3 +170,4 @@ LOGIN_REDIRECT_URL='/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+

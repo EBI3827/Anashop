@@ -1,5 +1,5 @@
-
 {% extends 'base1.html' %}
+{% load compare_tag %}
 {% load static %}
 
 {% block body %}
@@ -10,7 +10,7 @@
       <!-- Breadcrumb Start-->
       <ul class="breadcrumb">
         <li><a href="/"><i class="fa fa-home"></i></a></li>
-        <li><a href="{% url 'product:category' pk=category.id %}">{{ category.title }}</a></li>
+        <li><a href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
       </ul>
       <!-- Breadcrumb End-->
       <div class="row">
@@ -32,12 +32,12 @@
                   <button type="button" id="list-view" class="btn btn-default" data-toggle="tooltip" title="List"><i class="fa fa-th-list"></i></button>
                   <button type="button" id="grid-view" class="btn btn-default" data-toggle="tooltip" title="Grid"><i class="fa fa-th"></i></button>
                 </div>
-                <a href="{% url 'product:compare' %}" id="compare-total">محصولات مقایسه (0)</a> </div>
+                <a href="{% url 'product:compare' %}" id="compare-total">محصولات مقایسه ({{ request.user | compare_product_count }})</a> </div>
               <div class="col-sm-2 text-right">
                 <label class="control-label" for="input-sort">مرتب سازی :</label>
               </div>
-              <div class="col-md-3 col-sm-2 text-right">
-                <select id="input-sort" class="form-control col-sm-3">
+              <div class="col-md-3 col-sm-3 text-right">
+                <select id="input-sort" class="form-control">
                   <option value="" selected="selected">پیشفرض</option>
                   <option value="">نام (الف - ی)</option>
                   <option value="">نام (ی - الف)</option>
@@ -68,11 +68,11 @@
             {% for item in category.products.all %}
             <div class="product-layout product-list col-xs-12">
               <div class="product-thumb">
-                <div class="image"><a href="/product/{{ item.id }}"><img src="{{ item.miniimage.url }}" alt="{{product.name}}" title="{{product.name}}" class="img-responsive" /></a></div>
+                <div class="image"><a href="{{ item.get_absolute_url }}"><img src="{{ item.miniimage.url }}" alt="{{product.name}}" title="{{product.name}}" class="img-responsive" /></a></div>
                 <div>
                   <div class="caption">
-                    <h4><a href="/product/{{ item.id }}"> کد محصول : {{item.id}}</a></h4>
-                    <h4><a href="/product/{{ item.id }}"> نام محصول : {{item.name}} </a></h4>
+                    <h4><a href="{{ item.get_absolute_url }}"> کد محصول : {{item.id}}</a></h4>
+                    <h4><a href="{{ item.get_absolute_url }}"> نام محصول : {{item.name}} </a></h4>
                     <p class="description"> توضیحات : {{ item.description }}</p>
                     <p class="price">
                       {% if item.discount_price %}

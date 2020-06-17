@@ -4,13 +4,24 @@
     <div class="box-category">
         <ul id="cat_accordion">
         {% for category in categories %}
-        <li><a href="{% url 'product:category' pk=category.id %}">{{ category.title }}</a> <span class="down" ></span>
+        {% url 'product:category' pk=category.id slug=category.slug as the_url %}
+        {% if request.get_full_path == the_url %}
+        <li><a class="active" href="{{ category.get_absolute_url }}">{{ category.title }}</a> <span class="down" ></span>
             <ul>
             {% for sub in category.subcategory.all %}
-            <li><a href="{% url 'product:subcategory' pk=sub.id %}">{{ sub.title }}</a></li>
+            <li><a href="{{ sub.get_absolute_url }}">{{ sub.title }}</a></li>
             {% endfor %}
             </ul>
         </li>
+        {% else %}
+        <li><a href="{{ category.get_absolute_url }}">{{ category.title }}</a> <span class="down" ></span>
+            <ul>
+            {% for sub in category.subcategory.all %}
+            <li><a href="{{ sub.get_absolute_url }}">{{ sub.title }}</a></li>
+            {% endfor %}
+            </ul>
+        </li>
+        {% endif %}
         {% endfor %}
         </ul>
     </div>
@@ -29,10 +40,10 @@
         {% for product in products %}
         {% if product.featured %}
         <div class="product-thumb clearfix">
-          <div class="image"><a href="/product/{{ product.id }}"><img src="{{product.miniimage.url}}" alt="تی شرت کتان مردانه" title="تی شرت کتان مردانه" class="img-responsive" /></a></div>
+          <div class="image"><a href="{{ product.get_absolute_url }}"><img src="{{product.miniimage.url}}" alt="تی شرت کتان مردانه" title="تی شرت کتان مردانه" class="img-responsive" /></a></div>
           <div class="caption">
-            <h4><a href="/product/{{ product.id }}"> کد محصول : {{product.id}} </a></h4>
-            <h4><a href="/product/{{ product.id }}"> نام محصول : {{product.name}} </a></h4>
+            <h4><a href="{{ product.get_absolute_url }}"> کد محصول : {{product.id}} </a></h4>
+            <h4><a href="{{ product.get_absolute_url }}"> نام محصول : {{product.name}} </a></h4>
             <p class="price">
               {% if product.discount_price %}
               <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.discount_price}} تومان</span></li>
@@ -61,9 +72,9 @@
     <div class="side-item">
         {% for product in latest %}
         <div class="product-thumb clearfix">
-        <div class="image"><a href="product.html"><img src="{{ product.miniimage.url }}" alt="کرم مو آقایان" title="کرم مو آقایان" class="img-responsive" /></a></div>
+        <div class="image"><a href="{{ product.get_absolute_url }}"><img src="{{ product.miniimage.url }}" alt="کرم مو آقایان" title="کرم مو آقایان" class="img-responsive" /></a></div>
         <div class="caption">
-            <h4><a href="product.html">{{product.name}}</a></h4>
+            <h4><a href="{{ product.get_absolute_url }}">{{product.name}}</a></h4>
             <p class="price"> {{product.price}} تومان </p>
             <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
         </div>

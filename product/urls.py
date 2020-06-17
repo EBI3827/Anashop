@@ -1,5 +1,5 @@
 
-from django.urls import path
+from django.urls import path, re_path
 from .views import (
     home,
     ProductDetailView,
@@ -7,28 +7,36 @@ from .views import (
     contact,
     product_category,
     checkout,
-    cart,
     about_us,
-    compare, 
+    CompareView, 
+    add_to_compare,
+    remove_from_compare,
     search, 
-    wishlist,
+    WishView,
+    add_to_wishlist,
+    remove_from_wishlist,
     product_subcategory,
+    sitemap,
 )
 
 app_name = 'product'
 
 urlpatterns = [
     path('', home, name='home'),
-    path('product/<pk>', ProductDetailView.as_view(), name='product-detail'),
+    path('product/<int:pk>/<slug>/', ProductDetailView.as_view(), name='product-detail'),
     path('products/', productlist, name='products'),
     path('contact-us/', contact, name='contact-us'),
-    path('products/<pk>', product_category, name='category'),
-    path('sub-products/<pk>', product_subcategory, name='subcategory'),
+    path('products/<int:pk>/<slug>/', product_category, name='category'),
+    path('products/<slug>/<int:pk>/<category>/', product_subcategory, name='subcategory'),
     path('checkout/', checkout, name='checkout'),
-    path('cart/', cart, name='cart'),
     path('about-us/', about_us, name='about-us'),
-    path('compare/', compare, name='compare'),
+    path('sitemap/', sitemap, name='sitemap'),
+    path('compare/', CompareView.as_view(), name='compare'),
+    path('add_to_compare/<pk>', add_to_compare, name='add_to_compare'),
+    path('remove_from_compare/<pk>', remove_from_compare, name='remove_from_compare'),
     path('search/', search, name='search'),
-    path('wishlist/', wishlist, name='wishlist'),
+    path('wishlist/', WishView.as_view(), name='wishlist'),
+    path('add_to_wishlist/<pk>', add_to_wishlist, name='add_to_wishlist'),
+    path('remove_from_wishlist/<pk>', remove_from_wishlist, name='remove_from_wishlist'),
 
 ]

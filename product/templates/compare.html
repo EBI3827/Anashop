@@ -5,8 +5,8 @@
     <div class="container">
       <!-- Breadcrumb Start-->
       <ul class="breadcrumb">
-        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
-        <li><a href="compare.html">مقایسه محصولات</a></li>
+        <li><a href="/"><i class="fa fa-home"></i></a></li>
+        <li><a href="{% url 'product:compare' %}">مقایسه محصولات</a></li>
       </ul>
       <!-- Breadcrumb End-->
       <div class="row">
@@ -15,47 +15,43 @@
           <h1 class="title">مقایسه محصولات</h1>
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
-              <thead>
+              <!-- <thead>
                 <tr>
-                  <td colspan="4"><strong>جزئیات محصول</strong></td>
+                  <td colspan="{{ object.products.all | length }}"><strong>جزئیات محصول</strong></td>
                 </tr>
-              </thead>
-              <tbody>
+              </thead> -->
+              <tbody style="text-align:center;">
+                
                 <tr>
                   <td>محصولات</td>
-                  <td><a href="product.html"><strong>لپ تاپ ایلین ور</strong></a></td>
-                  <td><a href="product.html"><strong>کتاب آموزش باغبانی</strong></a></td>
-                  <td><a href="product.html"><strong>تبلت ایسر</strong></a></td>
+                  {% for item in object.products.all %}
+                  <td><a href="{{ item.product.get_absolute_url }}"><strong>{{ item.product.name }}</strong></a></td>
+                  {% endfor %}
                 </tr>
                 <tr>
                   <td>تصویر</td>
-                  <td class="text-center"><img class="img-thumbnail" title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" src="image/product/macbook_air_1-90x90.jpg"></td>
-                  <td class="text-center"><img class="img-thumbnail" title=" کتاب آموزش باغبانی " alt=" کتاب آموزش باغبانی " src="image/product/macbook_pro_1-90x90.jpg"></td>
-                  <td class="text-center"><img class="img-thumbnail" title="تبلت ایسر" alt="تبلت ایسر" src="image/product/samsung_tab_1-90x90.jpg"></td>
+                  {% for item in object.products.all %}
+                  <td class="text-center"><a href="{{ item.product.get_absolute_url }}"><img class="img-thumbnail" title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" src="{{ item.product.miniimage.url }}"></a></td>
+                  {% endfor %}
                 </tr>
                 <tr>
                   <td>قیمت</td>
-                  <td><span class="price-old">12 میلیون تومان</span> <span class="price-new">10 میلیون تومان</span></td>
-                  <td><span class="price-old">120000 تومان</span> <span class="price-new">98000 تومان</span></td>
-                  <td><span class="price-old">240000 تومان</span> <span class="price-new">98000 تومان</span></td>
-                </tr>
-                <tr>
-                  <td>مدل</td>
-                  <td>محصولات 17</td>
-                  <td>محصولات 18</td>
-                  <td>SAM1</td>
-                </tr>
-                <tr>
-                  <td>برند</td>
-                  <td>اپل</td>
-                  <td>اپل</td>
-                  <td>اپل</td>
+                  {% for item in object.products.all %}
+                  <td>
+                    {% if item.product.discount_price %}
+                    <span class="price-old">{{ item.product.price }}</span>
+                    <span class="price-new">{{ item.product.discount_price }}</span>
+                    {% else %}
+                    <span class="price-new">{{ item.product.price }}</span>
+                    {% endif %}
+                  </td>
+                  {% endfor %}
                 </tr>
                 <tr>
                   <td>وضعیت موجودی</td>
-                  <td>موجود</td>
-                  <td>موجود</td>
-                  <td>پیش سفارش</td>
+                  {% for item in object.products.all %}
+                  <td>{{ item.product.label }}</td>
+                  {% endfor %}
                 </tr>
                 <tr>
                   <td>رتبه</td>
@@ -63,39 +59,22 @@
                     بر اساس 0 بررسی</td>
                   <td class="rating"><span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <br>
                     بر اساس 0 بررسی</td>
-                  <td class="rating"><span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <br>
-                    بر اساس 1 بررسی.</td>
                 </tr>
                 <tr>
                   <td>خلاصه</td>
-                  <td class="description">مک بوک ایر ساده و سریع و سبک چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد..</td>
-                  <td class="description"> آخرین دستاورد های روز دنیا
-                    
-                    سامسونگ باز هم چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشت...</td>
-                  <td class="description">گلکسی تب 10.1, سامسونگ باز هم چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشت...</td>
-                </tr>
-                <tr>
-                  <td>وزن</td>
-                  <td>1.50kg</td>
-                  <td>1.80kg</td>
-                  <td>2.00kg</td>
-                </tr>
-                <tr>
-                  <td>ابعاد (طول - عرض - ارتفاع)</td>
-                  <td>0.00mm x 0.00mm x 0.00mm</td>
-                  <td>0.00mm x 0.00mm x 0.00mm</td>
-                  <td>0.00cm x 0.00cm x 0.00cm</td>
+                  {% for item in object.products.all %}
+                  <td class="description">{{ item.product.description }}</td>
+                  {% endfor %}
                 </tr>
               </tbody>
               <tbody>
                 <tr>
                   <td></td>
-                  <td><input type="button" onClick="" class="btn btn-primary btn-block" value="افزودن به سبد">
-                    <a class="btn btn-danger btn-block" href="#">حذف</a></td>
-                  <td><input type="button" onClick="" class="btn btn-primary btn-block" value="افزودن به سبد">
-                    <a class="btn btn-danger btn-block" href="#">حذف</a></td>
-                  <td><input type="button" onClick="" class="btn btn-primary btn-block" value="افزودن به سبد">
-                    <a class="btn btn-danger btn-block" href="#">حذف</a></td>
+                  {% for item in object.products.all %}
+                  <td><a href="{{ item.product.get_add_to_cart_url }}"><input type="button" onClick="" class="btn btn-primary btn-block" value="افزودن به سبد"></a>
+                    <a class="btn btn-danger btn-block" href="{{ item.product.get_remove_from_compare_url }}">حذف</a>
+                  </td>
+                  {% endfor %}
                 </tr>
               </tbody>
             </table>

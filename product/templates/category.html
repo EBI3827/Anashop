@@ -1,4 +1,6 @@
 {% extends 'base1.html' %}
+{% load templatehelpers %}
+{% load compare_tag %}
 {% load static %}
 {% block title %}<title>محصولات</title>{% endblock %}
 {% block body %}
@@ -31,22 +33,39 @@
                   <button type="button" id="list-view" class="btn btn-default" data-toggle="tooltip" title="List"><i class="fa fa-th-list"></i></button>
                   <button type="button" id="grid-view" class="btn btn-default" data-toggle="tooltip" title="Grid"><i class="fa fa-th"></i></button>
                 </div>
-                <a href="{% url 'product:compare' %}" id="compare-total">محصولات مقایسه (0)</a> </div>
+                <a href="{% url 'product:compare' %}" id="compare-total">محصولات مقایسه ({{ request.user | compare_product_count }})</a> </div>
               <div class="col-sm-2 text-right">
                 <label class="control-label" for="input-sort">مرتب سازی :</label>
               </div>
               <div class="col-md-3 col-sm-2 text-right">
-                <select id="input-sort" class="form-control col-sm-3">
-                  <option value="" selected="selected">پیشفرض</option>
-                  <option value="">نام (الف - ی)</option>
-                  <option value="">نام (ی - الف)</option>
-                  <option value="">قیمت (کم به زیاد)</option></option>
-                  <option value="">قیمت (زیاد به کم)</option>
-                  <option value="">امتیاز (بیشترین)</option>
-                  <option value="">امتیاز (کمترین)</option>
-                  <option value="">مدل (A - Z)</option>
-                  <option value="">مدل (Z - A)</option>
+                <!-- {% with params=request.GET.urlencode %}
+                <select id="input-sort" class="form-control">
+                  <option selected='selected'><a href="{% relative_url 'name' 'order' params %}">20</a></option>
+                  <option value="">25</option>
+                  <option value="">50</option>
+                  <option value="">75</option>
+                  <option value="">100</option>
                 </select>
+                {% endwith %} -->
+                <div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                    پیش فرض
+                  </button>
+                  <ul class="dropdown-menu">
+                    {% with params=request.GET.urlencode %}
+
+                      <li><a href="{% relative_url 'name' 'order' params %}">نام (الف -ی)</a></li>
+                      <li><a href="{% relative_url '-name' 'order' params %}">نام (ی -الف)</a></li>
+                      <li><a href="{% relative_url 'price' 'order' params %}">قیمت (از کم به زیاد )</a></li>
+                      <li><a href="{% relative_url 'price' 'order' params %}">قیمت (از زیاد به کم )</a></li>
+                      <li><a href="{% relative_url '-added_date' 'order' params %}">جدیدترین</a></li>
+                      <li><a href="{% relative_url 'added_date' 'order' params %}">قدیمی ترین</a></li>
+                      
+
+                    {% endwith %}
+                  </ul>
+                </div>
+
               </div>
               <div class="col-sm-1 text-right">
                 <label class="control-label" for="input-limit">نمایش :</label>
@@ -67,11 +86,11 @@
             {% for product in products%}
             <div class="product-layout product-list col-xs-12">
               <div class="product-thumb">
-                <div class="image"><a href="/product/{{ product.id }}"><img src="{{ product.miniimage.url }}" alt="{{product.name}}" title="{{product.name}}" class="img-responsive" /></a></div>
+                <div class="image"><a href="{{ product.get_absolute_url }}"><img src="{{ product.miniimage.url }}" alt="{{product.name}}" title="{{product.name}}" class="img-responsive" /></a></div>
                 <div>
                   <div class="caption">
-                    <h4><a href="/product/{{ product.id }}"> کد محصول : {{product.id}}</a></h4>
-                    <h4><a href="/product/{{ product.id }}"> نام محصول : {{product.name}} </a></h4>
+                    <h4><a href="{{ product.get_absolute_url }}"> کد محصول : {{product.id}}</a></h4>
+                    <h4><a href="{{ product.get_absolute_url }}"> نام محصول : {{product.name}} </a></h4>
                     <p class="description"> توضیحات : {{ product.description }}</p>
                     <p class="price">
                       {% if product.discount_price %}
@@ -102,11 +121,18 @@
           <div class="row">
             <div class="col-sm-6 text-left">
               <ul class="pagination">
+                {% for i in page_obj.paginator.page_range %}
+                  <li>
+                    <a href="{% relative_url i 'page' request.GET.urlencode %}">{{ i }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+              <!-- <ul class="pagination">
                 <li class="active"><span>1</span></li>
                 <li><a href="#">2</a></li>
                 <li><a href="#">&gt;</a></li>
                 <li><a href="#">&gt;|</a></li>
-              </ul>
+              </ul> -->
             </div>
             <div class="col-sm-6 text-right">نمایش 1 تا 12 از 15 (مجموع 2 صفحه)</div>
           </div>

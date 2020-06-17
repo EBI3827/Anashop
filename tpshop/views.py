@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .forms import LoginForm, RegisterForm
 from django.contrib import messages
 
+
 def home(request):
     context={
     'name':'Ebrahim'

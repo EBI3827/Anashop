@@ -1,7 +1,11 @@
 {% extends 'base1.html' %}
 {% load static %}
 {% block title %}<title>جزییات محصولات</title>{% endblock %}
+{% block head %}
+{% endblock %}
+
 {% block body %}
+
 <body>
 <div class="wrapper-wide">
   <div id="container">
@@ -9,8 +13,9 @@
       <!-- Breadcrumb Start-->
       <ul class="breadcrumb">
         <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{% url 'product:home' %}" itemprop="url"><span itemprop="title"><i class="fa fa-home"></i></span></a></li>
-        <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{% url 'product:products' %}" itemprop="url"><span itemprop="title">{{ object.subcategory.title }}</span></a></li>
-        <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/product/{{ product.id }}" itemprop="url"><span itemprop="title">{{ object.name}}</span></a></li>
+        <li><a href="{{ object.category.get_absolute_url }}">{{ object.category.title }}</a></li>
+        <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ object.subcategory.get_absolute_url }}" itemprop="url"><span itemprop="title">{{ object.subcategory.title }}</span></a></li>
+        <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ object.get_absolute_url }}" itemprop="url"><span itemprop="title">{{ object.name}}</span></a></li>
       </ul>
       <!-- Breadcrumb End-->
       <div class="row">
@@ -20,11 +25,15 @@
             <h1 class="title" itemprop="name">{{object.name}}</h1>
             <div class="row product-info">
               <div class="col-sm-6">
-                <div class="image"><img class="img-responsive" itemprop="image" id="zoom_01" src="{{ object.miniimage.url }}" title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" data-zoom-image="image/product/macbook_air_1-500x500.jpg" /> </div>
+                <!-- <div class="img-zoom-container">
+                  <img id="myimage" src="{{ object.miniimage.url }}" width="300" height="240">
+                  <div id="myresult" class="img-zoom-result"></div>
+                </div> -->
+                <div class="zoom"><img class="img-responsive" itemprop="image" id="zoom_01" src="{{ object.miniimage.url }}" title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" data-zoom-image="{% static 'kif.png'%}" /> </div>
                 <div class="center-block text-center"><span class="zoom-gallery"><i class="fa fa-search"></i> برای مشاهده گالری روی تصویر کلیک کنید</span></div>
                 <div class="image-additional" id="gallery_01">
                 {% for image in object.images.all %}
-                  <a class="thumbnail" href="#" data-zoom-image="image/product/macbook_air_1-500x500.jpg" data-image="image/product/macbook_air_1-350x350.jpg" title="لپ تاپ ایلین ور"><img src="{{ image.miniimage.url }}" title="لپ تاپ ایلین ور" alt = "لپ تاپ ایلین ور"/></a>
+                  <a class="thumbnail" href="{{ image.miniimage.url }}" data-zoom-image="image/product/macbook_air_1-500x500.jpg" data-image="image/product/macbook_air_1-350x350.jpg" title="لپ تاپ ایلین ور"><img src="{{ image.miniimage.url }}" title="لپ تاپ ایلین ور" alt = "لپ تاپ ایلین ور"/></a>
                 {% endfor %}
                 </div>
               </div>
@@ -60,16 +69,20 @@
                       <div class="qty">
                         <label class="control-label" for="input-quantity">تعداد</label>
                         <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
-                        <a class="qtyBtn plus" href="javascript:void(0);">+</a><br />
+                        <a href="{{ product.get_add_to_cart_url }}" class="qtyBtn plus" href="javascript:void(0);">+</a><br />
                         <a class="qtyBtn mines" href="javascript:void(0);">-</a>
                         <div class="clear"></div>
                       </div>
-                      <button type="button" id="button-cart" class="btn btn-primary btn-lg">افزودن به سبد</button>
+                      {% if product.label == 'ناموجود' %}
+                      <a class="btn disabled" href="{{ product.get_add_to_cart_url }}"><button type="button" id="button-cart" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
+                      {% else %}
+                      <a href="{{ product.get_add_to_cart_url }}"><button type="button" id="button-cart" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
+                      {% endif %}
                     </div>
                     <div>
-                      <button type="button" class="wishlist" onClick=""><i class="fa fa-heart"></i> افزودن به علاقه مندی ها</button>
+                      <a href="{{ product.get_add_to_wishlist_url }}"><button type="button" class="wishlist" onClick=""><i class="fa fa-heart"></i> افزودن به علاقه مندی ها</button></a>
                       <br />
-                      <button type="button" class="wishlist" onClick=""><i class="fa fa-exchange"></i> مقایسه این محصول</button>
+                      <a href="{{ product.get_add_to_compare_url }}"><button type="button" class="wishlist" onClick=""><i class="fa fa-exchange"></i> مقایسه این محصول</button></a>
                     </div>
                   </div>
                 </div>
@@ -79,6 +92,39 @@
                 </div>
                 <hr>
               </div>
+            </div>
+            <h3 class="subtitle">محصولات مرتبط</h3>
+            <div class="owl-carousel related_pro">
+              {% for item in object.subcategory.products.all %}
+              {% if item.id != object.id %}
+              <div class="product-thumb">
+                <div class="image"><a href="{{ item.get_absolute_url }}"><img src="{{ item.miniimage.url }}" alt="تبلت ایسر" title="تبلت ایسر" class="img-responsive" /></a></div>
+                <div class="caption">
+                  <h4><a href="{{ item.get_absolute_url }}">{{item.name}}</a></h4>
+                  <p class="price">
+                    {% if item.discount_price %} 
+                    <span class="price-new">{{item.discount_price}} تومان</span>
+                    <span class="price-old">{{item.price}} تومان</span>
+                    <span class="saving">
+                      {{ item.save_percent }}%
+                    </span>
+                    {% else %}
+                    <li style="list-style-type: none;"><span class="price-new">قیمت :{{item.price}} تومان</span></li>
+                    <li style="list-style-type: none;"><br></li>
+                    {% endif %}
+                  </p>
+                  <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
+                </div>
+                <div class="button-group">
+                  <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
+                  <div class="add-to-links">
+                    <button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button>
+                    <button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+              {% endfor %}
             </div>
             <ul class="nav nav-tabs">
               <li class="active"><a href="#tab-description" data-toggle="tab">توضیحات</a></li>
@@ -187,39 +233,7 @@
                 </form>
               </div>
             </div>
-            <h3 class="subtitle">محصولات مرتبط</h3>
-            <div class="owl-carousel related_pro">
-              {% for item in object.subcategory.products.all %}
-              {% if item.id != object.id %}
-              <div class="product-thumb">
-                <div class="image"><a href="/product/{{ item.id }}"><img src="{{ item.miniimage.url }}" alt="تبلت ایسر" title="تبلت ایسر" class="img-responsive" /></a></div>
-                <div class="caption">
-                  <h4><a href="/product/{{ item.id }}">{{item.name}}</a></h4>
-                  <p class="price">
-                    {% if item.discount_price %} 
-                    <span class="price-new">{{item.discount_price}} تومان</span>
-                    <span class="price-old">{{item.price}} تومان</span>
-                    <span class="saving">
-                      {{ item.save_percent }}%
-                    </span>
-                    {% else %}
-                    <li style="list-style-type: none;"><span class="price-new">قیمت :{{item.price}} تومان</span></li>
-                    <li style="list-style-type: none;"><br></li>
-                    {% endif %}
-                  </p>
-                  <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
-                </div>
-                <div class="button-group">
-                  <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
-                  <div class="add-to-links">
-                    <button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button>
-                    <button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button>
-                  </div>
-                </div>
-              </div>
-              {% endif %}
-              {% endfor %}
-            </div>
+
           </div>
         </div>
         <!--Middle Part End -->
@@ -228,26 +242,31 @@
   </div>
 </div>
 
+<script type="text/javascript">
+  // Elevate Zoom for Product Page image
+  $("#zoom_01").elevateZoom({
+    gallery:'gallery_01',
+    cursor: 'pointer',
+    galleryActiveClass: 'active',
+    imageCrossfade: true,
+    zoomWindowFadeIn: 200,
+    zoomWindowFadeOut: 200,
+    zoomWindowPosition : 11,
+    lensFadeIn: 500,
+    lensFadeOut: 500,
+    loadingIcon: 'image/progress.gif'
+    }); 
+  //////pass the images to swipebox
+  $("#zoom_01").bind("click", function(e) {
+    var ez =   $('#zoom_01').data('elevateZoom');
+    $.swipebox(ez.getGalleryList());
+    return false;
+  });
+  </script>
+
 <script>
-// Elevate Zoom for Product Page image
-$("#zoom_01").elevateZoom({
-	gallery:'gallery_01',
-	cursor: 'pointer',
-	galleryActiveClass: 'active',
-	imageCrossfade: true,
-	zoomWindowFadeIn: 500,
-	zoomWindowFadeOut: 500,
-	zoomWindowPosition : 11,
-	lensFadeIn: 500,
-	lensFadeOut: 500,
-	loadingIcon: 'image/progress.gif'
-	}); 
-//////pass the images to swipebox
-$("#zoom_01").bind("click", function(e) {
-  var ez =   $('#zoom_01').data('elevateZoom');
-	$.swipebox(ez.getGalleryList());
-  return false;
-});
+  // Initiate zoom effect:
+  imageZoom("myimage", "myresult");
 </script>
 <!-- JS Part End-->
 </body>

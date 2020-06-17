@@ -40,13 +40,13 @@
                 <!-- Slideshow Start-->
                 <div class="slideshow single-slider owl-carousel">
                     <div class="item">
-                        <a href="{% url 'product:category' pk=1 %}"><img class="img-responsive" src="static/image/slider/k.jpg" alt="banner 1" /></a>
+                        <a href="{{ category.get_absolute_url }}"><img class="img-responsive" src="static/image/slider/k.jpg" alt="banner 1" /></a>
                     </div>
                     <div class="item">
-                        <a href="{% url 'product:category' pk=2 %}"><img class="img-responsive" src="static/image/slider/s.jpg" alt="banner 3" /></a>
+                        <a href="{{ category.get_absolute_url }}"><img class="img-responsive" src="static/image/slider/s.jpg" alt="banner 3" /></a>
                     </div>
                     <div class="item">
-                        <a href="{% url 'product:category' pk=3 %}"><img class="img-responsive" src="static/image/slider/f.jpg" alt="banner 2" /></a>
+                        <a href="{{ category.get_absolute_url }}"><img class="img-responsive" src="static/image/slider/f.jpg" alt="banner 2" /></a>
                     </div>
                 </div>
                 <!-- Slideshow End-->
@@ -56,18 +56,18 @@
                     {% for product in products %} {% if product.featured %}
                     <div class="product-thumb clearfix">
                         <div class="image">
-                            <a href="/product/{{ product.id }}"><img src="{{product.miniimage.url}}" alt="تی شرت کتان مردانه" title="تی شرت کتان مردانه" class="img-responsive" /></a>
+                            <a href="{{ product.get_absolute_url }}"><img src="{{product.miniimage.url}}" alt="تی شرت کتان مردانه" title="تی شرت کتان مردانه" class="img-responsive" /></a>
                         </div>
                         <div class="caption">
-                            <h4><a href="/product/{{ product.id }}"> کد محصول : {{product.id}} </a></h4>
-                            <h4><a href="/product/{{ product.id }}"> نام محصول : {{product.name}} </a></h4>
+                            <h4><a href="{{ product.get_absolute_url }}"> کد محصول : {{product.id}} </a></h4>
+                            <h4><a href="{{ product.get_absolute_url }}"> نام محصول : {{product.name}} </a></h4>
                             <p class="price">
                                 {% if product.discount_price %}
                                 <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.discount_price}} تومان</span></li>
                                 <li style="list-style-type: none;"><span class="price-old">قیمت :{{product.price}} تومان</span></li>
                                 <span class="saving">
-                  {{ product.save_percent }}%
-                  </span> {% else %}
+                                {{ product.save_percent }}%
+                                </span> {% else %}
                                 <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.price}} تومان</span></li>
                                 <li style="list-style-type: none;"><br></li>
                                 {% endif %}
@@ -75,10 +75,14 @@
                             </p>
                         </div>
                         <div class="button-group">
-                            <button class="btn-primary" type="button" onClick="cart.add('42');"><span>افزودن به سبد</span></button>
+                            {% if product.label == 'ناموجود' %}
+                            <a class="btn disabled" href="{{ product.get_add_to_cart_url }}"><button class="btn-danger" type="button" onClick=""><span>ناموجود</span></button></a>
+                            {% else %}
+                            <a href="{{ product.get_add_to_cart_url }}"><button class="btn-primary" type="button"><span>افزودن به سبد</span></button></a>
+                            {% endif %}
                             <div class="add-to-links">
-                                <button type="button" data-toggle="tooltip" title="Add to Wish List" onClick=""><i class="fa fa-heart"></i></button>
-                                <button type="button" data-toggle="tooltip" title="مقایسه this محصولات" onClick=""><i class="fa fa-exchange"></i></button>
+                                <a href="{{ product.get_add_to_wishlist_url }}"><button type="button" data-toggle="tooltip" title="Add to Wish List" onClick=""><i class="fa fa-heart"></i></button></a>
+                                <a href="{{ product.get_add_to_compare_url }}"><button type="button" data-toggle="tooltip" title="مقایسه this محصولات" onClick=""><i class="fa fa-exchange"></i></button></a>
                             </div>
                         </div>
                     </div>
@@ -102,24 +106,39 @@
                 <!-- Banner End-->
                 <!-- دسته ها محصولات Slider Start-->
                 {% for category in categories %}
-                <h3 class="subtitle"> {{ category.title }}- <a class="viewall" href="{% url 'product:category' pk=category.id %}">نمایش همه</a></h3>
+                <h3 class="subtitle"> {{ category.title }}- <a class="viewall" href="{{ category.get_absolute_url }}">نمایش همه</a></h3>
                 <div class="owl-carousel latest_category_carousel">
                     {% for product in category.products.all %}
 
                     <div class="product-thumb">
                         <div class="image">
-                            <a href="/product/{{ product.id }}"><img src="{{ product.miniimage.url }}" alt="کرم مو آقایان" title="کرم مو آقایان" class="img-responsive" /></a>
+                            <a href="{{ product.get_absolute_url }}"><img src="{{ product.miniimage.url }}" alt="کرم مو آقایان" title="کرم مو آقایان" class="img-responsive" /></a>
                         </div>
                         <div class="caption">
-                            <h4><a href="/product/{{ product.id }}">{{ product.name }}</a></h4>
-                            <p class="price"> {{ product.price }} </p>
+                            <h4><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h4>
+                            {% if product.discount_price %}
+                            <p class="price-new"> {{ product.discount_price }} تومان</p>
+                            <p class="price-old"> {{ product.price }} تومان</p>
                             <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>                                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>                                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
+                            <span class="saving">
+                                {{ product.save_percent }}%
+                            </span>
+
+                            {% else %}
+                            <p class="price"> {{ product.price }} تومان</p>
+                            <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>                                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>                                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
+                            {% endif %}
                         </div>
+                        
                         <div class="button-group">
-                            <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
+                            {% if product.label == 'ناموجود' %}
+                            <a class="btn disabled" href="{{ product.get_add_to_cart_url }}"><button class="btn-danger" type="button" onClick=""><span>ناموجود</span></button></a>
+                            {% else %}
+                            <a href="{{ product.get_add_to_cart_url }}"><button class="btn-primary" type="button"><span>افزودن به سبد</span></button></a>
+                            {% endif %}
                             <div class="add-to-links">
-                                <button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button>
-                                <button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button>
+                                <a href="{{ product.get_add_to_wishlist_url }}"><button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button></a>
+                                <a href="{{ product.get_add_to_compare_url }}"><button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button></a>
                             </div>
                         </div>
                     </div>

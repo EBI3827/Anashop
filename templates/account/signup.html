@@ -5,8 +5,8 @@
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
-<div class="container ">
-<div class="col-md-6">
+<div class="container">
+<div class="col-md-4" style="display: inline">
 <h1>{% trans "ثبت نام" %}</h1>
 
 <p style="font-size: large;">{% blocktrans %}از قبل حساب کاربری دارید؟ پس <a href="{{ login_url }}">وارد شوید</a>.{% endblocktrans %}</p>
@@ -17,8 +17,9 @@
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
-  <button type="submit" class="btn btn-primary" style="width: 100px; font-size: x-large;">{% trans "ثبت نام" %} &raquo;</button>
+  <button type="submit" class="btn btn-primary" style="width: 100px; font-size: x-large;">{% trans "ثبت نام" %}</button>
 </form>
+<br><br>
 </div>
 </div>
 {% endblock %}
