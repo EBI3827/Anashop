@@ -1,13 +1,12 @@
 {% extends 'base1.html' %}
 {% load static %}
+{% load ratings %}
 {% block title %}<title>جزییات محصولات</title>{% endblock %}
 {% block head %}
 {% endblock %}
 
 {% block body %}
 
-<body>
-<div class="wrapper-wide">
   <div id="container">
     <div class="container">
       <!-- Breadcrumb Start-->
@@ -29,7 +28,7 @@
                   <img id="myimage" src="{{ object.miniimage.url }}" width="300" height="240">
                   <div id="myresult" class="img-zoom-result"></div>
                 </div> -->
-                <div class="zoom"><img class="img-responsive" itemprop="image" id="zoom_01" src="{{ object.miniimage.url }}" title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" data-zoom-image="{% static 'kif.png'%}" /> </div>
+                <div class="zoom"><img class="img-responsive" itemprop="image" id="zoom_01" src="{{ object.miniimage.url }}" title="{{object.name}}" alt="{{object.name}}" data-zoom-image="{% static 'kif.png'%}" /> </div>
                 <div class="center-block text-center"><span class="zoom-gallery"><i class="fa fa-search"></i> برای مشاهده گالری روی تصویر کلیک کنید</span></div>
                 <div class="image-additional" id="gallery_01">
                 {% for image in object.images.all %}
@@ -39,8 +38,9 @@
               </div>
               <div class="col-sm-6">
                 <ul class="list-unstyled description">
+                  <!-- <span style="color:gold;" class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span> -->
                   <li><b>کد محصول :</b> <span itemprop="mpn">{{ object.id }}</span></li>
-                  <li><b>وضعیت موجودی :</b><span class="{{object.get_label_color}}">{{ object.label }}</span></li>
+                  <li><b>وضعیت موجودی :  </b><span class="{{object.get_label_color}}">{{ object.label }}</span></li>
                 </ul>
                 <ul class="price-box">
                   {% if product.discount_price %}
@@ -86,11 +86,12 @@
                     </div>
                   </div>
                 </div>
-                <div class="rating" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-                  <meta itemprop="ratingValue" content="0" />
-                  <p><span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span> <a onClick="$('a[href=\'#tab-review\']').trigger('click'); return false;" href=""><span itemprop="reviewCount">1 بررسی</span></a> / <a onClick="$('a[href=\'#tab-review\']').trigger('click'); return false;" href="">یک بررسی بنویسید</a></p>
+                <div style="font-size: 20px;color: gray;">
+                {% ratings object %} {{ rating.average |floatformat:"-2" }} ({{ rating.count }})
                 </div>
-                <hr>
+                <div class="rating" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                  <a href="#preview"><span itemprop="reviewCount">{{ comments.count }} نظر</span></a> / <a href="#preview">افزودن نظر جدید</a>
+                </div>
               </div>
             </div>
             <h3 class="subtitle">محصولات مرتبط</h3>
@@ -98,7 +99,7 @@
               {% for item in object.subcategory.products.all %}
               {% if item.id != object.id %}
               <div class="product-thumb">
-                <div class="image"><a href="{{ item.get_absolute_url }}"><img src="{{ item.miniimage.url }}" alt="تبلت ایسر" title="تبلت ایسر" class="img-responsive" /></a></div>
+                <div class="image"><a href="{{ item.get_absolute_url }}"><img src="{{ item.miniimage.url }}" alt="{{item.name}}" title="{{item.name}}" class="img-responsive" /></a></div>
                 <div class="caption">
                   <h4><a href="{{ item.get_absolute_url }}">{{item.name}}</a></h4>
                   <p class="price">
@@ -113,13 +114,15 @@
                     <li style="list-style-type: none;"><br></li>
                     {% endif %}
                   </p>
-                  <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
+                  <div class="rating">{% ratings item %} </div>
                 </div>
                 <div class="button-group">
-                  <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
+                  <a {% if item.label == 'ناموجود' %} class="btn disabled" {% endif %} href="{{ item.get_add_to_cart_url }}">
+                    <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
+                  </a>
                   <div class="add-to-links">
-                    <button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button>
-                    <button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button>
+                    <a href="{{ item.get_add_to_wishlist_url }}"><button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button></a>
+                    <a href="{{ item.get_add_to_compare_url }}"><button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick="{{ item.get_add_to_compare_url}}"><i class="fa fa-exchange"></i></button></a>
                   </div>
                 </div>
               </div>
@@ -129,9 +132,9 @@
             <ul class="nav nav-tabs">
               <li class="active"><a href="#tab-description" data-toggle="tab">توضیحات</a></li>
               <li><a href="#tab-specification" data-toggle="tab">مشخصات</a></li>
-              <li><a href="#tab-review" data-toggle="tab">نظرات</a></li>
+              <li><a id="preview" href="#tab-review" data-toggle="tab">نظرات کاربران ({{ comments.count }})</a></li>
             </ul>
-            <div class="tab-content">
+            <div class="tab-content pre-scrollable">
               <div itemprop="description" id="tab-description" class="tab-pane active">
                 <div>
                   <p>{{ object.description }}</p>
@@ -166,81 +169,89 @@
                 </table>
               </div>
               <div id="tab-review" class="tab-pane">
-                <form class="form-horizontal">
-                  <div id="review">
+                  <div>
                     <div>
                       <table class="table table-striped table-bordered">
                         <tbody>
+                          {% for comment in comments %}
                           <tr>
-                            <td style="width: 50%;"><strong><span>هاروی</span></strong></td>
-                            <td class="text-right"><span>1395/1/20</span></td>
+                            <td style="width: 50%;"><strong><span>{{ comment.username }}</span></strong></td>
+                            <td class="text-right"><span>{{ comment.convert_jalali }}</span></td>
                           </tr>
-                          <tr>
-                            <td colspan="2"><p>ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
-                              <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> </div></td>
+                          <tr> 
+                            <td colspan="2"><p>{{ comment.message }}</p>
+                              <!-- <div class="rating"> 
+                              <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> 
+                              </div> -->
+                              <button style="margin: 10px;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ comment.id }}" aria-expanded="false" aria-controls="collapseExample">
+                                پاسخ
+                              </button>
+                              <div class="collapse" id="{{ comment.id }}">
+                                <div class="card card-body" style="height: 100%;">
+                                  <table class="table table-striped table-bordered" style="margin-right: 60px;max-width: 19cm;">
+                                    <tbody>
+                                      {% for reply in comment.replies.all %}
+                                      <tr>
+                                        <td style="width: 50%;"><strong><span>{{ reply.username }}</span></strong></td>
+                                        <td class="text-right"><span>{{ reply.convert_jalali }}</span></td>
+                                      </tr>
+                                      <tr> 
+                                        <td colspan="2"><p>{{ reply.message }}</p></td>
+                                      </tr>
+                                      {% endfor %}
+                                    </tbody>
+                                  </table>
+                                  <h2>افزودن پاسخ جدید</h2> 
+                                  <form method="POST">
+                                    {% csrf_token %}       
+                                    {{form.as_p}}
+                                    <!-- <div class="form-group required">
+                                      <div class="col-sm-12">
+                                        <label for="input-name" class="control-label">نام شما</label>
+                                        {{ form.username }}
+                                      </div>
+                                    </div>
+                                    <div class="form-group required">
+                                      <div class="col-sm-12">
+                                        <label for="input-name" class="control-label">نام شما</label>
+                                        {{ form.message }}
+                                      </div>
+                                    </div> -->
+                                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                                    <div class="buttons">
+                                      <div class="pull-right">
+                                        <button class="btn btn-primary" id="button-review" type="submit">ارسال پاسخ</button>
+                                      </div>
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+                            </td>  
                           </tr>
-                        </tbody>
-                      </table>
-                      <table class="table table-striped table-bordered">
-                        <tbody>
-                          <tr>
-                            <td style="width: 50%;"><strong><span>اندرسون</span></strong></td>
-                            <td class="text-right"><span>1395/1/20</span></td>
-                          </tr>
-                          <tr>
-                            <td colspan="2"><p>ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
-                              <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div></td>
-                          </tr>
+                          {% endfor %}
                         </tbody>
                       </table>
                     </div>
                     <div class="text-right"></div>
                   </div>
-                  <h2>یک بررسی بنویسید</h2>
-                  <div class="form-group required">
-                    <div class="col-sm-12">
-                      <label for="input-name" class="control-label">نام شما</label>
-                      <input type="text" class="form-control" id="input-name" value="" name="name">
-                    </div>
-                  </div>
-                  <div class="form-group required">
-                    <div class="col-sm-12">
-                      <label for="input-review" class="control-label">بررسی شما</label>
-                      <textarea class="form-control" id="input-review" rows="5" name="text"></textarea>
-                      <div class="help-block"><span class="text-danger">توجه :</span> HTML بازگردانی نخواهد شد!</div>
-                    </div>
-                  </div>
-                  <div class="form-group required">
-                    <div class="col-sm-12">
-                      <label class="control-label">رتبه</label>
-                      &nbsp;&nbsp;&nbsp; بد&nbsp;
-                      <input type="radio" value="1" name="rating">
-                      &nbsp;
-                      <input type="radio" value="2" name="rating">
-                      &nbsp;
-                      <input type="radio" value="3" name="rating">
-                      &nbsp;
-                      <input type="radio" value="4" name="rating">
-                      &nbsp;
-                      <input type="radio" value="5" name="rating">
-                      &nbsp;خوب</div>
-                  </div>
+                  <h2>افزودن نظر جدید</h2> 
+                <form method="POST" class="form-horizontal">
+                    {% csrf_token %}       
+                    {{form}}
                   <div class="buttons">
                     <div class="pull-right">
-                      <button class="btn btn-primary" id="button-review" type="button">ادامه</button>
+                      <button class="btn btn-primary" id="button-review" type="submit">ادامه</button>
                     </div>
                   </div>
                 </form>
               </div>
             </div>
-
-          </div>
+            </div>
         </div>
         <!--Middle Part End -->
       </div>
     </div>
   </div>
-</div>
 
 <script type="text/javascript">
   // Elevate Zoom for Product Page image
@@ -269,5 +280,5 @@
   imageZoom("myimage", "myresult");
 </script>
 <!-- JS Part End-->
-</body>
+
 {% endblock %}

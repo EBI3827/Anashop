@@ -27,7 +27,7 @@
         <h3 class="subtitle">محل ما</h3>
         <div class="row">
           <div class="mapouter">
-            <div class="gmap_canvas"><iframe width="100%" height="400" id="gmap_canvas"
+            <div class="gmap_canvas"><iframe width="600" height="350" id="gmap_canvas"
                 src="https://maps.google.com/maps?q=gorgan&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0"
                 scrolling="no" marginheight="0" marginwidth="0"></iframe>
             </div>
@@ -67,25 +67,15 @@
             <strong>دیدگاه ها</strong><br />
             در اینجا توضیحات دلخواه خود را قرار دهید. فروشگاه چک قبول نمیکند! </div>
         </div>
-        <form class="form-horizontal">
+        <form method="POST" class="form-horizontal">
           <fieldset>
             <h3 class="subtitle">با ما ارتباط برقرار کنید</h3>
             <div class="form-group required">
-              <label class="col-md-2 col-sm-3 control-label" for="input-name">نام شما</label>
               <div class="col-md-10 col-sm-9">
-                <input type="text" name="name" value="" id="input-name" class="form-control" />
-              </div>
-            </div>
-            <div class="form-group required">
-              <label class="col-md-2 col-sm-3 control-label" for="input-email">آدرس ایمیل</label>
-              <div class="col-md-10 col-sm-9">
-                <input type="text" name="email" value="" id="input-email" class="form-control" />
-              </div>
-            </div>
-            <div class="form-group required">
-              <label class="col-md-2 col-sm-3 control-label" for="input-enquiry">پرسش</label>
-              <div class="col-md-10 col-sm-9">
-                <textarea name="enquiry" rows="10" id="input-enquiry" class="form-control"></textarea>
+                {% csrf_token %}
+                {{ form }}
+                <script src='https://www.google.com/recaptcha/api.js'></script>
+                <div class="g-recaptcha" data-sitekey="6LdyVacZAAAAAHTwTD2uUHMH2xXPLj1OzA9w6GMR"></div>
               </div>
             </div>
           </fieldset>

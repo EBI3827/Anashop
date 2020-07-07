@@ -1,4 +1,6 @@
-{% extends 'base1.html' %} {% load static %}
+{% extends 'base1.html' %}
+{% load static %}
+{% load ratings %}
 {% block title %}<title>Anashop</title>{% endblock %}
 {% block body %}
 <div id="container">
@@ -13,7 +15,7 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="feature-box fbox_2">
-                    <div class="title">پس فرستادن رایگان</div>
+                    <div class="title">ضمانت بازگشت کالا</div>
                     <p>بازگشت کالا تا 24 ساعت پس از خرید</p>
                 </div>
             </div>
@@ -40,13 +42,13 @@
                 <!-- Slideshow Start-->
                 <div class="slideshow single-slider owl-carousel">
                     <div class="item">
-                        <a href="{{ category.get_absolute_url }}"><img class="img-responsive" src="static/image/slider/k.jpg" alt="banner 1" /></a>
+                        <a href="{% url 'product:category' pk=1 slug='محصولات-کشاورزی' %}"><img class="img-responsive" src="static/image/slider/k.jpg" alt="banner 1" /></a>
                     </div>
                     <div class="item">
-                        <a href="{{ category.get_absolute_url }}"><img class="img-responsive" src="static/image/slider/s.jpg" alt="banner 3" /></a>
+                        <a href="{% url 'product:category' pk=2 slug='صنایع-دستی-سنتی' %}"><img class="img-responsive" src="static/image/slider/s.jpg" alt="banner 3" /></a>
                     </div>
                     <div class="item">
-                        <a href="{{ category.get_absolute_url }}"><img class="img-responsive" src="static/image/slider/f.jpg" alt="banner 2" /></a>
+                        <a href="{% url 'product:category' pk=3 slug='فرآورده-های-روستایی' %}"><img class="img-responsive" src="static/image/slider/f.jpg" alt="banner 2" /></a>
                     </div>
                 </div>
                 <!-- Slideshow End-->
@@ -56,7 +58,7 @@
                     {% for product in products %} {% if product.featured %}
                     <div class="product-thumb clearfix">
                         <div class="image">
-                            <a href="{{ product.get_absolute_url }}"><img src="{{product.miniimage.url}}" alt="تی شرت کتان مردانه" title="تی شرت کتان مردانه" class="img-responsive" /></a>
+                            <a href="{{ product.get_absolute_url }}"><img src="{{product.miniimage.url}}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a>
                         </div>
                         <div class="caption">
                             <h4><a href="{{ product.get_absolute_url }}"> کد محصول : {{product.id}} </a></h4>
@@ -81,8 +83,8 @@
                             <a href="{{ product.get_add_to_cart_url }}"><button class="btn-primary" type="button"><span>افزودن به سبد</span></button></a>
                             {% endif %}
                             <div class="add-to-links">
-                                <a href="{{ product.get_add_to_wishlist_url }}"><button type="button" data-toggle="tooltip" title="Add to Wish List" onClick=""><i class="fa fa-heart"></i></button></a>
-                                <a href="{{ product.get_add_to_compare_url }}"><button type="button" data-toggle="tooltip" title="مقایسه this محصولات" onClick=""><i class="fa fa-exchange"></i></button></a>
+                                <a href="{{ product.get_add_to_wishlist_url }}"><button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی ها" onClick=""><i class="fa fa-heart"></i></button></a>
+                                <a href="{{ product.get_add_to_compare_url }}"><button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button></a>
                             </div>
                         </div>
                     </div>
@@ -96,10 +98,10 @@
                             <a href="#"><img src="static/image/banner/sample-banner-3-400x200.jpg" alt="بنر نمونه 3" title="بنر نمونه 3" /></a>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                            <a href="#"><img src="static/image/banner/sample-banner-1-400x200.jpg" alt="بنر نمونه" title="بنر نمونه" /></a>
+                            <a href="#"><img src="{% static 'image/banner/112.png' %}" alt="بنر نمونه" title="بنر نمونه" /></a>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                            <a href="#"><img src="static/image/banner/sample-banner-2-400x200.jpg" alt="بنر نمونه 2" title="بنر نمونه 2" /></a>
+                            <a href="#"><img src="{% static 'image/banner/special.jpeg' %}" alt="بنر نمونه 2" title="بنر نمونه 2" /></a>
                         </div>
                     </div>
                 </div>
@@ -112,22 +114,20 @@
 
                     <div class="product-thumb">
                         <div class="image">
-                            <a href="{{ product.get_absolute_url }}"><img src="{{ product.miniimage.url }}" alt="کرم مو آقایان" title="کرم مو آقایان" class="img-responsive" /></a>
+                            <a href="{{ product.get_absolute_url }}"><img src="{{ product.miniimage.url }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a>
                         </div>
                         <div class="caption">
                             <h4><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h4>
                             {% if product.discount_price %}
                             <p class="price-new"> {{ product.discount_price }} تومان</p>
                             <p class="price-old"> {{ product.price }} تومان</p>
-                            <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>                                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>                                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
                             <span class="saving">
                                 {{ product.save_percent }}%
                             </span>
-
                             {% else %}
                             <p class="price"> {{ product.price }} تومان</p>
-                            <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>                                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>                                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
                             {% endif %}
+                            <div class="rating">{% ratings product %} </div>
                         </div>
                         
                         <div class="button-group">
@@ -137,7 +137,7 @@
                             <a href="{{ product.get_add_to_cart_url }}"><button class="btn-primary" type="button"><span>افزودن به سبد</span></button></a>
                             {% endif %}
                             <div class="add-to-links">
-                                <a href="{{ product.get_add_to_wishlist_url }}"><button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button></a>
+                                <a href="{{ product.get_add_to_wishlist_url }}"><button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی ها" onClick=""><i class="fa fa-heart"></i></button></a>
                                 <a href="{{ product.get_add_to_compare_url }}"><button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button></a>
                             </div>
                         </div>

@@ -1,2 +1,2 @@
 {% load i18n %}
-{% blocktrans %}Your primary e-mail address must be verified.{% endblocktrans %}
+{% blocktrans %}ابتدا باید آدرس پست الکترونیک اصلی خود را تایید کنید .{% endblocktrans %}

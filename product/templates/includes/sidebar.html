@@ -1,3 +1,5 @@
+{% load ratings %}
+
 <!-- Left Part Start-->
 <aside id="column-left" class="col-sm-3 hidden-xs">
     <h3 class="subtitle">دسته ها</h3>
@@ -27,20 +29,24 @@
     </div>
     <h3 class="subtitle">پرفروش ها</h3>
     <div class="side-item">
+        {% for order in best_sell %}
+        {% for item in order.products.all %}
         <div class="product-thumb clearfix">
-        <div class="image"><a href="product.html"><img src="static/image/product/apple_cinema_30-50x50.jpg" alt="تی شرت کتان مردانه" title="تی شرت کتان مردانه" class="img-responsive" /></a></div>
+        <div class="image"><a href="product.html"><img src="{{ item.product.miniimage.url }}" alt="{{ item.product.name }}" title="{{ item.product.name }}" class="img-responsive" /></a></div>
         <div class="caption">
-            <h4><a href="product.html">تی شرت کتان مردانه</a></h4>
+            <h4><a href="product.html">{{ item.product.name }}</a></h4>
             <p class="price"><span class="price-new">110000 تومان</span> <span class="price-old">122000 تومان</span> <span class="saving">-10%</span></p>
         </div>
         </div>
+        {% endfor %}
+        {% endfor %}
     </div>
     <h3 class="subtitle">ویژه</h3>
     <div class="side-item">
         {% for product in products %}
         {% if product.featured %}
         <div class="product-thumb clearfix">
-          <div class="image"><a href="{{ product.get_absolute_url }}"><img src="{{product.miniimage.url}}" alt="تی شرت کتان مردانه" title="تی شرت کتان مردانه" class="img-responsive" /></a></div>
+          <div class="image"><a href="{{ product.get_absolute_url }}"><img src="{{product.miniimage.url}}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a></div>
           <div class="caption">
             <h4><a href="{{ product.get_absolute_url }}"> کد محصول : {{product.id}} </a></h4>
             <h4><a href="{{ product.get_absolute_url }}"> نام محصول : {{product.name}} </a></h4>
@@ -72,12 +78,11 @@
     <div class="side-item">
         {% for product in latest %}
         <div class="product-thumb clearfix">
-        <div class="image"><a href="{{ product.get_absolute_url }}"><img src="{{ product.miniimage.url }}" alt="کرم مو آقایان" title="کرم مو آقایان" class="img-responsive" /></a></div>
+        <div class="image"><a href="{{ product.get_absolute_url }}"><img src="{{ product.miniimage.url }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a></div>
         <div class="caption">
             <h4><a href="{{ product.get_absolute_url }}">{{product.name}}</a></h4>
             <p class="price"> {{product.price}} تومان </p>
-            <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
-        </div>
+            <div class="rating">{% ratings product %}</div>
         </div>
         {% endfor %}
 

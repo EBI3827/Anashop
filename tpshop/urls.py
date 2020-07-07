@@ -1,11 +1,11 @@
-from django.contrib import admin
-from django.urls import path, include,re_path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.urls import path, include,re_path
 from django.conf.urls.static import static
+from product.views import handler404
+from django.contrib import admin
+from api.views import TestView
 from tpshop import settings
 from .views import home
-from api.views import TestView
-from product.views import handler404
 
 
 handler404 = handler404
@@ -19,7 +19,13 @@ urlpatterns = [
     path('cart/',include('cart.urls'),name='cart'),
     path('api-auth/', include('rest_framework.urls')),
     path('api/',TestView.as_view(),name='api'),
-    
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('captcha/', include('captcha.urls')),
+    path('ratings/', include('star_ratings.urls', namespace='ratings')),   
+]
+
+if settings.DEBUG:
+    urlpatterns +=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 urlpatterns += staticfiles_urlpatterns()

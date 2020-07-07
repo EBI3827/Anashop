@@ -23,7 +23,14 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/responsive-rtl.css' %}" />
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans' type='text/css'>
 <!-- CSS Part End-->
+<link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
 {% block head %}{% endblock %}
+<style>
+  ul{
+    list-style-type: none;
+    padding: 0px;
+  }
+</style>
 <style>
   * {
     box-sizing: border-box;
@@ -56,30 +63,8 @@
     -webkit-transform: scale(2); /* Safari 3-8 */
     transform: scale(2); 
   }
-  </style>
-<!-- <style>
-  * {box-sizing: border-box;}
-  
-  .img-zoom-container {
-    position: relative;
-  }
-  
-  .img-zoom-lens {
-    position: absolute;
-    border: 1px solid #d4d4d4;
-    /*set the size of the lens:*/
-    width: 40px;
-    height: 40px;
-  }
-  
-  .img-zoom-result {
-    border: 1px solid #d4d4d4;
-    /*set the size of the result div:*/
-    width: 300px;
-    height: 300px;
-  }
-  </style> -->
-  <script>
+</style>
+<script>
   function imageZoom(imgID, resultID) {
     var img, lens, result, cx, cy;
     img = document.getElementById(imgID);
@@ -135,33 +120,35 @@
       return {x : x, y : y};
     }
   }
-  </script>
+</script>
 </head>
 
 <body>
 <div class="wrapper-wide">
+  {% include 'includes/navbar.html' %}
+
   <div class="container">
+
   {% if messages %}
   {% for message in messages %}
   {% if message.tags == 'info' %}
   <div class="alert alert-success alert-dismissible" role="alert">
     {{message}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <i class="fa fa-times" aria-hidden="true"></i>
+      <i style="padding-left: 20px ;" class="fa fa-times" aria-hidden="true"></i>
     </button>
   </div>
   {% else %}
   <div class="alert alert-warning alert-dismissible show" role="alert">
       {{message}}
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <i class="fa fa-times" aria-hidden="true"></i>
+        <i style="padding-left: 20px ;" class="fa fa-times" aria-hidden="true"></i>
       </button>
     </div>
   {% endif %}
   {% endfor %}
   {% endif %}
   </div>
-{% include 'includes/navbar.html' %}
 
 
 <!-- Modal -->
@@ -169,10 +156,11 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <strong><h4 class="modal-title" id="exampleModalLabel">خروج از حساب</h4></strong>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <strong><h4 class="modal-title" id="exampleModalLabel">خروج از حساب
+        <button class="close" data-dismiss="modal" aria-label="Close">
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
+        </h4></strong>
       </div>
       <div class="modal-body">
         آیا از خروج اطمینان دارید ؟
@@ -190,47 +178,6 @@
     </div>
   </div>
 </div>
-
-<!-- Modal -->
-<!-- <div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <strong><h4 class="modal-title" id="exampleModalLabel">ورود</h4></strong>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="fa fa-times" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form class="login" method="POST" action="{% url 'account_login' %}">
-          {% csrf_token %}
-          {{form}}
-          {% if redirect_field_value %}
-          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-          {% endif %}
-          <a class="button secondaryAction" href="{% url 'account_reset_password' %}">فراموشی رمز عبور ؟</a>
-          <button class="btn btn-primary" type="submit">ورود</button>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<!-- {% if messages %}
-<div>
-    <strong>Messages:</strong>
-    <ul>
-    {% for message in messages %}
-    <li>{{message}}</li>
-    {% endfor %}
-    </ul>
-</div>
-{% endif %}  -->
-
-
 
 {% block body%}
 {% endblock %}
@@ -269,8 +216,9 @@
     $.swipebox(ez.getGalleryList());
     return false;
   });
-  </script>
-
+</script>
+<script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+<!-- JS Part End-->
 <script>
   // Initialize and add the map
   function initMap() {
@@ -282,12 +230,9 @@
     // The marker, positioned at Uluru
     var marker = new google.maps.Marker({position: uluru, map: map});
   }
-      </script>
-      <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHQsaXvcM-TXJsZGuz2Y8KbUYcqYx7CDc&callback=initMap">
-      </script>
-<!-- JS Part End-->  
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHQsaXvcM-TXJsZGuz2Y8KbUYcqYx7CDc&callback=initMap"></script>
+  
 </div>
 </body>
-
 </html>

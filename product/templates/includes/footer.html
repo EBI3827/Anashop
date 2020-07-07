@@ -7,15 +7,15 @@
           <div class="contact col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <h5>اطلاعات تماس</h5>
             <ul>
-              <li class="address"><i class="fa fa-map-marker"></i>میدان تایمز، شماره 77، نیویورک</li>
-              <li class="mobile"><i class="fa fa-phone"></i>+21 9898777656</li>
-              <li class="email"><i class="fa fa-envelope"></i>برقراری ارتباط از طریق <a href="contact-us.html">تماس با ما</a>
+              <li class="address"><i class="fa fa-map-marker"></i>استان گلستان  گرگان</li>
+              <li class="mobile"><i class="fa fa-phone"></i>09918797376</li>
+              <li class="email"><i class="fa fa-envelope"></i>برقراری ارتباط از طریق <a href="{% url 'product:contact-us' %}">تماس با ما</a>
             </ul>
           </div>
           <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
             <h5>اطلاعات</h5>
             <ul>
-              <li><a href="about-us.html">درباره ما</a></li>
+              <li><a href="{% url 'product:about-us' %}">درباره ما</a></li>
               <li><a href="about-us.html">اطلاعات ارسال</a></li>
               <li><a href="about-us.html">حریم خصوصی</a></li>
               <li><a href="about-us.html">شرایط و قوانین</a></li>
@@ -24,9 +24,9 @@
           <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
             <h5>خدمات مشتریان</h5>
             <ul>
-              <li><a href="contact-us.html">تماس با ما</a></li>
-              <li><a href="about-us.html">سوالات متداول</a></li>
-              <li><a href="sitemap.html">نقشه سایت</a></li>
+              <li><a href="{% url 'product:contact-us' %}">تماس با ما</a></li>
+              <li><a href="{% url 'product:faq' %}">سوالات متداول</a></li>
+              <li><a href="{% url 'product:sitemap' %}">نقشه سایت</a></li>
             </ul>
           </div>
           <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">

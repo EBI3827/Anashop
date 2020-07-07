@@ -10,3 +10,4 @@ def cart_product_count(user):
         if qs.exists():
             return qs[0].products.count()
     return 0
+

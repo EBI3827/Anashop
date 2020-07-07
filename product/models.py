@@ -1,10 +1,12 @@
 from django.db import models
-from datetime import datetime  
+from datetime import datetime
 from django.utils.text import slugify
 from django.shortcuts import reverse
 from django.conf import settings
+from star_ratings.models import Rating
 
 
+from persiantools.jdatetime import JalaliDate
 # Create your models here.
 
 LABEL_CHOICES = (
@@ -12,44 +14,50 @@ LABEL_CHOICES = (
     ('ناموجود', 'ناموجود'),
 )
 
+
 class Category(models.Model):
     title = models.CharField(max_length=200)
-    slug = models.SlugField(null=True,blank=True, default='test', allow_unicode=True)
+    slug = models.SlugField(null=True, blank=True,
+                            default='test', allow_unicode=True)
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
 
     def __str__(self):
         return self.title
 
-    # def get_slug(self):
-    #     return slugify(self.title)
-
-    def save(self, *args, **kwargs): # new
+    def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title, allow_unicode=True)
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('product:category', kwargs={ 'pk':self.id,'slug': self.slug })
-
-
+        return reverse('product:category', kwargs={'pk': self.id, 'slug': self.slug})
 
 
 class Subcategory(models.Model):
     title = models.CharField(max_length=200)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE,null=True, related_name='subcategory')
-    slug = models.SlugField(null=True,blank=True, default='test', allow_unicode=True)
+        Category, on_delete=models.CASCADE, null=True, related_name='subcategory')
+    slug = models.SlugField(null=True, blank=True,
+                            default='test', allow_unicode=True)
+
+    class Meta:
+        verbose_name = "Subcategory"
+        verbose_name_plural = "Subcategories"
 
     def __str__(self):
         return self.title
-    
+
     def get_category_slug(self):
-        category_slug=slugify(self.category,allow_unicode=True)
+        category_slug = slugify(self.category, allow_unicode=True)
         return category_slug
 
     def get_absolute_url(self):
-        return reverse('product:subcategory', kwargs={'category':self.get_category_slug(), 'pk':self.id, 'slug': self.slug })
+        return reverse('product:subcategory', kwargs={'category': self.get_category_slug(), 'pk': self.id, 'slug': self.slug})
 
-    def save(self, *args, **kwargs): # new
+    def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title, allow_unicode=True)
         return super().save(*args, **kwargs)
@@ -62,20 +70,21 @@ class Product (models.Model):
     discount_price = models.IntegerField(null=True, blank=True)
     miniimage = models.ImageField(upload_to='products/', null=True, blank=True)
     subcategory = models.ForeignKey(
-        Subcategory, on_delete=models.CASCADE,null=True, related_name='products')
-    label = models.CharField(choices=LABEL_CHOICES, default='M',max_length=8)
+        Subcategory, on_delete=models.CASCADE, null=True, related_name='products')
+    label = models.CharField(choices=LABEL_CHOICES, default='M', max_length=8)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE,null=True, related_name='products')
-    added_date=models.DateTimeField(auto_now_add=True)
-    slug = models.SlugField(null=True,blank=True, default='test', allow_unicode=True)
+        Category, on_delete=models.CASCADE, null=True, related_name='products')
+    added_date = models.DateTimeField(auto_now_add=True)
+    slug = models.SlugField(null=True, blank=True,
+                            default='test', allow_unicode=True)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('product:product-detail', kwargs={'pk':self.id, 'slug': self.slug })
+        return reverse('product:product-detail', kwargs={'pk': self.id, 'slug': self.slug})
 
-    def save(self, *args, **kwargs): # new
+    def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name, allow_unicode=True)
         return super().save(*args, **kwargs)
@@ -86,15 +95,15 @@ class Product (models.Model):
             return saving
         return 0
 
-    def get_label_color (self):
-        if self.label=='موجود':
+    def get_label_color(self):
+        if self.label == 'موجود':
             return 'instock'
         else:
             return 'nostock'
-    
+
     def featured(self):
-        save=self.save_percent()
-        if save >= 5 :
+        save = self.save_percent()
+        if save >= 5:
             return True
         else:
             return False
@@ -117,8 +126,10 @@ class Product (models.Model):
     def get_remove_from_wishlist_url(self):
         return reverse('product:remove_from_wishlist', kwargs={'pk': self.id})
 
+
 class Images (models.Model):
-    product = models.ForeignKey(Product, default=None, on_delete=models.CASCADE, related_name='images')
+    product = models.ForeignKey(
+        Product, default=None, on_delete=models.CASCADE, related_name='images')
     miniimage = models.ImageField(upload_to='products/', blank=True)
 
 
@@ -130,10 +141,15 @@ class CompareItem(models.Model):
     def __str__(self):
         return self.product.name
 
+
 class Compare(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     products = models.ManyToManyField(CompareItem)
+
+    def __str__(self):
+        return self.user.username
+
 
 class WishItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -149,6 +165,31 @@ class Wishlist(models.Model):
                              on_delete=models.CASCADE)
     products = models.ManyToManyField(WishItem)
 
-
     def __str__(self):
         return self.user.username
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    message = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+
+class ProductComment(models.Model):
+    username = models.CharField(max_length=200)
+    message = models.TextField()
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name='comments')
+    date = models.DateField(auto_now_add=True)
+    approved = models.BooleanField(default=False)
+    parent = models.ForeignKey(
+        'self', on_delete=models.CASCADE, blank=True, null=True, related_name='replies')
+
+    def __str__(self):
+        return self.username
+
+    def convert_jalali(self):
+        return JalaliDate(self.date).strftime("%Y/%m/%d")

@@ -1,5 +1,6 @@
 
 import os
+from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -9,10 +10,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'qh^txo(p4_4@bp=&qxm1#*f)4_1ji&&e1w&lm^tl_)hf$@bkwb'
+SECRET_KEY = config('SECRET_KEY')
+GOOGLE_RECAPTCHA_SECRET_KEY=config('GOOGLE_RECAPTCHA_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = [
@@ -24,6 +26,9 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'dal',
+    'dal_select2',
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -37,17 +42,19 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'crispy_forms',
     'rest_framework',
+    'captcha',
+    'cities_light',
+    'star_ratings',
 
 
     'product',
     'cart',
     'api',
-    'whitenoise',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -89,10 +96,10 @@ WSGI_APPLICATION = 'tpshop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'shop',
-        'USER': 'dbadmin',
-        'PASSWORD': '12345',
-        'HOST': 'localhost',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
         'PORT': '3306',
     }
 }
@@ -121,6 +128,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
+LANGUAGES = [
+    ('en','English'),
+    ('fa', 'persian')
+]
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -128,6 +140,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# allauth settings
 
 AUTHENTICATION_BACKENDS = (
 
@@ -146,6 +160,12 @@ ACCOUNT_FORMS = {
 }
 ACCOUNT_EMAIL_REQUIRED=True
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL='/'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -161,13 +181,16 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "static_cdn", "media_root")
 
-SITE_ID = 1
-
-LOGIN_REDIRECT_URL='/'
-
-# ACCOUNT_EMAIL_REQUIRED=True
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# cities-light settings
+
+CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fa', 'en','abbr']
+CITIES_LIGHT_INCLUDE_COUNTRIES = ['IR']
+CITIES_LIGHT_INCLUDE_CITY_TYPES = [
+    'PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC',
+    'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT',
+]
+
+STAR_RATINGS_STAR_HEIGHT=STAR_RATINGS_STAR_WIDTH=14
 

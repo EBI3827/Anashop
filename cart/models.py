@@ -1,8 +1,8 @@
 from django.db import models
 from django.conf import settings
 from product.models import Product
+from cities_light.models import City
 
-# Create your models here.
 
 class OrderItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -37,10 +37,15 @@ class Order(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
+    checkoutinfo=models.ForeignKey(
+        'CheckoutInfo', related_name='checkoutinfo', on_delete=models.SET_NULL, blank=True, null=True)
     # shipping_address = models.ForeignKey(
     #     'Address', related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
     # billing_address = models.ForeignKey(
     #     'Address', related_name='billing_address', on_delete=models.SET_NULL, blank=True, null=True)
+    coupon = models.ForeignKey(
+        'Coupon', on_delete=models.CASCADE, blank=True, null=True)
+    post_price=models.IntegerField(default=12000)
 
     def __str__(self):
         return self.user.username
@@ -50,3 +55,52 @@ class Order(models.Model):
         for order_product in self.products.all():
             total += order_product.get_final_price()
         return total
+
+    def get_final_total(self):
+        total = 0
+        for order_product in self.products.all():
+            total += order_product.get_final_price()
+        if self.coupon :
+            total -= (self.coupon.amount + self.post_price)
+        else:
+            total -= self.post_price
+        return total
+
+    def get_total_with_coupon(self):
+        total = 0
+        for order_product in self.products.all():
+            total += order_product.get_final_price()
+        if self.coupon :
+            total -= self.coupon.amount
+        return total
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=15)
+    amount = models.IntegerField()
+
+    def __str__(self):
+        return self.code
+
+
+class MyCity(models.Model):
+    location = models.ForeignKey(
+        City, on_delete=models.CASCADE, blank=True, null=True)
+
+
+class CheckoutInfo(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=13)
+    address = models.CharField(max_length=300)
+    postal_code = models.CharField(max_length=10)
+    default = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.first_name
+
+    class Meta:
+        verbose_name_plural = 'Checkoutinfo'

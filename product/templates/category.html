@@ -4,9 +4,7 @@
 {% load static %}
 {% block title %}<title>محصولات</title>{% endblock %}
 {% block body %}
-<body>
-<div class="wrapper-wide">
-  <div id="container">
+<div id="container">
     <div class="container">
       <!-- Breadcrumb Start-->
       <ul class="breadcrumb">
@@ -22,10 +20,6 @@
         <div id="content" class="col-sm-9">
           <h1 class="title">همه محصولات</h1>
           <hr>
-          <!-- <h3 class="subtitle">بهبود جستجو</h3>
-          <div class="category-list-thumb row">
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4"> <a href="category.html"><img src="static/image/no_image.jpg" alt="لپ تاپ (6)" /></a> <a href="category.html">لپ تاپ (6)</a> </div>
-          </div> -->
           <div class="product-filter">
             <div class="row">
               <div class="col-md-4 col-sm-5">
@@ -34,44 +28,27 @@
                   <button type="button" id="grid-view" class="btn btn-default" data-toggle="tooltip" title="Grid"><i class="fa fa-th"></i></button>
                 </div>
                 <a href="{% url 'product:compare' %}" id="compare-total">محصولات مقایسه ({{ request.user | compare_product_count }})</a> </div>
+              <form id="FORM_ID" method="GET" action="{% url 'product:products' %}">
               <div class="col-sm-2 text-right">
                 <label class="control-label" for="input-sort">مرتب سازی :</label>
               </div>
-              <div class="col-md-3 col-sm-2 text-right">
-                <!-- {% with params=request.GET.urlencode %}
-                <select id="input-sort" class="form-control">
-                  <option selected='selected'><a href="{% relative_url 'name' 'order' params %}">20</a></option>
-                  <option value="">25</option>
-                  <option value="">50</option>
-                  <option value="">75</option>
-                  <option value="">100</option>
+              <div class="col-md-3 col-sm-3 text-right">
+                <select onchange="this.form.submit()" name="order" class="form-control">
+                  <option value="name"  {% if order == "name" %} selected {% endif %}>پیشفرض</option>
+                  <option value="name"  {% if order == "name" %} selected {% endif %}>نام (الف - ی)</option>
+                  <option value="-name" {% if order == "-name" %} selected {% endif %}>نام (ی - الف)</option>
+                  <option value="price"  {% if order == "price" %} selected {% endif %}>قیمت (کم به زیاد)</option></option>
+                  <option value="-price"  {% if order == "-price" %} selected {% endif %}>قیمت (زیاد به کم)</option>
+                  <option value="-added_date"  {% if order == "-added_date" %} selected {% endif %}>جدیدترین</option>
+                  <option value="added_date"  {% if order == "added_date" %} selected {% endif %}>قدیمی ترین</option>
                 </select>
-                {% endwith %} -->
-                <div class="dropdown">
-                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                    پیش فرض
-                  </button>
-                  <ul class="dropdown-menu">
-                    {% with params=request.GET.urlencode %}
-
-                      <li><a href="{% relative_url 'name' 'order' params %}">نام (الف -ی)</a></li>
-                      <li><a href="{% relative_url '-name' 'order' params %}">نام (ی -الف)</a></li>
-                      <li><a href="{% relative_url 'price' 'order' params %}">قیمت (از کم به زیاد )</a></li>
-                      <li><a href="{% relative_url 'price' 'order' params %}">قیمت (از زیاد به کم )</a></li>
-                      <li><a href="{% relative_url '-added_date' 'order' params %}">جدیدترین</a></li>
-                      <li><a href="{% relative_url 'added_date' 'order' params %}">قدیمی ترین</a></li>
-                      
-
-                    {% endwith %}
-                  </ul>
-                </div>
-
               </div>
+              </form>
               <div class="col-sm-1 text-right">
                 <label class="control-label" for="input-limit">نمایش :</label>
               </div>
               <div class="col-sm-2 text-right">
-                <select id="input-limit" class="form-control">
+                <select id="input-limit" class="form-control" >
                   <option value="" selected="selected">20</option>
                   <option value="">25</option>
                   <option value="">50</option>
@@ -83,7 +60,7 @@
           </div>
           <br />
           <div class="row products-category">
-            {% for product in products%}
+            {% for product in page_obj %}
             <div class="product-layout product-list col-xs-12">
               <div class="product-thumb">
                 <div class="image"><a href="{{ product.get_absolute_url }}"><img src="{{ product.miniimage.url }}" alt="{{product.name}}" title="{{product.name}}" class="img-responsive" /></a></div>
@@ -120,13 +97,24 @@
           </div>
           <div class="row">
             <div class="col-sm-6 text-left">
+            <nav aria-label="Page navigation example">
               <ul class="pagination">
-                {% for i in page_obj.paginator.page_range %}
-                  <li>
-                    <a href="{% relative_url i 'page' request.GET.urlencode %}">{{ i }}</a>
-                  </li>
-                {% endfor %}
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">اولین</a></li>
+                <!-- <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">قبلی</a></li> -->
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&?order={{order}}">{{ page_obj.previous_page_number }}</a></li>
+
+                {% endif %}
+                <li class="page-item active"><a class="page-link">{{ page_obj.number }}</a></li>
+
+                {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&?order={{order}}">{{ page_obj.next_page_number }}</a></li>
+                <!-- <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">بعدی</a></li> -->
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">آخرین</a></li>
+                {% endif %}
               </ul>
+            </nav>
+            <!-- از {{ page_obj.paginator.num_pages }}. -->
               <!-- <ul class="pagination">
                 <li class="active"><span>1</span></li>
                 <li><a href="#">2</a></li>
@@ -134,12 +122,14 @@
                 <li><a href="#">&gt;|</a></li>
               </ul> -->
             </div>
-            <div class="col-sm-6 text-right">نمایش 1 تا 12 از 15 (مجموع 2 صفحه)</div>
+            <!-- <div class="col-sm-6 text-right">نمایش 1 تا 12 از 15 (مجموع 2 صفحه)</div> -->
           </div>
         </div>
         <!--Middle Part End -->
       </div>
     </div>
 </div>
-</body>
+<!-- <script type="text/javascript">
+  document.getElementById("FORM_ID").submit();
+</script> -->
 {% endblock %}

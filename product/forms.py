@@ -1,8 +1,11 @@
 from allauth.account.forms import LoginForm, SignupForm, ResetPasswordForm, PasswordField
 from allauth.account import app_settings
-from allauth.account.app_settings import AuthenticationMethod
 from django import forms
 from django.utils.translation import gettext
+from django.forms import ModelForm
+from .models import Contact, ProductComment
+# need django-simple-captcha module
+from captcha.fields import CaptchaField
 
 class CustomLoginForm(LoginForm):
     password = PasswordField(label=("رمز عبور"))
@@ -11,7 +14,7 @@ class CustomLoginForm(LoginForm):
         ("این حساب در حال حاضر غیرفعال است ."),
 
         'email_password_mismatch':
-        ("The e-mail address and/or password you specified are not correct."),
+        ("آدرس ایمیل یا رمز عبور وارد شده اشتباه است ."),
 
         'username_password_mismatch':
         ("نام کابری یا رمز عبور اشتباه است ."),
@@ -59,3 +62,46 @@ class CustomResetPasswordForm(ResetPasswordForm):
             attrs={"type": "email",
                    "size": "30",
                    "placeholder": ('آدرس پست الکترونیک')}))
+
+class ContactForm(forms.ModelForm):
+    name=forms.CharField(label="نام شما ", widget=forms.TextInput(attrs={ 
+        'class': "form-control",
+        }))
+    email=forms.EmailField(label="ایمیل", widget=forms.EmailInput(attrs={ 
+        'class': "form-control",
+        }))
+    message=forms.CharField(label="پیام شما" , widget=forms.Textarea(attrs={ 
+        'class': "form-control",
+        }))
+
+    class Meta:
+        model = Contact
+        fields = "__all__" 
+
+class ProductCommentForm(forms.ModelForm):
+    # username=forms.CharField(label="نام شما ", widget=forms.TextInput(attrs={ 
+    #     'class': "form-control",
+    #     }))
+    # message=forms.CharField(label="پیام شما" , widget=forms.Textarea(attrs={ 
+    #     'class': "form-control",
+    #     }))
+    # # captcha = CaptchaField(label="کد امنیتی ")
+    # product=forms.CharField(widget=forms.HiddenInput())
+    class Meta:
+        model = ProductComment
+        fields='__all__'
+        exclude = ('approved','parent')
+        widgets = {
+            'product': forms.HiddenInput(),
+            'username':forms.TextInput(attrs={ 
+            'class': "form-control",
+        }),
+            'message': forms.Textarea(attrs={ 
+            'class': "form-control",
+        }),
+        }
+
+        labels = {
+            'username': 'نام شما',
+            'message': 'نظر شما',
+        }

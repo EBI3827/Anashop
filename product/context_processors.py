@@ -1,31 +1,28 @@
 from .models import Product,Category
-from cart.models import Order
-# from django.contrib import messages
-# from django.core.exceptions import ObjectDoesNotExist
-# from django.shortcuts import redirect
+from cart.models import Order, OrderItem
+from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import redirect
 
-
-def nav (request):
-   
+def nav (request,*args, **kwargs):
     categories = Category.objects.all()
-    order = request.GET.get('order', 'added_date')  # Set 'name' as a default value
+    order = request.GET.get('order', 'added_date')
     products = Product.objects.all().order_by(order)
-
+    latest = Product.objects.all().order_by('-added_date')[:4]
+    best_sell=Order.objects.filter(ordered=True)
     navbar = {
         'products': products,
         'categories': categories,
-        'order':order
+        'order':order,
+        'latest': latest,
+        'best_sell': best_sell,
     }
+
+    if request.user.is_authenticated:
+        try:
+            order2 = Order.objects.get(user=request.user, ordered=False)
+            if order2:
+                navbar.update({'order2': order2})
+        except ObjectDoesNotExist:
+            pass
     return navbar
-
-
-# def get(request):
-#     user = request.user
-#     if user.is_authenticated():
-#         try:
-#             orders = Order.objects.filter(user=user, ordered=False)
-#             if orders.exists():
-#                 order = orders[0]
-#                 return {'object': order}
-#         except ObjectDoesNotExist:
-#             return redirect("account_login")

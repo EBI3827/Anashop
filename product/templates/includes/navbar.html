@@ -40,7 +40,7 @@
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'product:wishlist' %}">لیست علاقه مندی ( {{ request.user | wishlist_product_count }})</a></li>
                 <li><a href="{% url 'cart:cart' %}">سبد خرید</a></li>
-                <li><a href="{% url 'product:checkout' %}">تسویه حساب</a></li>
+                <li><a href="{% url 'cart:checkout' %}">تسویه حساب</a></li>
                 {% endif %}
               </ul>
             </div>
@@ -77,23 +77,24 @@
             <div id="cart">
 
               <button type="button" data-toggle="dropdown" data-loading-text="Loading..." class="heading dropdown-toggle">
-              <span class="cart-icon pull-left flip"></span>
+              <span data-toggle="tooltip" data-placement="top" title="سبد خرید" class="cart-icon pull-left flip"></span>
               <span id="cart-total">
+                {% if order2.get_total_with_coupon %}
                 {{ request.user | cart_product_count }} آیتم -                              
-                {% if object.get_total %}
-                {{ object.get_total }} تومان
+                {{ order2.get_total_with_coupon }} تومان
                 {% endif %}
-              </span></button>
+              </span>
+              </button>
               {% if user.is_authenticated %}
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu  pre-scrollable">
                 <li>
                   <table class="table">
                     <tbody>
-                      {% for order_item in object.products.all %}
+                      {% for order_item in order2.products.all %}
                       <tr>
-                        <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="کفش راحتی مردانه" alt="کفش راحتی مردانه" src="{{ order_item.product.miniimage.url }}"></a></td>
+                        <!-- <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="کفش راحتی مردانه" alt="کفش راحتی مردانه" src="{{ order_item.product.miniimage.url }}"></a></td> -->
                         <td class="text-left"><a href="product.html">{{ order_item.product.name }}</a></td>
-                        <td class="text-right">x {{ order_item.quantity }}</td>
+                        <td class="text-right" style="width:fit-content">x {{ order_item.quantity }}</td>
                         <td class="text-right">   
                           {% if order_item.product.discount_price %}
                           {{ order_item.get_total_product_discount_price }} تومان
@@ -101,7 +102,13 @@
                           {{ order_item.get_total_product_price }} تومان
                           {% endif %}
                         </td>
-                        <td class="text-center"><button class="btn btn-danger btn-xs remove" title="حذف" onClick="" type="button"><i class="fa fa-times"></i></button></td>
+                        <td class="text-center">
+                          <a href="{{ order_item.product.get_remove_from_cart_url }}">
+                            <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true" style="vertical-align: middle;"></i>
+                            </button>
+                          </a>
+                          <!-- <button class="btn btn-danger btn-xs remove" title="حذف" onClick="" type="button"><i class="fa fa-times"></i></button> -->
+                        </td>
                       </tr>
                       {% endfor %}
                     </tbody>
@@ -114,30 +121,30 @@
                         <tr>
                           <td class="text-right"><strong>جمع کل</strong></td>
                           <td class="text-right">
-                            {% if object.get_total %}
-                            {{ object.get_total }} تومان
+                            {% if order2.get_total %}
+                            {{ order2.get_total }} تومان
                             {% endif %}
                           </td>
                         </tr>
                         <tr>
                           <td class="text-right"><strong>کسر هدیه</strong></td>
-                          <td class="text-right">0 تومان</td>
-                        </tr>
-                        <tr>
-                          <td class="text-right"><strong>مالیات</strong></td>
-                          <td class="text-right">0 تومان</td>
+                          <td class="text-right">
+                            {% if order2.coupon.amount %}
+                            {{ order2.coupon.amount }} - تومان
+                            {% endif %}
+                          </td>
                         </tr>
                         <tr>
                           <td class="text-right"><strong>قابل پرداخت</strong></td>
                           <td class="text-right"> 
-                            {% if object.get_total %}
-                            {{ object.get_total }} تومان
+                            {% if order2.get_total_with_coupon %}
+                            {{ order2.get_total_with_coupon }} تومان
                             {% endif %}
                           </td>
                         </tr>
                       </tbody>
                     </table>
-                    <p class="checkout"><a href="{% url 'cart:cart' %}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> مشاهده سبد</a>&nbsp;&nbsp;&nbsp;<a href="{% url 'product:checkout' %}" class="btn btn-primary"><i class="fa fa-share"></i> تسویه حساب</a></p>
+                    <p class="checkout"><a href="{% url 'cart:cart' %}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> مشاهده سبد</a>&nbsp;&nbsp;&nbsp;<a href="{% url 'cart:checkout' %}" class="btn btn-primary"><i class="fa fa-share"></i> تسویه حساب</a></p>
                   </div>
                 </li>
               </ul>
@@ -148,8 +155,10 @@
           <!-- جستجو Start-->
           <div class="col-table-cell col-lg-3 col-md-3 col-sm-6 col-xs-12 inner">
             <div id="search" class="input-group">
-              <input id="filter_name" type="text" name="search" value="" placeholder="جستجو" class="form-control input-lg" />
-              <button type="button" class="button-search"><i class="fa fa-search"></i></button>
+              <form method="GET" action="{% url 'product:search' %}">
+                <input id="filter_name" type="text" name="search" placeholder="جستجو" class="form-control input-lg" />
+                <button type="submit" class="button-search"><i class="fa fa-search"></i></button>
+              </form>
             </div>
           </div>
           <!-- جستجو End-->
@@ -164,7 +173,7 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
             <li><a class="home_link" title="خانه" href="/"><span>خانه</span></a></li>
-            <li class="mega-menu dropdown"><a>دسته ها</a>
+            <li class="mega-menu dropdown"><a href="{% url 'product:products' %}">دسته ها</a>
               <div class="dropdown-menu">
                 {% for category in categories %}
                 <div class="column col-lg-2 col-md-3"><a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
@@ -179,11 +188,11 @@
                 {% endfor %}
               </div>
             </li>
-            <li class="menu_brands dropdown"><a href="#">عرضه کنندگان</a>
+            <!-- <li class="menu_brands dropdown"><a href="#">عرضه کنندگان</a>
               <div class="dropdown-menu">
                 <div class="col-lg-1 col-md-2 col-sm-3 col-xs-6"><a href="#"><img src="image/product/apple_logo-60x60.jpg" title="اپل" alt="اپل" /></a><a href="#">اپل</a></div>
               </div>
-            </li>
+            </li> -->
             <li class="dropdown wrap_custom_block hidden-sm hidden-xs"><a>وبلاگ</a>
               <div class="dropdown-menu custom_block">
                 <ul>
@@ -217,10 +226,10 @@
               </div>
             </li>
             <li class="contact-link"><a href="{% url 'product:contact-us' %}">تماس با ما</a></li>
-            <li class="custom-link-right"><a href="{% url 'product:products' %}"> همین حالا بخرید!</a></li>
+            <li class="custom-link-right"><a title=" جستجوی محصولات " href="{% url 'product:search' %}"><i class="fa fa-lg fa-search"  aria-hidden="true"></i> جستجوی محصولات </a></li>
           </ul>
         </div>
       </nav>
     </div>
     <!-- Main آقایانu End-->
-  </div>
+</div>
