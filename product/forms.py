@@ -7,6 +7,7 @@ from .models import Contact, ProductComment
 # need django-simple-captcha module
 from captcha.fields import CaptchaField
 
+
 class CustomLoginForm(LoginForm):
     password = PasswordField(label=("رمز عبور"))
     error_messages = {
@@ -33,26 +34,28 @@ class CustomLoginForm(LoginForm):
 
         self.fields["login"] = username
 
+
 class CustomSignupForm(SignupForm):
     username = forms.CharField(label=("نام کاربری"),
-                            #    min_length=app_settings.USERNAME_MIN_LENGTH,
+                               #    min_length=app_settings.USERNAME_MIN_LENGTH,
                                widget=forms.TextInput(
                                    attrs={'placeholder':
                                           ('نام کاربری'),
                                           'autofocus': 'autofocus'}))
-    field_order= [
-                    'username',
-                    'email',
-                    'email2',  # ignored when not present
-                    'password1',
-                    'password2'  # ignored when not present
-                ]
+    field_order = [
+        'username',
+        'email',
+        'email2',  # ignored when not present
+        'password1',
+        'password2'  # ignored when not present
+    ]
 
     def __init__(self, *args, **kwargs):
         super(CustomSignupForm, self).__init__(*args, **kwargs)
         self.fields['password1'] = PasswordField(label=("رمز عبور"))
         self.fields['password2'] = PasswordField(label=("تکرار رمز عبور"))
         self.fields['email'].label = gettext("ایمیل")
+
 
 class CustomResetPasswordForm(ResetPasswordForm):
     email = forms.EmailField(
@@ -63,42 +66,44 @@ class CustomResetPasswordForm(ResetPasswordForm):
                    "size": "30",
                    "placeholder": ('آدرس پست الکترونیک')}))
 
+
 class ContactForm(forms.ModelForm):
-    name=forms.CharField(label="نام شما ", widget=forms.TextInput(attrs={ 
+    name = forms.CharField(label="نام شما ", widget=forms.TextInput(attrs={
         'class': "form-control",
-        }))
-    email=forms.EmailField(label="ایمیل", widget=forms.EmailInput(attrs={ 
+    }))
+    email = forms.EmailField(label="ایمیل", widget=forms.EmailInput(attrs={
         'class': "form-control",
-        }))
-    message=forms.CharField(label="پیام شما" , widget=forms.Textarea(attrs={ 
+    }))
+    message = forms.CharField(label="پیام شما", widget=forms.Textarea(attrs={
         'class': "form-control",
-        }))
+    }))
 
     class Meta:
         model = Contact
-        fields = "__all__" 
+        fields = "__all__"
+
 
 class ProductCommentForm(forms.ModelForm):
-    # username=forms.CharField(label="نام شما ", widget=forms.TextInput(attrs={ 
+    # username=forms.CharField(label="نام شما ", widget=forms.TextInput(attrs={
     #     'class': "form-control",
     #     }))
-    # message=forms.CharField(label="پیام شما" , widget=forms.Textarea(attrs={ 
+    # message=forms.CharField(label="پیام شما" , widget=forms.Textarea(attrs={
     #     'class': "form-control",
     #     }))
     # # captcha = CaptchaField(label="کد امنیتی ")
     # product=forms.CharField(widget=forms.HiddenInput())
     class Meta:
         model = ProductComment
-        fields='__all__'
-        exclude = ('approved','parent')
+        fields = '__all__'
+        exclude = ('approved', 'parent')
         widgets = {
             'product': forms.HiddenInput(),
-            'username':forms.TextInput(attrs={ 
-            'class': "form-control",
-        }),
-            'message': forms.Textarea(attrs={ 
-            'class': "form-control",
-        }),
+            'username': forms.TextInput(attrs={
+                'class': "form-control",
+            }),
+            'message': forms.Textarea(attrs={
+                'class': "form-control",
+            }),
         }
 
         labels = {

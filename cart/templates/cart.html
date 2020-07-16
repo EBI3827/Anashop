@@ -30,8 +30,9 @@
               <tr>
                 <td style="vertical-align: middle;">
                   <a href="{{ order_item.product.get_remove_from_cart_url }}">
-                  <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true" style="vertical-align: middle;"></i>
-                  </button>
+                    <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"
+                        style="vertical-align: middle;"></i>
+                    </button>
                   </a>
                 </td>
                 <td class="text-center"><a href="{{ order_item.product.get_absolute_url }}"><img
@@ -58,7 +59,8 @@
                 <td style="vertical-align: middle;" class="text-right">
                   {% if order_item.product.discount_price %}
                   {{ order_item.get_total_product_discount_price }} تومان
-                  <span class="badge badge-pill badge-danger" style="background-color:dodgerblue;"> تخفیف {{ order_item.get_amount_saved }} تومان</span>
+                  <span class="badge badge-pill badge-danger" style="background-color:dodgerblue;"> تخفیف
+                    {{ order_item.get_amount_saved }} تومان</span>
                   {% else %}
                   {{ order_item.get_total_product_price }} تومان
                   {% endif %}
@@ -497,8 +499,8 @@
           </div>
         </div> -->
         <div class="row">
-            {% if DISPLAY_COUPON_FORM %}
-            <form method="POST" action="{% url 'cart:add-coupon' %}">
+          {% if DISPLAY_COUPON_FORM %}
+          <form method="POST" action="{% url 'cart:add-coupon' %}">
             {% csrf_token %}
             <div class="col-sm-6">
               <div class="panel panel-default">
@@ -510,8 +512,6 @@
                     <label class="col-sm-4 control-label" for="input-coupon">کد تخفیف خود را در اینجا وارد کنید</label>
                     <div class="input-group">
                       {{ couponform.code }}
-                      <!-- <input type="text" name="coupon" value="" placeholder="کد تخفیف خود را در اینجا وارد کنید"
-                        id="input-coupon" class="form-control" /> -->
                       <span class="input-group-btn">
                         <input type="submit" value="اعمال کد تخفیف" id="button-coupon" data-loading-text="بارگذاری ..."
                           class="btn btn-primary" />

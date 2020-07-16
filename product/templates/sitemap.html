@@ -1,63 +1,63 @@
 {% extends "base1.html" %}
 
 {% block content %}
-  <div id="container">
-    <div class="container">
-      <!-- Breadcrumb Start-->
-      <ul class="breadcrumb">
-        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
-        <li><a href="sitemap.html">نقشه سایت</a></li>
-      </ul>
-      <!-- Breadcrumb End-->
-      <div class="row">
-        <!--Middle Part Start-->
-        <div id="content" class="col-sm-12">
-          <h1 class="title">نقشه سایت</h1>
-          <div class="row">
-            <div class="col-sm-3 hidden-xs hidden-sm sitemap-icon"><i class="fa fa-sitemap"></i></div>
-            <div class="col-md-5 col-sm-6">
-              <ul class="sitemap">
-                {% for category in categories %}
-                <li><a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
-                  <ul>
-                    {% for sub in category.subcategory.all %}
-                    <li><a href="{{ sub.get_absolute_url }}">{{ sub.title }}</a>
-                    </li>
-                    {% endfor %}
-                  </ul>
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
-            <div class="col-md-4 col-sm-6">
-              <ul class="sitemap">
-                <li><a href="#">پیشنهاد های ویژه</a></li>
-                <li><a href="login.html">حساب کاربری من</a>
-                  <ul>
-                    <li><a href="#">اطلاعات حساب</a></li>
-                    <li><a href="#">رمز عبور</a></li>
-                    <li><a href="#">آدرس ها</a></li>
-                    <li><a href="#">تاریخچه سفارشات</a></li>
-                  </ul>
-                </li>
-                <li><a href="cart.html">سبد خرید</a></li>
-                <li><a href="checkout.html">تسویه حساب</a></li>
-                <li><a href="search.html">جستجو</a></li>
-                <li>اطلاعات
-                  <ul class="sitemap">
-                    <li><a href="about-us.html">درباره ما</a></li>
-                    <li><a href="about-us.html">اطلاعات 0 تومان</a></li>
-                    <li><a href="about-us.html">حریم خصوصی</a></li>
-                    <li><a href="about-us.html">شرایط و قوانین</a></li>
-                    <li><a href="contact-us">تماس با ما</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
+<div id="container">
+  <div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="breadcrumb">
+      <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+      <li><a href="sitemap.html">نقشه سایت</a></li>
+    </ul>
+    <!-- Breadcrumb End-->
+    <div class="row">
+      <!--Middle Part Start-->
+      <div id="content" class="col-sm-12">
+        <h1 class="title">نقشه سایت</h1>
+        <div class="row">
+          <div class="col-sm-3 hidden-xs hidden-sm sitemap-icon"><i class="fa fa-sitemap"></i></div>
+          <div class="col-md-5 col-sm-6">
+            <ul class="sitemap">
+              {% for category in categories %}
+              <li><a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
+                <ul>
+                  {% for sub in category.subcategory.all %}
+                  <li><a href="{{ sub.get_absolute_url }}">{{ sub.title }}</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="col-md-4 col-sm-6">
+            <ul class="sitemap">
+              <li><a href="#">پیشنهاد های ویژه</a></li>
+              <li><a href="login.html">حساب کاربری من</a>
+                <ul>
+                  <li><a href="#">اطلاعات حساب</a></li>
+                  <li><a href="#">رمز عبور</a></li>
+                  <li><a href="#">آدرس ها</a></li>
+                  <li><a href="#">تاریخچه سفارشات</a></li>
+                </ul>
+              </li>
+              <li><a href="cart.html">سبد خرید</a></li>
+              <li><a href="checkout.html">تسویه حساب</a></li>
+              <li><a href="search.html">جستجو</a></li>
+              <li>اطلاعات
+                <ul class="sitemap">
+                  <li><a href="about-us.html">درباره ما</a></li>
+                  <li><a href="about-us.html">اطلاعات 0 تومان</a></li>
+                  <li><a href="about-us.html">حریم خصوصی</a></li>
+                  <li><a href="about-us.html">شرایط و قوانین</a></li>
+                  <li><a href="contact-us">تماس با ما</a></li>
+                </ul>
+              </li>
+            </ul>
           </div>
         </div>
-        <!--Middle Part End -->
       </div>
+      <!--Middle Part End -->
     </div>
   </div>
+</div>
 {% endblock %}

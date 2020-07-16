@@ -42,35 +42,42 @@
                 <!-- Slideshow Start-->
                 <div class="slideshow single-slider owl-carousel">
                     <div class="item">
-                        <a href="{% url 'product:category' pk=1 slug='محصولات-کشاورزی' %}"><img class="img-responsive" src="static/image/slider/k.jpg" alt="banner 1" /></a>
+                        <a href="{% url 'product:category' pk=1 slug='محصولات-کشاورزی' %}"><img class="img-responsive"
+                                src="static/image/slider/k.jpg" alt="banner 1" /></a>
                     </div>
                     <div class="item">
-                        <a href="{% url 'product:category' pk=2 slug='صنایع-دستی-سنتی' %}"><img class="img-responsive" src="static/image/slider/s.jpg" alt="banner 3" /></a>
+                        <a href="{% url 'product:category' pk=2 slug='صنایع-دستی-سنتی' %}"><img class="img-responsive"
+                                src="static/image/slider/s.jpg" alt="banner 3" /></a>
                     </div>
                     <div class="item">
-                        <a href="{% url 'product:category' pk=3 slug='فرآورده-های-روستایی' %}"><img class="img-responsive" src="static/image/slider/f.jpg" alt="banner 2" /></a>
+                        <a href="{% url 'product:category' pk=3 slug='فرآورده-های-روستایی' %}"><img
+                                class="img-responsive" src="static/image/slider/f.jpg" alt="banner 2" /></a>
                     </div>
                 </div>
                 <!-- Slideshow End-->
                 <!-- Featured محصولات Start-->
-                <h3 class="subtitle">ویژه</h3>
+                <h3 class="subtitle">پیشنهاد شگفت انگیز</h3>
                 <div class="owl-carousel product_carousel">
-                    {% for product in products %} {% if product.featured %}
+                    {% for product in products %} {% if product.is_featured %}
                     <div class="product-thumb clearfix">
                         <div class="image">
-                            <a href="{{ product.get_absolute_url }}"><img src="{{product.miniimage.url}}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a>
+                            <a href="{{ product.get_absolute_url }}"><img src="{{product.miniimage.url}}"
+                                    alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a>
                         </div>
                         <div class="caption">
                             <h4><a href="{{ product.get_absolute_url }}"> کد محصول : {{product.id}} </a></h4>
                             <h4><a href="{{ product.get_absolute_url }}"> نام محصول : {{product.name}} </a></h4>
                             <p class="price">
                                 {% if product.discount_price %}
-                                <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.discount_price}} تومان</span></li>
-                                <li style="list-style-type: none;"><span class="price-old">قیمت :{{product.price}} تومان</span></li>
+                                <li style="list-style-type: none;"><span class="price-new">قیمت
+                                        :{{product.discount_price}} تومان</span></li>
+                                <li style="list-style-type: none;"><span class="price-old">قیمت :{{product.price}}
+                                        تومان</span></li>
                                 <span class="saving">
-                                {{ product.save_percent }}%
+                                    {{ product.save_percent }}%
                                 </span> {% else %}
-                                <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.price}} تومان</span></li>
+                                <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.price}}
+                                        تومان</span></li>
                                 <li style="list-style-type: none;"><br></li>
                                 {% endif %}
                                 <span class="price-tax">بدون مالیات : 90000 تومان</span>
@@ -78,13 +85,19 @@
                         </div>
                         <div class="button-group">
                             {% if product.label == 'ناموجود' %}
-                            <a class="btn disabled" href="{{ product.get_add_to_cart_url }}"><button class="btn-danger" type="button" onClick=""><span>ناموجود</span></button></a>
+                            <a class="btn disabled" href="{{ product.get_add_to_cart_url }}"><button class="btn-danger"
+                                    type="button" onClick=""><span>ناموجود</span></button></a>
                             {% else %}
-                            <a href="{{ product.get_add_to_cart_url }}"><button class="btn-primary" type="button"><span>افزودن به سبد</span></button></a>
+                            <a href="{{ product.get_add_to_cart_url }}"><button class="btn-primary"
+                                    type="button"><span>افزودن به سبد</span></button></a>
                             {% endif %}
                             <div class="add-to-links">
-                                <a href="{{ product.get_add_to_wishlist_url }}"><button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی ها" onClick=""><i class="fa fa-heart"></i></button></a>
-                                <a href="{{ product.get_add_to_compare_url }}"><button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button></a>
+                                <a href="{{ product.get_add_to_wishlist_url }}"><button type="button"
+                                        data-toggle="tooltip" title="افزودن به علاقه مندی ها" onClick=""><i
+                                            class="fa fa-heart"></i></button></a>
+                                <a href="{{ product.get_add_to_compare_url }}"><button type="button"
+                                        data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i
+                                            class="fa fa-exchange"></i></button></a>
                             </div>
                         </div>
                     </div>
@@ -95,26 +108,31 @@
                 <div class="marketshop-banner">
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                            <a href="#"><img src="static/image/banner/sample-banner-3-400x200.jpg" alt="بنر نمونه 3" title="بنر نمونه 3" /></a>
+                            <a href="#"><img src="static/image/banner/sample-banner-3-400x200.jpg" alt="بنر نمونه 3"
+                                    title="بنر نمونه 3" /></a>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                            <a href="#"><img src="{% static 'image/banner/112.png' %}" alt="بنر نمونه" title="بنر نمونه" /></a>
+                            <a href="#"><img src="{% static 'image/banner/112.png' %}" alt="بنر نمونه"
+                                    title="بنر نمونه" /></a>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                            <a href="#"><img src="{% static 'image/banner/special.jpeg' %}" alt="بنر نمونه 2" title="بنر نمونه 2" /></a>
+                            <a href="#"><img src="{% static 'image/banner/special.jpeg' %}" alt="بنر نمونه 2"
+                                    title="بنر نمونه 2" /></a>
                         </div>
                     </div>
                 </div>
                 <!-- Banner End-->
                 <!-- دسته ها محصولات Slider Start-->
                 {% for category in categories %}
-                <h3 class="subtitle"> {{ category.title }}- <a class="viewall" href="{{ category.get_absolute_url }}">نمایش همه</a></h3>
+                <h3 class="subtitle"> {{ category.title }}- <a class="viewall"
+                        href="{{ category.get_absolute_url }}">نمایش همه</a></h3>
                 <div class="owl-carousel latest_category_carousel">
                     {% for product in category.products.all %}
 
                     <div class="product-thumb">
                         <div class="image">
-                            <a href="{{ product.get_absolute_url }}"><img src="{{ product.miniimage.url }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a>
+                            <a href="{{ product.get_absolute_url }}"><img src="{{ product.miniimage.url }}"
+                                    alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a>
                         </div>
                         <div class="caption">
                             <h4><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h4>
@@ -129,16 +147,22 @@
                             {% endif %}
                             <div class="rating">{% ratings product %} </div>
                         </div>
-                        
+
                         <div class="button-group">
                             {% if product.label == 'ناموجود' %}
-                            <a class="btn disabled" href="{{ product.get_add_to_cart_url }}"><button class="btn-danger" type="button" onClick=""><span>ناموجود</span></button></a>
+                            <a class="btn disabled" href="{{ product.get_add_to_cart_url }}"><button class="btn-danger"
+                                    type="button" onClick=""><span>ناموجود</span></button></a>
                             {% else %}
-                            <a href="{{ product.get_add_to_cart_url }}"><button class="btn-primary" type="button"><span>افزودن به سبد</span></button></a>
+                            <a href="{{ product.get_add_to_cart_url }}"><button class="btn-primary"
+                                    type="button"><span>افزودن به سبد</span></button></a>
                             {% endif %}
                             <div class="add-to-links">
-                                <a href="{{ product.get_add_to_wishlist_url }}"><button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی ها" onClick=""><i class="fa fa-heart"></i></button></a>
-                                <a href="{{ product.get_add_to_compare_url }}"><button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button></a>
+                                <a href="{{ product.get_add_to_wishlist_url }}"><button type="button"
+                                        data-toggle="tooltip" title="افزودن به علاقه مندی ها" onClick=""><i
+                                            class="fa fa-heart"></i></button></a>
+                                <a href="{{ product.get_add_to_compare_url }}"><button type="button"
+                                        data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i
+                                            class="fa fa-exchange"></i></button></a>
                             </div>
                         </div>
                     </div>
@@ -146,21 +170,68 @@
 
                 </div>
                 {% endfor %}
-                <!-- دسته ها محصولات Slider End-->
-                <!-- Brand Logo Carousel Start-->
-                <h3 class="subtitle">تازه های مجله آنا - <a class="viewall" href="{% url 'product:products' %}">نمایش همه</a></h3>
-                <!-- Slideshow Start-->
-                <div class="slideshow single-slider owl-carousel">
-                    <div class="item">
-                        <div class="card mb-3">
-                            <img class="img-responsive" src="static/image/product/2.png" alt="Card image cap">
-                            <div class="card-body">
-                                <h3 class="card-title">قلمکاری در ایران</h3>
-                                <p class="card-text">قلمکاری (یا چیت سازی) هنر چاپ یا نقش زدن روی پارچه است. قلمکاری واژه‌ای فارسی است که در زبان هندی به عاریت گرفته شده و به‌طور لغوی از دو واژه قلم و کاری تشکیل شده و معنی آن، کار هنری است که با قلم انجام می‌شود.</p>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                <h3 class="subtitle">پربازدیدترین محصولات</h3>
+                <div class="owl-carousel product_carousel">
+                    {% for product in popular_products %}
+                    <div class="product-thumb clearfix">
+                        <div class="image">
+                            <a href="{{ product.get_absolute_url }}"><img src="{{product.miniimage.url}}"
+                                    alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a>
+                        </div>
+                        <div class="caption">
+                            <h4><a href="{{ product.get_absolute_url }}"> کد محصول : {{product.id}} </a></h4>
+                            <h4><a href="{{ product.get_absolute_url }}"> نام محصول : {{product.name}} </a></h4>
+                            <p class="price">
+                                {% if product.discount_price %}
+                                <li style="list-style-type: none;"><span class="price-new">قیمت
+                                        :{{product.discount_price}} تومان</span></li>
+                                <li style="list-style-type: none;"><span class="price-old">قیمت :{{product.price}}
+                                        تومان</span></li>
+                                <span class="saving">
+                                    {{ product.save_percent }}%
+                                </span> {% else %}
+                                <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.price}}
+                                        تومان</span></li>
+                                <li style="list-style-type: none;"><br></li>
+                                {% endif %}
+                                <span class="price-tax">بدون مالیات : 90000 تومان</span>
+                            </p>
+                        </div>
+                        <div class="button-group">
+                            {% if product.label == 'ناموجود' %}
+                            <a class="btn disabled" href="{{ product.get_add_to_cart_url }}"><button class="btn-danger"
+                                    type="button" onClick=""><span>ناموجود</span></button></a>
+                            {% else %}
+                            <a href="{{ product.get_add_to_cart_url }}"><button class="btn-primary"
+                                    type="button"><span>افزودن به سبد</span></button></a>
+                            {% endif %}
+                            <div class="add-to-links">
+                                <a href="{{ product.get_add_to_wishlist_url }}"><button type="button"
+                                        data-toggle="tooltip" title="افزودن به علاقه مندی ها" onClick=""><i
+                                            class="fa fa-heart"></i></button></a>
+                                <a href="{{ product.get_add_to_compare_url }}"><button type="button"
+                                        data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i
+                                            class="fa fa-exchange"></i></button></a>
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
+                </div>
+                <!-- دسته ها محصولات Slider End-->
+                <!-- Brand Logo Carousel Start-->
+                <h3 class="subtitle">تازه های مجله آنا - <a class="viewall" href="{% url 'blog:blog' %}">نمایش همه</a>
+                </h3>
+                <!-- Slideshow Start-->
+                <div class="slideshow single-slider owl-carousel">
+                    {% for i in blogs %}
+                    <div class="item">
+                        <a href="{% url 'blog:blog-detail' pk=i.id %}"><img class="img-responsive"
+                                src="{{ i.blog_image.url }}" alt="Card image cap"></a>
+                        <h3>{{ i.title }}</h3>
+                        <p> {{ i.short_desc }} </p>
+                        <p><small class="text-muted">{{ i.jalali_date}}</small></p>
+                    </div>
+                    {% endfor %}
                 </div>
                 <!-- Brand Logo Carousel End -->
             </div>

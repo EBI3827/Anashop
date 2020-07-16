@@ -1,21 +1,21 @@
-{% extends 'base1.html' %} {% load static %} 
+{% extends 'base1.html' %} {% load static %}
 {% block title %}<title>تسویه حساب</title>{% endblock %}
 {% block body %}
-  <div id="container">
-    <div class="container">
-      <!-- Breadcrumb Start-->
-      <ul class="breadcrumb">
-        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
-        <li><a href="cart.html">سبد خرید</a></li>
-        <li><a href="checkout.html">تسویه حساب</a></li>
-      </ul>
-      <!-- Breadcrumb End-->
-      <div class="row">
-        <!--Middle Part Start-->
-        <div id="content" class="col-sm-12">
-          <h1 class="title">تسویه حساب</h1>
-          <div class="row">
-            <div class="col-sm-4">
+<div id="container">
+  <div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="breadcrumb">
+      <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+      <li><a href="cart.html">سبد خرید</a></li>
+      <li><a href="checkout.html">تسویه حساب</a></li>
+    </ul>
+    <!-- Breadcrumb End-->
+    <div class="row">
+      <!--Middle Part Start-->
+      <div id="content" class="col-sm-12">
+        <h1 class="title">تسویه حساب</h1>
+        <div class="row">
+          <div class="col-sm-4">
             <form method="POST">
               {{ form.non_field_errors }}
               {% csrf_token %}
@@ -23,221 +23,205 @@
                 <div class="panel-heading">
                   <h4 class="panel-title"><i class="fa fa-user"></i> اطلاعات شخصی شما</h4>
                 </div>
+                <div class="panel-body">
+                  <fieldset id="account">
+                    <div class="form-group required">
+                      {{ form.first_name.errors }}
+                      <label for="input-payment-firstname" class="control-label">نام</label>
+                      {{ form.first_name }}
+                    </div>
+                    <div class="form-group required">
+                      {{ form.last_name.errors }}
+                      <label for="input-payment-lastname" class="control-label">نام خانوادگی</label>
+                      {{ form.last_name }}
+                    </div>
+                    <div class="form-group required">
+                      <label for="input-payment-email" class="control-label">آدرس ایمیل</label>
+                      {{ form.email }}
+                      <div style="color: red;padding-top: 5px;">
+                        {{ form.email.errors }}
+                      </div>
+                    </div>
+                    <div class="form-group required">
+                      <label for="input-payment-telephone" class="control-label">شماره تلفن</label>
+                      {{ form.phone }}
+                      <div style="color: red;padding-top: 5px;">
+                        {{ form.phone.errors }}
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="panel panel-default" style="border: none;margin-bottom: 0px;">
+                  <div class="panel-heading">
+                    <h4 class="panel-title"><i class="fa fa-book"></i> آدرس</h4>
+                  </div>
                   <div class="panel-body">
-                        <fieldset id="account">
-                          <div class="form-group required">
-                            {{ form.first_name.errors }}
-                            <label for="input-payment-firstname" class="control-label">نام</label>
-                            {{ form.first_name }}
-                          </div>
-                          <div class="form-group required">
-                            {{ form.last_name.errors }}
-                            <label for="input-payment-lastname" class="control-label">نام خانوادگی</label>
-                            {{ form.last_name }}
-                          </div>
-                          <div class="form-group required">
-                            <label for="input-payment-email" class="control-label">آدرس ایمیل</label>
-                            {{ form.email }}
+                    <fieldset id="address" class="required">
+                      <div class="form-group required">
+                        {{ form.address.errors }}
+                        <label for="input-payment-address-1" class="control-label">آدرس </label>
+                        {{ form.address }}
+                      </div>
+                      <div class="form-group required">
+                        <label for="input-payment-postcode" class="control-label">کد پستی</label>
+                        {{ form.postal_code }}
+                        <ul class="errorlist">
+                          <li>
                             <div style="color: red;padding-top: 5px;">
-                            {{ form.email.errors }}
+                              {{ form.postal_code.errors }}
                             </div>
-                          </div>
-                          <div class="form-group required">
-                            <label for="input-payment-telephone" class="control-label">شماره تلفن</label>
-                            {{ form.phone }}
-                            <div style="color: red;padding-top: 5px;">
-                            {{ form.phone.errors }}
-                            </div>
-                          </div>
-                        </fieldset>
+                          </li>
+                        </ul>
                       </div>
-                      <div class="panel panel-default" style="border: none;margin-bottom: 0px;">
-                        <div class="panel-heading">
-                          <h4 class="panel-title"><i class="fa fa-book"></i> آدرس</h4>
-                        </div>
-                          <div class="panel-body">
-                                <fieldset id="address" class="required">
-                                  <div class="form-group required">
-                                    {{ form.address.errors }}
-                                    <label for="input-payment-address-1" class="control-label">آدرس </label>
-                                    {{ form.address }}
-                                  </div>
-                                  <div class="form-group required">
-                                    <label for="input-payment-postcode" class="control-label">کد پستی</label>
-                                    {{ form.postal_code }}
-                                    <ul class="errorlist">
-                                      <li>
-                                        <div style="color: red;padding-top: 5px;">
-                                          {{ form.postal_code.errors }}
-                                        </div>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div class="checkbox">
-                                    <label>
-                                    {{ form.set_default_info }}
-                                      ذخیره اطلاعات به عنوان اطلاعات پیش فرض</label>
-                                  </div>
-                                  <div class="checkbox">
-                                    <label>
-                                    {{ form.use_default_info }}
-                                      استفاده از اطلاعات پیش فرض</label>
-                                  </div>
-                                </fieldset>
-                              </div>
+                      <div class="checkbox">
+                        <label>
+                          {{ form.set_default_info }}
+                          ذخیره اطلاعات به عنوان اطلاعات پیش فرض</label>
                       </div>
-                      <div class="panel panel-default"  style="border: none;margin-bottom: 0px;">
-                        <div class="panel-heading">
-                          <h4 class="panel-title"><i class="fa fa-credit-card"></i> شیوه پرداخت</h4>
-                        </div>
-                          <div class="panel-body">
-                            <p>لطفا یک شیوه پرداخت برای سفارش خود انتخاب کنید.</p>
-                            <div class="radio" style="list-style-type: none;">
-                              {{ form.payment_option }}
-                            </div>
-                          </div>
+                      <div class="checkbox">
+                        <label>
+                          {{ form.use_default_info }}
+                          استفاده از اطلاعات پیش فرض</label>
                       </div>
-                      <div class="panel-body">
-                        <label class="control-label" for="confirm_agree">
-                          {{ form.agreed }}
-                          <span><a class="agree" href="#"><b>شرایط و قوانین</b></a> را خوانده ام و با آنها موافق هستم.</span> </label>
-                        <div class="buttons" style="border-top: none;">
-                          <div class="pull-right">
-                              <input type="submit" class="btn btn-primary" id="button-confirm" value="تایید سفارش">
-                          </div>
-                        </div>
-                      </div>
-              </div>
-            </form>
-            </div>
-            <div class="col-sm-8">
-              <div class="row">
-                {% if DISPLAY_COUPON_FORM %}
-                <form method="POST" action="{% url 'cart:add-coupon' %}">
-                  {% csrf_token %}
-                  <div class="col-sm-12">
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                        <h4 class="panel-title"><i class="fa fa-ticket"></i> استفاده از کوپن تخفیف</h4>
-                      </div>
-                        <div class="panel-body">
-                          <label for="input-coupon" class="col-sm-3 control-label">کد تخفیف خود را وارد کنید</label>
-                          <div class="input-group">
-                            {{ couponform.code }}
-                            <!-- <input type="text" class="form-control" id="input-coupon" placeholder="کد تخفیف خود را در اینجا وارد کنید" value="" name="coupon"> -->
-                            <span class="input-group-btn">
-                            <input type="button" class="btn btn-primary" data-loading-text="بارگذاری ..." id="button-coupon" value="اعمال کوپن">
-                            </span></div>
-                        </div>
+                    </fieldset>
+                  </div>
+                </div>
+                <div class="panel panel-default" style="border: none;margin-bottom: 0px;">
+                  <div class="panel-heading">
+                    <h4 class="panel-title"><i class="fa fa-credit-card"></i> شیوه پرداخت</h4>
+                  </div>
+                  <div class="panel-body">
+                    <p>لطفا یک شیوه پرداخت برای سفارش خود انتخاب کنید.</p>
+                    <div class="radio" style="list-style-type: none;">
+                      {{ form.payment_option }}
                     </div>
                   </div>
-                </form>
-                {% endif %}
+                </div>
+                <div class="panel-body">
+                  <label class="control-label" for="confirm_agree">
+                    {{ form.agreed }}
+                    <span><a class="agree" href="#"><b>شرایط و قوانین</b></a> را خوانده ام و با آنها موافق هستم.</span>
+                  </label>
+                  <div class="buttons" style="border-top: none;">
+                    <div class="pull-right">
+                      <input type="submit" class="btn btn-primary" id="button-confirm" value="تایید سفارش">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-sm-8">
+            <div class="row">
+              {% if DISPLAY_COUPON_FORM %}
+              <form method="POST" action="{% url 'cart:add-coupon' %}">
+                {% csrf_token %}
                 <div class="col-sm-12">
                   <div class="panel panel-default">
                     <div class="panel-heading">
-                      <h4 class="panel-title"><i class="fa fa-shopping-cart"></i> سبد خرید</h4>
+                      <h4 class="panel-title"><i class="fa fa-ticket"></i> استفاده از کوپن تخفیف</h4>
                     </div>
-                      <div class="panel-body">
-                        <div class="table-responsive">
-                          <table class="table table-bordered">
-                            <thead>
-                              <tr>
-                                <td class="text-center">تصویر</td>
-                                <td class="text-left">نام محصول</td>
-                                <td class="text-left">تعداد</td>
-                                <td class="text-right">قیمت واحد</td>
-                                <td class="text-right">کل</td>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {% for item in order2.products.all %}
-                              <tr>
-                                <td class="text-center"><a href="product.html"><img src="{{ item.product.miniimage.url }}" alt="کفش راحتی مردانه" title="کفش راحتی مردانه" class="img-thumbnail"></a></td>
-                                <td class="text-left"><a href="product.html">{{ item.product.name }}</a></td>
-                                <td class="text-left" style="width: 0px;">
-                                  <div class="input-group btn-block" style="width: 0px;">
-                                    <input type="text" name="quantity" value="{{ item.quantity }}" size="1" class="form-control">
-                                    <span class="input-group-btn">
-                                      <a href="{% url 'cart:remove_single_item_from_cart' pk=item.product.id %}"><button
-                                          type="button" data-toggle="tooltip" title="حذف" class="btn btn-danger"><i class="fa fa-minus"
-                                            aria-hidden="true" style="vertical-align: middle;"></i></button></a>
-                                      <a href="{{ item.product.get_add_to_cart_url }}"><button type="submit" data-toggle="tooltip"
-                                          title="افزودن" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"
-                                            style="vertical-align: middle;"></i></button></a>
-                                    </span>
-                                  </div>
-                                </td>
-                                <td class="text-right">{{ item.product.price }} تومان</td>
-                                <td class="text-right">
-                                  {% if item.product.discount_price %}
-                                  {{ item.get_total_product_discount_price }} تومان
-                                  <span class="badge badge-pill badge-danger" style="background-color:dodgerblue;"> تخفیف {{ item.get_amount_saved }} تومان</span>
-                                  {% else %}
-                                  {{ item.get_total_product_price }} تومان
-                                  {% endif %}
-                                </td>
-                              </tr>
-                              {% endfor %}
-                            </tbody>
-                            <tfoot>
-                              <tr>
-                                <td class="text-right" colspan="4"><strong>جمع کل:</strong></td>
-                                <td class="text-right">
-                                  {% if order2.get_total %}
-                                  {{ order2.get_total }} تومان
-                                  {% endif %}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-right" colspan="4"><strong>هزینه ارسال ثابت :</strong></td>
-                                <td class="text-right">{{ order2.post_price }} - تومان</td>
-                              </tr>
-                              <tr>
-                                <td class="text-right" colspan="4"><strong>کسر هدیه:</strong></td>
-                                <td class="text-right">
-                                  {% if order2.coupon.amount %}
-                                  {{ order2.coupon.amount }} - تومان
-                                  {% endif %}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-right" colspan="4"><strong>کل :</strong></td>
-                                <td class="text-right">{{ order2.get_final_total }} تومان</td>
-                              </tr>
-                            </tfoot>
-                          </table>
-                        </div>
-                      </div>
+                    <div class="panel-body">
+                      <label for="input-coupon" class="col-sm-3 control-label">کد تخفیف خود را وارد کنید</label>
+                      <div class="input-group">
+                        {{ couponform.code }}
+                        <span class="input-group-btn">
+                          <input type="button" class="btn btn-primary" data-loading-text="بارگذاری ..."
+                            id="button-coupon" value="اعمال کوپن">
+                        </span></div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              {% endif %}
+              <div class="col-sm-12">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title"><i class="fa fa-shopping-cart"></i> سبد خرید</h4>
+                  </div>
+                  <div class="panel-body">
+                    <div class="table-responsive">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <td class="text-center">تصویر</td>
+                            <td class="text-left">نام محصول</td>
+                            <td class="text-left">تعداد</td>
+                            <td class="text-right">قیمت واحد</td>
+                            <td class="text-right">کل</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for item in order2.products.all %}
+                          <tr>
+                            <td class="text-center"><a href="product.html"><img src="{{ item.product.miniimage.url }}"
+                                  alt="کفش راحتی مردانه" title="کفش راحتی مردانه" class="img-thumbnail"></a></td>
+                            <td class="text-left"><a href="product.html">{{ item.product.name }}</a></td>
+                            <td class="text-left" style="width: 0px;">
+                              <div class="input-group btn-block" style="width: 0px;">
+                                <input type="text" name="quantity" value="{{ item.quantity }}" size="1"
+                                  class="form-control">
+                                <span class="input-group-btn">
+                                  <a href="{% url 'cart:remove_single_item_from_cart' pk=item.product.id %}"><button
+                                      type="button" data-toggle="tooltip" title="حذف" class="btn btn-danger"><i
+                                        class="fa fa-minus" aria-hidden="true"
+                                        style="vertical-align: middle;"></i></button></a>
+                                  <a href="{{ item.product.get_add_to_cart_url }}"><button type="submit"
+                                      data-toggle="tooltip" title="افزودن" class="btn btn-success"><i class="fa fa-plus"
+                                        aria-hidden="true" style="vertical-align: middle;"></i></button></a>
+                                </span>
+                              </div>
+                            </td>
+                            <td class="text-right">{{ item.product.price }} تومان</td>
+                            <td class="text-right">
+                              {% if item.product.discount_price %}
+                              {{ item.get_total_product_discount_price }} تومان
+                              <span class="badge badge-pill badge-danger" style="background-color:dodgerblue;"> تخفیف
+                                {{ item.get_amount_saved }} تومان</span>
+                              {% else %}
+                              {{ item.get_total_product_price }} تومان
+                              {% endif %}
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td class="text-right" colspan="4"><strong>جمع کل:</strong></td>
+                            <td class="text-right">
+                              {% if order2.get_total %}
+                              {{ order2.get_total }} تومان
+                              {% endif %}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="text-right" colspan="4"><strong>هزینه ارسال ثابت :</strong></td>
+                            <td class="text-right">{{ order2.post_price }} - تومان</td>
+                          </tr>
+                          <tr>
+                            <td class="text-right" colspan="4"><strong>کسر هدیه:</strong></td>
+                            <td class="text-right">
+                              {% if order2.coupon.amount %}
+                              {{ order2.coupon.amount }} - تومان
+                              {% endif %}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="text-right" colspan="4"><strong>کل :</strong></td>
+                            <td class="text-right">{{ order2.get_final_total }} تومان</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!--Middle Part End -->
       </div>
+      <!--Middle Part End -->
     </div>
   </div>
-
-  <!-- Modal -->
-<!-- <div class="modal fade" id="paymentmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color: #212529;">
-        <strong><h4 class="modal-title" id="exampleModalLabel" style="color: white;">تایید سفارش</h4></strong>
-      </div>
-      <div class="modal-body">
-        شما گزینه پرداخت هنگام تحویل را انتخاب کرده اید .
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
-        <form method="POST" action="{% url 'cart:payment' payment_option='DE' %}">
-          {% csrf_token %}
-          <button type="submit" id="button-coupon" class="btn btn-primary">تایید سفارش</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div> -->
+</div>
 {% endblock %}

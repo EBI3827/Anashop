@@ -4,6 +4,10 @@ from django.utils.text import slugify
 from django.shortcuts import reverse
 from django.conf import settings
 from star_ratings.models import Rating
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
+from hitcount.models import HitCountMixin, HitCount
+from django.contrib.contenttypes.fields import GenericRelation
 
 
 from persiantools.jdatetime import JalaliDate
@@ -13,6 +17,17 @@ LABEL_CHOICES = (
     ('موجود', 'موجود'),
     ('ناموجود', 'ناموجود'),
 )
+
+
+class FeatureManager(models.Manager):
+    def are_featured(self):
+        featured_products = []
+        for product in Product.objects.all():
+            if product.is_featured():
+                featured_products.append(product.id)
+        nfeatured = Product.objects.filter(id__in=featured_products)[:6]
+        # use your method to filter results
+        return nfeatured
 
 
 class Category(models.Model):
@@ -77,6 +92,9 @@ class Product (models.Model):
     added_date = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(null=True, blank=True,
                             default='test', allow_unicode=True)
+    hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk',
+                                        related_query_name='hit_count_generic_relation')
+    objects = FeatureManager()
 
     def __str__(self):
         return self.name
@@ -101,7 +119,7 @@ class Product (models.Model):
         else:
             return 'nostock'
 
-    def featured(self):
+    def is_featured(self):
         save = self.save_percent()
         if save >= 5:
             return True
@@ -193,3 +211,10 @@ class ProductComment(models.Model):
 
     def convert_jalali(self):
         return JalaliDate(self.date).strftime("%Y/%m/%d")
+
+
+class Hit(models.Model):
+    date = models.DateTimeField(auto_now=True)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')

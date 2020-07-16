@@ -1,87 +1,97 @@
-{% extends 'base1.html' %} {% load static %} 
+{% extends 'base1.html' %} {% load static %}
 {% block title %}<title>مقایسه محصولات</title>{% endblock %}
 {% block body %}
-  <div id="container">
-    <div class="container">
-      <!-- Breadcrumb Start-->
-      <ul class="breadcrumb">
-        <li><a href="/"><i class="fa fa-home"></i></a></li>
-        <li><a href="{% url 'product:compare' %}">مقایسه محصولات</a></li>
-      </ul>
-      <!-- Breadcrumb End-->
-      <div class="row">
-        <!--Middle Part Start-->
-        <div id="content" class="col-sm-12">
-          <h1 class="title">مقایسه محصولات</h1>
-          <div class="table-responsive">
-            <table class="table table-bordered table-hover">
-              <!-- <thead>
+<div id="container">
+  <div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="breadcrumb">
+      <li><a href="/"><i class="fa fa-home"></i></a></li>
+      <li><a href="{% url 'product:compare' %}">مقایسه محصولات</a></li>
+    </ul>
+    <!-- Breadcrumb End-->
+    <div class="row">
+      <!--Middle Part Start-->
+      <div id="content" class="col-sm-12">
+        <h1 class="title">مقایسه محصولات</h1>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <!-- <thead>
                 <tr>
                   <td colspan="{{ object.products.all | length }}"><strong>جزئیات محصول</strong></td>
                 </tr>
               </thead> -->
-              <tbody style="text-align:center;">
-                
-                <tr>
-                  <td>محصولات</td>
-                  {% for item in object.products.all %}
-                  <td><a href="{{ item.product.get_absolute_url }}"><strong>{{ item.product.name }}</strong></a></td>
-                  {% endfor %}
-                </tr>
-                <tr>
-                  <td>تصویر</td>
-                  {% for item in object.products.all %}
-                  <td class="text-center"><a href="{{ item.product.get_absolute_url }}"><img class="img-thumbnail" title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" src="{{ item.product.miniimage.url }}"></a></td>
-                  {% endfor %}
-                </tr>
-                <tr>
-                  <td>قیمت</td>
-                  {% for item in object.products.all %}
-                  <td>
-                    {% if item.product.discount_price %}
-                    <span class="price-old">{{ item.product.price }}</span>
-                    <span class="price-new">{{ item.product.discount_price }}</span>
-                    {% else %}
-                    <span class="price-new">{{ item.product.price }}</span>
-                    {% endif %}
-                  </td>
-                  {% endfor %}
-                </tr>
-                <tr>
-                  <td>وضعیت موجودی</td>
-                  {% for item in object.products.all %}
-                  <td>{{ item.product.label }}</td>
-                  {% endfor %}
-                </tr>
-                <tr>
-                  <td>رتبه</td>
-                  <td class="rating"><span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <br>
-                    بر اساس 0 بررسی</td>
-                  <td class="rating"><span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <br>
-                    بر اساس 0 بررسی</td>
-                </tr>
-                <tr>
-                  <td>خلاصه</td>
-                  {% for item in object.products.all %}
-                  <td class="description">{{ item.product.description }}</td>
-                  {% endfor %}
-                </tr>
-              </tbody>
-              <tbody>
-                <tr>
-                  <td></td>
-                  {% for item in object.products.all %}
-                  <td><a href="{{ item.product.get_add_to_cart_url }}"><input type="button" onClick="" class="btn btn-primary btn-block" value="افزودن به سبد"></a>
-                    <a class="btn btn-danger btn-block" href="{{ item.product.get_remove_from_compare_url }}">حذف</a>
-                  </td>
-                  {% endfor %}
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            <tbody style="text-align:center;">
+
+              <tr>
+                <td>محصولات</td>
+                {% for item in object.products.all %}
+                <td><a href="{{ item.product.get_absolute_url }}"><strong>{{ item.product.name }}</strong></a></td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <td>تصویر</td>
+                {% for item in object.products.all %}
+                <td class="text-center"><a href="{{ item.product.get_absolute_url }}"><img class="img-thumbnail"
+                      title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" src="{{ item.product.miniimage.url }}"></a></td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <td>قیمت</td>
+                {% for item in object.products.all %}
+                <td>
+                  {% if item.product.discount_price %}
+                  <span class="price-old">{{ item.product.price }}</span>
+                  <span class="price-new">{{ item.product.discount_price }}</span>
+                  {% else %}
+                  <span class="price-new">{{ item.product.price }}</span>
+                  {% endif %}
+                </td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <td>وضعیت موجودی</td>
+                {% for item in object.products.all %}
+                <td>{{ item.product.label }}</td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <td>رتبه</td>
+                <td class="rating"><span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span
+                    class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i
+                      class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i
+                      class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i
+                      class="fa fa-star-o fa-stack-2x"></i></span> <br>
+                  بر اساس 0 بررسی</td>
+                <td class="rating"><span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span
+                    class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i
+                      class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i
+                      class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i
+                      class="fa fa-star-o fa-stack-2x"></i></span> <br>
+                  بر اساس 0 بررسی</td>
+              </tr>
+              <tr>
+                <td>خلاصه</td>
+                {% for item in object.products.all %}
+                <td class="description">{{ item.product.description }}</td>
+                {% endfor %}
+              </tr>
+            </tbody>
+            <tbody>
+              <tr>
+                <td></td>
+                {% for item in object.products.all %}
+                <td><a href="{{ item.product.get_add_to_cart_url }}"><input type="button" onClick=""
+                      class="btn btn-primary btn-block" value="افزودن به سبد"></a>
+                  <a class="btn btn-danger btn-block" href="{{ item.product.get_remove_from_compare_url }}">حذف</a>
+                </td>
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <!--Middle Part End -->
       </div>
+      <!--Middle Part End -->
     </div>
   </div>
+</div>
 {% endblock %}

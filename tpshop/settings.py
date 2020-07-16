@@ -26,9 +26,6 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'dal',
-    'dal_select2',
-    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,13 +40,15 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rest_framework',
     'captcha',
-    'cities_light',
     'star_ratings',
+    "taggit",
+    'hitcount',
 
 
     'product',
     'cart',
     'api',
+    'blog',
 ]
 
 
@@ -79,8 +78,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'product.context_processors.nav',
-                # 'product.context_processors.get',
-
 
             ],
         },
@@ -183,14 +180,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "static_cdn", "media_root")
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# cities-light settings
-
-CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fa', 'en','abbr']
-CITIES_LIGHT_INCLUDE_COUNTRIES = ['IR']
-CITIES_LIGHT_INCLUDE_CITY_TYPES = [
-    'PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC',
-    'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT',
-]
-
 STAR_RATINGS_STAR_HEIGHT=STAR_RATINGS_STAR_WIDTH=14
 
+TAGGIT_CASE_INSENSITIVE = True

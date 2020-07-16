@@ -5,7 +5,7 @@ from product.views import handler404
 from django.contrib import admin
 from api.views import TestView
 from tpshop import settings
-from .views import home
+
 
 
 handler404 = handler404
@@ -18,9 +18,11 @@ urlpatterns = [
     path('',include('product.urls'),name='product'),
     path('cart/',include('cart.urls'),name='cart'),
     path('api-auth/', include('rest_framework.urls')),
+    path('blog/', include('blog.urls')),
     path('api/',TestView.as_view(),name='api'),
     path('captcha/', include('captcha.urls')),
-    path('ratings/', include('star_ratings.urls', namespace='ratings')),   
+    path('ratings/', include('star_ratings.urls', namespace='ratings')),
+    path('hitcount/', include(('hitcount.urls', 'hitcount'), namespace='hitcount')),
 ]
 
 if settings.DEBUG:

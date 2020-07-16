@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from product.models import Product
-from cities_light.models import City
 
 
 class OrderItem(models.Model):
@@ -37,15 +36,11 @@ class Order(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
-    checkoutinfo=models.ForeignKey(
+    checkoutinfo = models.ForeignKey(
         'CheckoutInfo', related_name='checkoutinfo', on_delete=models.SET_NULL, blank=True, null=True)
-    # shipping_address = models.ForeignKey(
-    #     'Address', related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
-    # billing_address = models.ForeignKey(
-    #     'Address', related_name='billing_address', on_delete=models.SET_NULL, blank=True, null=True)
     coupon = models.ForeignKey(
         'Coupon', on_delete=models.CASCADE, blank=True, null=True)
-    post_price=models.IntegerField(default=12000)
+    post_price = models.IntegerField(default=12000)
 
     def __str__(self):
         return self.user.username
@@ -60,7 +55,7 @@ class Order(models.Model):
         total = 0
         for order_product in self.products.all():
             total += order_product.get_final_price()
-        if self.coupon :
+        if self.coupon:
             total -= (self.coupon.amount + self.post_price)
         else:
             total -= self.post_price
@@ -70,7 +65,7 @@ class Order(models.Model):
         total = 0
         for order_product in self.products.all():
             total += order_product.get_final_price()
-        if self.coupon :
+        if self.coupon:
             total -= self.coupon.amount
         return total
 
@@ -81,11 +76,6 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
-
-
-class MyCity(models.Model):
-    location = models.ForeignKey(
-        City, on_delete=models.CASCADE, blank=True, null=True)
 
 
 class CheckoutInfo(models.Model):

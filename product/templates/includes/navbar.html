@@ -2,234 +2,279 @@
 {% load cart_tag %}
 {% load wishlist_tag %}
 <div id="header">
-    <!-- Top Bar Start-->
-    <nav id="top" class="htop">
-      <div class="container">
-        <div class="row"> <span class="drop-icon visible-sm visible-xs"><i class="fa fa-align-justify"></i></span>
-          <div class="pull-left flip left-top">
-            <div class="links">
-              <ul>
-                <li class="wrap_custom_block hidden-sm hidden-xs"><a>وبلاگ<b></b></a>
-                  <div class="dropdown-menu custom_block">
-                    <ul>
-                      <li>
-                        <table>
-                          <tbody>
-                            <tr>
-                              <td><img alt="" src="static/image/banner/cms-block.jpg"></td>
-                              <td><img alt="" src="static/image/banner/responsive.jpg"></td>
-                            </tr>
-                            <tr>
-                              <td><h4>بلاک های محتوا</h4></td>
-                              <td><h4>قالب واکنش گرا</h4></td>
-                            </tr>
-                            <tr>
-                              <td>این یک بلاک مدیریت محتواست. شما میتوانید هر نوع محتوای html نوشتاری یا تصویری را در آن قرار دهید.</td>
-                              <td>این یک بلاک مدیریت محتواست. شما میتوانید هر نوع محتوای html نوشتاری یا تصویری را در آن قرار دهید.</td>
-                            </tr>
-                            <tr>
-                              <td><strong><a class="btn btn-default btn-sm" href="#">ادامه مطلب</a></strong></td>
-                              <td><strong><a class="btn btn-default btn-sm" href="#">ادامه مطلب</a></strong></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                {% if user.is_authenticated %}
-                <li><a href="{% url 'product:wishlist' %}">لیست علاقه مندی ( {{ request.user | wishlist_product_count }})</a></li>
-                <li><a href="{% url 'cart:cart' %}">سبد خرید</a></li>
-                <li><a href="{% url 'cart:checkout' %}">تسویه حساب</a></li>
-                {% endif %}
-              </ul>
-            </div>
-          </div>
-          <div id="top-links" class="nav pull-right flip">
+  <!-- Top Bar Start-->
+  <nav id="top" class="htop">
+    <div class="container">
+      <div class="row"> <span class="drop-icon visible-sm visible-xs"><i class="fa fa-align-justify"></i></span>
+        <div class="pull-left flip left-top">
+          <div class="links">
             <ul>
-              {% if not user.is_authenticated %}
-              <li><a href="{% url 'account_login' %}">ورود</a></li>
-              <li><a href="{% url 'account_signup' %}">ثبت نام</a></li>
-              {% else %}
-              <li><a data-toggle="modal" data-target="#logoutmodal">
-                خروج از حساب کاربری 
-              </a></li>
-              
-              <!-- <li><a href="{% url 'account_logout' %}">خروج از حساب کاربری</a></li> -->
+              <li class="wrap_custom_block hidden-sm hidden-xs"><a>وبلاگ<b></b></a>
+                <div class="dropdown-menu custom_block">
+                  <ul>
+                    <li>
+                      <table>
+                        <tbody>
+                          <tr>
+                            {% for blog in blogs %}
+                            <td><img alt="" src="{{ blog.blog_image.url }}" style="width: 250px;height: 130;"></td>
+                            {% endfor %}
+                          </tr>
+                          <tr>
+                            {% for blog in blogs %}
+                            <td>
+                              <h4>{{blog.title}}</h4>
+                            </td>
+                            {% endfor %}
+                          </tr>
+                          <tr>
+                            {% for blog in blogs %}
+                            <td style="vertical-align: top;">
+                              <p>{{blog.short_desc}}</p>
+                            </td>
+                            {% endfor %}
+                          </tr>
+                          <tr>
+                            {% for blog in blogs %}
+                            <td><strong><a class="btn btn-default btn-sm"
+                                  href="{% url 'blog:blog-detail' pk=blog.id %}">ادامه مطلب</a></strong></td>
+                            {% endfor %}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              {% if user.is_authenticated %}
+              <li><a href="{% url 'product:wishlist' %}">لیست علاقه مندی (
+                  {{ request.user | wishlist_product_count }})</a></li>
+              <li><a href="{% url 'cart:cart' %}">سبد خرید</a></li>
+              <li><a href="{% url 'cart:checkout' %}">تسویه حساب</a></li>
               {% endif %}
             </ul>
           </div>
         </div>
+        <div id="top-links" class="nav pull-right flip">
+          <ul>
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'account_login' %}">ورود</a></li>
+            <li><a href="{% url 'account_signup' %}">ثبت نام</a></li>
+            {% else %}
+            <li><a data-toggle="modal" data-target="#logoutmodal">
+                خروج از حساب کاربری
+              </a></li>
+            {% endif %}
+          </ul>
+        </div>
       </div>
-    </nav>
-    <!-- Top Bar End-->
-    <!-- Header Start-->
-    <header class="header-row">
-      <div class="container">
-        <div class="table-container">
-          <!-- Logo Start -->
-          <div class="col-table-cell col-lg-6 col-md-6 col-sm-12 col-xs-12 inner">
-            <div id="logo"><a href="{% url 'product:home' %}"><img class="img-responsive" src="{% static 'image/logo.png' %}" title="MarketShop" alt="MarketShop" /></a></div>
-          </div>
-          <!-- Logo End -->
-          <!-- Mini Cart Start-->
-          <div class="col-table-cell col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <div id="cart">
-
-              <button type="button" data-toggle="dropdown" data-loading-text="Loading..." class="heading dropdown-toggle">
+    </div>
+  </nav>
+  <!-- Top Bar End-->
+  <!-- Header Start-->
+  <header class="header-row">
+    <div class="container">
+      <div class="table-container">
+        <!-- Logo Start -->
+        <div class="col-table-cell col-lg-6 col-md-6 col-sm-12 col-xs-12 inner">
+          <div id="logo"><a href="{% url 'product:home' %}"><img class="img-responsive"
+                src="{% static 'image/logo.png' %}" title="MarketShop" alt="MarketShop" /></a></div>
+        </div>
+        <!-- Logo End -->
+        <!-- Mini Cart Start-->
+        <div class="col-table-cell col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div id="cart">
+            <button type="button" data-toggle="dropdown" data-loading-text="Loading..." class="heading dropdown-toggle">
               <span data-toggle="tooltip" data-placement="top" title="سبد خرید" class="cart-icon pull-left flip"></span>
               <span id="cart-total">
                 {% if order2.get_total_with_coupon %}
-                {{ request.user | cart_product_count }} آیتم -                              
+                {{ request.user | cart_product_count }} آیتم -
                 {{ order2.get_total_with_coupon }} تومان
                 {% endif %}
               </span>
-              </button>
-              {% if user.is_authenticated %}
-              <ul class="dropdown-menu  pre-scrollable">
-                <li>
-                  <table class="table">
+            </button>
+            {% if user.is_authenticated %}
+            <ul class="dropdown-menu  pre-scrollable">
+              <li>
+                <table class="table">
+                  <tbody>
+                    {% for order_item in order2.products.all %}
+                    <tr>
+                      <!-- <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="کفش راحتی مردانه" alt="کفش راحتی مردانه" src="{{ order_item.product.miniimage.url }}"></a></td> -->
+                      <td class="text-left"><a href="product.html">{{ order_item.product.name }}</a></td>
+                      <td class="text-right" style="width:fit-content">x {{ order_item.quantity }}</td>
+                      <td class="text-right">
+                        {% if order_item.product.discount_price %}
+                        {{ order_item.get_total_product_discount_price }} تومان
+                        {% else %}
+                        {{ order_item.get_total_product_price }} تومان
+                        {% endif %}
+                      </td>
+                      <td class="text-center">
+                        <a href="{{ order_item.product.get_remove_from_cart_url }}">
+                          <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"
+                              style="vertical-align: middle;"></i>
+                          </button>
+                        </a>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </li>
+              <li>
+                <div>
+                  <table class="table table-bordered">
                     <tbody>
-                      {% for order_item in order2.products.all %}
                       <tr>
-                        <!-- <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="کفش راحتی مردانه" alt="کفش راحتی مردانه" src="{{ order_item.product.miniimage.url }}"></a></td> -->
-                        <td class="text-left"><a href="product.html">{{ order_item.product.name }}</a></td>
-                        <td class="text-right" style="width:fit-content">x {{ order_item.quantity }}</td>
-                        <td class="text-right">   
-                          {% if order_item.product.discount_price %}
-                          {{ order_item.get_total_product_discount_price }} تومان
-                          {% else %}
-                          {{ order_item.get_total_product_price }} تومان
+                        <td class="text-right"><strong>جمع کل</strong></td>
+                        <td class="text-right">
+                          {% if order2.get_total %}
+                          {{ order2.get_total }} تومان
                           {% endif %}
                         </td>
-                        <td class="text-center">
-                          <a href="{{ order_item.product.get_remove_from_cart_url }}">
-                            <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true" style="vertical-align: middle;"></i>
-                            </button>
-                          </a>
-                          <!-- <button class="btn btn-danger btn-xs remove" title="حذف" onClick="" type="button"><i class="fa fa-times"></i></button> -->
+                      </tr>
+                      <tr>
+                        <td class="text-right"><strong>کسر هدیه</strong></td>
+                        <td class="text-right">
+                          {% if order2.coupon.amount %}
+                          {{ order2.coupon.amount }} - تومان
+                          {% endif %}
                         </td>
                       </tr>
-                      {% endfor %}
+                      <tr>
+                        <td class="text-right"><strong>قابل پرداخت</strong></td>
+                        <td class="text-right">
+                          {% if order2.get_total_with_coupon %}
+                          {{ order2.get_total_with_coupon }} تومان
+                          {% endif %}
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
-                </li>
-                <li>
-                  <div>
-                    <table class="table table-bordered">
-                      <tbody>
-                        <tr>
-                          <td class="text-right"><strong>جمع کل</strong></td>
-                          <td class="text-right">
-                            {% if order2.get_total %}
-                            {{ order2.get_total }} تومان
-                            {% endif %}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="text-right"><strong>کسر هدیه</strong></td>
-                          <td class="text-right">
-                            {% if order2.coupon.amount %}
-                            {{ order2.coupon.amount }} - تومان
-                            {% endif %}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="text-right"><strong>قابل پرداخت</strong></td>
-                          <td class="text-right"> 
-                            {% if order2.get_total_with_coupon %}
-                            {{ order2.get_total_with_coupon }} تومان
-                            {% endif %}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p class="checkout"><a href="{% url 'cart:cart' %}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> مشاهده سبد</a>&nbsp;&nbsp;&nbsp;<a href="{% url 'cart:checkout' %}" class="btn btn-primary"><i class="fa fa-share"></i> تسویه حساب</a></p>
-                  </div>
-                </li>
-              </ul>
-              {% endif %}
-            </div>
-          </div>
-          <!-- Mini Cart End-->
-          <!-- جستجو Start-->
-          <div class="col-table-cell col-lg-3 col-md-3 col-sm-6 col-xs-12 inner">
-            <div id="search" class="input-group">
-              <form method="GET" action="{% url 'product:search' %}">
-                <input id="filter_name" type="text" name="search" placeholder="جستجو" class="form-control input-lg" />
-                <button type="submit" class="button-search"><i class="fa fa-search"></i></button>
-              </form>
-            </div>
-          </div>
-          <!-- جستجو End-->
-        </div>
-      </div>
-    </header>
-    <!-- Header End-->
-    <!-- Main آقایانu Start-->
-    <div class="container">
-      <nav id="menu" class="navbar">
-        <div class="navbar-header"> <span class="visible-xs visible-sm"> منو <b></b></span></div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-          <ul class="nav navbar-nav">
-            <li><a class="home_link" title="خانه" href="/"><span>خانه</span></a></li>
-            <li class="mega-menu dropdown"><a href="{% url 'product:products' %}">دسته ها</a>
-              <div class="dropdown-menu">
-                {% for category in categories %}
-                <div class="column col-lg-2 col-md-3"><a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
-                  <div>
-                    <ul>
-                      {% for sub in category.subcategory.all %}
-                      <li><a href="{{ sub.get_absolute_url }}">{{ sub.title }}</a></li>
-                      {% endfor %}
-                    </ul>
-                  </div>
+                  <p class="checkout"><a href="{% url 'cart:cart' %}" class="btn btn-primary"><i
+                        class="fa fa-shopping-cart"></i> مشاهده سبد</a>&nbsp;&nbsp;&nbsp;<a
+                      href="{% url 'cart:checkout' %}" class="btn btn-primary"><i class="fa fa-share"></i> تسویه
+                      حساب</a></p>
                 </div>
-                {% endfor %}
+              </li>
+            </ul>
+            {% endif %}
+          </div>
+        </div>
+        <!-- Mini Cart End-->
+        <!-- جستجو Start-->
+        <div class="col-table-cell col-lg-3 col-md-3 col-sm-6 col-xs-12 inner">
+          <div id="search" class="input-group">
+            <form method="GET" action="{% url 'product:search' %}">
+              <input id="filter_name" type="text" name="search" placeholder="جستجو" class="form-control input-lg" />
+              <button type="submit" class="button-search"><i class="fa fa-search"></i></button>
+            </form>
+          </div>
+        </div>
+        <!-- جستجو End-->
+      </div>
+    </div>
+  </header>
+  <!-- Header End-->
+  <!-- Main آقایانu Start-->
+  <div class="container">
+    <nav id="menu" class="navbar">
+      <div class="navbar-header"> <span class="visible-xs visible-sm"> منو <b></b></span></div>
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+          <li><a class="home_link" title="خانه" href="/"><span>خانه</span></a></li>
+          <li class="mega-menu dropdown"><a href="{% url 'product:products' %}">دسته ها</a>
+            <div class="dropdown-menu">
+              {% for category in categories %}
+              <div class="column col-lg-2 col-md-3"><a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
+                <div>
+                  <ul>
+                    {% for sub in category.subcategory.all %}
+                    <li><a href="{{ sub.get_absolute_url }}">{{ sub.title }}</a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
               </div>
-            </li>
-            <!-- <li class="menu_brands dropdown"><a href="#">عرضه کنندگان</a>
+              {% endfor %}
+            </div>
+          </li>
+          <!-- <li class="menu_brands dropdown"><a href="#">عرضه کنندگان</a>
               <div class="dropdown-menu">
                 <div class="col-lg-1 col-md-2 col-sm-3 col-xs-6"><a href="#"><img src="image/product/apple_logo-60x60.jpg" title="اپل" alt="اپل" /></a><a href="#">اپل</a></div>
               </div>
             </li> -->
-            <li class="dropdown wrap_custom_block hidden-sm hidden-xs"><a>وبلاگ</a>
-              <div class="dropdown-menu custom_block">
-                <ul>
-                  <li>
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td><img alt="" src="static/image/banner/cms-block.jpg"></td>
-                          <td><img alt="" src="static/image/banner/responsive.jpg"></td>
-                          <td><img alt="" src="static/image/banner/cms-block.jpg"></td>
-                        </tr>
-                        <tr>
-                          <td><h4>بلاک های محتوا</h4></td>
-                          <td><h4>قالب واکنش گرا</h4></td>
-                          <td><h4>پشتیبانی ویژه</h4></td>
-                        </tr>
-                        <tr>
-                          <td>این یک بلاک مدیریت محتواست. شما میتوانید هر نوع محتوای html نوشتاری یا تصویری را در آن قرار دهید.</td>
-                          <td>این یک بلاک مدیریت محتواست. شما میتوانید هر نوع محتوای html نوشتاری یا تصویری را در آن قرار دهید.</td>
-                          <td>این یک بلاک مدیریت محتواست. شما میتوانید هر نوع محتوای html نوشتاری یا تصویری را در آن قرار دهید.</td>
-                        </tr>
-                        <tr>
-                          <td><strong><a class="btn btn-primary btn-sm" href="#">ادامه مطلب</a></strong></td>
-                          <td><strong><a class="btn btn-primary btn-sm" href="#">ادامه مطلب</a></strong></td>
-                          <td><strong><a class="btn btn-primary btn-sm" href="#">ادامه مطلب</a></strong></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="contact-link"><a href="{% url 'product:contact-us' %}">تماس با ما</a></li>
-            <li class="custom-link-right"><a title=" جستجوی محصولات " href="{% url 'product:search' %}"><i class="fa fa-lg fa-search"  aria-hidden="true"></i> جستجوی محصولات </a></li>
-          </ul>
+          <li class="hidden-lg hidden-md"><a href="{% url 'blog:blog' %}">وبلاگ</a>
+          <li class="dropdown wrap_custom_block hidden-sm hidden-xs"><a href="{% url 'blog:blog' %}">وبلاگ</a>
+            <div class="dropdown-menu custom_block">
+              <ul>
+                <li>
+                  <table>
+                    <tbody>
+                      <tr>
+                        {% for blog in blogs %}
+                        <td><img alt="" src="{{ blog.blog_image.url }}" style="width: 250px;height: 130;"></td>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        {% for blog in blogs %}
+                        <td>
+                          <h4>{{blog.title}}</h4>
+                        </td>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        {% for blog in blogs %}
+                        <td style="vertical-align: top;">{{blog.short_desc}}</td>
+                        {% endfor %}
+                      </tr>
+                      <tr>
+                        {% for blog in blogs %}
+                        <td><strong><a class="btn btn-default btn-sm"
+                              href="{% url 'blog:blog-detail' pk=blog.id %}">ادامه مطلب</a></strong></td>
+                        {% endfor %}
+                      </tr>
+                    </tbody>
+                  </table>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="contact-link"><a href="{% url 'product:contact-us' %}">تماس با ما</a></li>
+          <li class="custom-link-right"><a title=" جستجوی محصولات " href="{% url 'product:search' %}"><i
+                class="fa fa-lg fa-search" aria-hidden="true"></i> جستجوی محصولات </a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="logoutmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <strong>
+            <h4 class="modal-title" id="exampleModalLabel">خروج از حساب
+              <button class="close" data-dismiss="modal" aria-label="Close">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </button>
+            </h4>
+          </strong>
         </div>
-      </nav>
+        <div class="modal-body">
+          آیا از خروج اطمینان دارید ؟
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+          <form method="post" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            <button type="submit" class="btn btn-danger" style="font-weight: 500;width: 90px;">خروج از حساب</button>
+          </form>
+        </div>
+      </div>
     </div>
-    <!-- Main آقایانu End-->
+  </div>
 </div>

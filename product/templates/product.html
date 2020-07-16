@@ -1,5 +1,6 @@
 {% extends 'base1.html' %}
 {% load static %}
+{% load hitcount_tags %}
 {% load ratings %}
 {% block title %}<title>جزییات محصولات</title>{% endblock %}
 {% block head %}
@@ -7,278 +8,262 @@
 
 {% block body %}
 
-  <div id="container">
-    <div class="container">
-      <!-- Breadcrumb Start-->
-      <ul class="breadcrumb">
-        <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{% url 'product:home' %}" itemprop="url"><span itemprop="title"><i class="fa fa-home"></i></span></a></li>
-        <li><a href="{{ object.category.get_absolute_url }}">{{ object.category.title }}</a></li>
-        <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ object.subcategory.get_absolute_url }}" itemprop="url"><span itemprop="title">{{ object.subcategory.title }}</span></a></li>
-        <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ object.get_absolute_url }}" itemprop="url"><span itemprop="title">{{ object.name}}</span></a></li>
-      </ul>
-      <!-- Breadcrumb End-->
-      <div class="row">
-        <!--Middle Part Start-->
-        <div id="content" class="col-sm-9">
-          <div itemscope itemtype="http://schema.org/محصولات">
-            <h1 class="title" itemprop="name">{{object.name}}</h1>
-            <div class="row product-info">
-              <div class="col-sm-6">
-                <!-- <div class="img-zoom-container">
+<div id="container">
+  <div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="breadcrumb">
+      <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{% url 'product:home' %}"
+          itemprop="url"><span itemprop="title"><i class="fa fa-home"></i></span></a></li>
+      <li><a href="{{ object.category.get_absolute_url }}">{{ object.category.title }}</a></li>
+      <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ object.subcategory.get_absolute_url }}"
+          itemprop="url"><span itemprop="title">{{ object.subcategory.title }}</span></a></li>
+      <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ object.get_absolute_url }}"
+          itemprop="url"><span itemprop="title">{{ object.name}}</span></a></li>
+    </ul>
+    <!-- Breadcrumb End-->
+    <div class="row">
+      <!--Middle Part Start-->
+      <div id="content" class="col-sm-9">
+        <div itemscope itemtype="http://schema.org/محصولات">
+          <h1 class="title" itemprop="name">{{object.name}}</h1>
+          <div class="row product-info">
+            <div class="col-sm-6">
+              <!-- <div class="img-zoom-container">
                   <img id="myimage" src="{{ object.miniimage.url }}" width="300" height="240">
                   <div id="myresult" class="img-zoom-result"></div>
                 </div> -->
-                <div class="zoom"><img class="img-responsive" itemprop="image" id="zoom_01" src="{{ object.miniimage.url }}" title="{{object.name}}" alt="{{object.name}}" data-zoom-image="{% static 'kif.png'%}" /> </div>
-                <div class="center-block text-center"><span class="zoom-gallery"><i class="fa fa-search"></i> برای مشاهده گالری روی تصویر کلیک کنید</span></div>
-                <div class="image-additional" id="gallery_01">
+              <div class="zoom"><img class="img-responsive" itemprop="image" id="zoom_01"
+                  src="{{ object.miniimage.url }}" title="{{object.name}}" alt="{{object.name}}"
+                  data-zoom-image="{% static 'kif.png'%}" /> </div>
+              <div class="center-block text-center"><span class="zoom-gallery"><i class="fa fa-search"></i> برای مشاهده
+                  گالری روی تصویر کلیک کنید</span></div>
+              <div class="image-additional" id="gallery_01">
                 {% for image in object.images.all %}
-                  <a class="thumbnail" href="{{ image.miniimage.url }}" data-zoom-image="image/product/macbook_air_1-500x500.jpg" data-image="image/product/macbook_air_1-350x350.jpg" title="لپ تاپ ایلین ور"><img src="{{ image.miniimage.url }}" title="لپ تاپ ایلین ور" alt = "لپ تاپ ایلین ور"/></a>
+                <a class="thumbnail" href="{{ image.miniimage.url }}"
+                  data-zoom-image="image/product/macbook_air_1-500x500.jpg"
+                  data-image="image/product/macbook_air_1-350x350.jpg" title="لپ تاپ ایلین ور"><img
+                    src="{{ image.miniimage.url }}" title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" /></a>
                 {% endfor %}
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <ul class="list-unstyled description">
-                  <!-- <span style="color:gold;" class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span> -->
-                  <li><b>کد محصول :</b> <span itemprop="mpn">{{ object.id }}</span></li>
-                  <li><b>وضعیت موجودی :  </b><span class="{{object.get_label_color}}">{{ object.label }}</span></li>
-                </ul>
-                <ul class="price-box">
-                  {% if product.discount_price %}
-                  <li class="price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                    <span class="price-old">{{object.price}} تومان</span> 
-                    <span itemprop="price">{{object.discount_price}} تومان<span itemprop="availability" content="موجود"></span></span>
-                  </li>
-                  {% else %}
-                  <li><span class="price">{{product.price}} تومان</span></li>
-                  {% endif %}
-                </ul>
-                <div id="product">
-                  <h3 class="subtitle">انتخاب های در دسترس</h3>
-                  <div class="form-group required">
-                    <label class="control-label">رنگ</label>
-                    <select class="form-control" id="input-option200" name="option[200]">
-                      <option value=""> --- لطفا انتخاب کنید --- </option>
-                      <option value="4">مشکی </option>
-                      <option value="3">نقره ای </option>
-                      <option value="1">سبز </option>
-                      <option value="2">آبی </option>
-                    </select>
-                  </div>
-                  <div class="cart">
-                    <div>
-                      <div class="qty">
-                        <label class="control-label" for="input-quantity">تعداد</label>
-                        <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
-                        <a href="{{ product.get_add_to_cart_url }}" class="qtyBtn plus" href="javascript:void(0);">+</a><br />
-                        <a class="qtyBtn mines" href="javascript:void(0);">-</a>
-                        <div class="clear"></div>
-                      </div>
-                      {% if product.label == 'ناموجود' %}
-                      <a class="btn disabled" href="{{ product.get_add_to_cart_url }}"><button type="button" id="button-cart" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
-                      {% else %}
-                      <a href="{{ product.get_add_to_cart_url }}"><button type="button" id="button-cart" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
-                      {% endif %}
-                    </div>
-                    <div>
-                      <a href="{{ product.get_add_to_wishlist_url }}"><button type="button" class="wishlist" onClick=""><i class="fa fa-heart"></i> افزودن به علاقه مندی ها</button></a>
-                      <br />
-                      <a href="{{ product.get_add_to_compare_url }}"><button type="button" class="wishlist" onClick=""><i class="fa fa-exchange"></i> مقایسه این محصول</button></a>
-                    </div>
-                  </div>
-                </div>
-                <div style="font-size: 20px;color: gray;">
-                {% ratings object %} {{ rating.average |floatformat:"-2" }} ({{ rating.count }})
-                </div>
-                <div class="rating" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-                  <a href="#preview"><span itemprop="reviewCount">{{ comments.count }} نظر</span></a> / <a href="#preview">افزودن نظر جدید</a>
-                </div>
               </div>
             </div>
-            <h3 class="subtitle">محصولات مرتبط</h3>
-            <div class="owl-carousel related_pro">
-              {% for item in object.subcategory.products.all %}
-              {% if item.id != object.id %}
-              <div class="product-thumb">
-                <div class="image"><a href="{{ item.get_absolute_url }}"><img src="{{ item.miniimage.url }}" alt="{{item.name}}" title="{{item.name}}" class="img-responsive" /></a></div>
-                <div class="caption">
-                  <h4><a href="{{ item.get_absolute_url }}">{{item.name}}</a></h4>
-                  <p class="price">
-                    {% if item.discount_price %} 
-                    <span class="price-new">{{item.discount_price}} تومان</span>
-                    <span class="price-old">{{item.price}} تومان</span>
-                    <span class="saving">
-                      {{ item.save_percent }}%
-                    </span>
-                    {% else %}
-                    <li style="list-style-type: none;"><span class="price-new">قیمت :{{item.price}} تومان</span></li>
-                    <li style="list-style-type: none;"><br></li>
-                    {% endif %}
-                  </p>
-                  <div class="rating">{% ratings item %} </div>
+            <div class="col-sm-6">
+              <ul class="list-unstyled description">
+                <!-- <span style="color:gold;" class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span> -->
+                <li><b>کد محصول :</b> <span itemprop="mpn">{{ object.id }}</span></li>
+                <li><b>وضعیت موجودی : </b><span class="{{object.get_label_color}}">{{ object.label }}</span></li>
+              </ul>
+              <ul class="price-box">
+                {% if product.discount_price %}
+                <li class="price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                  <span class="price-old">{{object.price}} تومان</span>
+                  <span itemprop="price">{{object.discount_price}} تومان<span itemprop="availability"
+                      content="موجود"></span></span>
+                </li>
+                {% else %}
+                <li><span class="price">{{product.price}} تومان</span></li>
+                {% endif %}
+              </ul>
+              <div id="product">
+                <h3 class="subtitle">انتخاب های در دسترس</h3>
+                <div class="form-group required">
+                  <label class="control-label">رنگ</label>
+                  <select class="form-control" id="input-option200" name="option[200]">
+                    <option value=""> --- لطفا انتخاب کنید --- </option>
+                    <option value="4">مشکی </option>
+                    <option value="3">نقره ای </option>
+                    <option value="1">سبز </option>
+                    <option value="2">آبی </option>
+                  </select>
                 </div>
-                <div class="button-group">
-                  <a {% if item.label == 'ناموجود' %} class="btn disabled" {% endif %} href="{{ item.get_add_to_cart_url }}">
-                    <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
-                  </a>
-                  <div class="add-to-links">
-                    <a href="{{ item.get_add_to_wishlist_url }}"><button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button></a>
-                    <a href="{{ item.get_add_to_compare_url }}"><button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick="{{ item.get_add_to_compare_url}}"><i class="fa fa-exchange"></i></button></a>
-                  </div>
-                </div>
-              </div>
-              {% endif %}
-              {% endfor %}
-            </div>
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab-description" data-toggle="tab">توضیحات</a></li>
-              <li><a href="#tab-specification" data-toggle="tab">مشخصات</a></li>
-              <li><a id="preview" href="#tab-review" data-toggle="tab">نظرات کاربران ({{ comments.count }})</a></li>
-            </ul>
-            <div class="tab-content pre-scrollable">
-              <div itemprop="description" id="tab-description" class="tab-pane active">
-                <div>
-                  <p>{{ object.description }}</p>
-                </div>
-              </div>
-              <div id="tab-specification" class="tab-pane">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <td colspan="2"><strong>حافظه</strong></td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>تست 1</td>
-                      <td>8gb</td>
-                    </tr>
-                  </tbody>
-                  </table>
-                <table class="table table-bordered">
-                <thead>
-                    <tr>
-                      <td colspan="2"><strong>پردازشگر</strong></td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>تعداد هسته</td>
-                      <td>1</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div id="tab-review" class="tab-pane">
+                <div class="cart">
                   <div>
-                    <div>
-                      <table class="table table-striped table-bordered">
-                        <tbody>
-                          {% for comment in comments %}
-                          <tr>
-                            <td style="width: 50%;"><strong><span>{{ comment.username }}</span></strong></td>
-                            <td class="text-right"><span>{{ comment.convert_jalali }}</span></td>
-                          </tr>
-                          <tr> 
-                            <td colspan="2"><p>{{ comment.message }}</p>
-                              <!-- <div class="rating"> 
-                              <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> 
-                              </div> -->
-                              <button style="margin: 10px;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{ comment.id }}" aria-expanded="false" aria-controls="collapseExample">
-                                پاسخ
-                              </button>
-                              <div class="collapse" id="{{ comment.id }}">
-                                <div class="card card-body" style="height: 100%;">
-                                  <table class="table table-striped table-bordered" style="margin-right: 60px;max-width: 19cm;">
-                                    <tbody>
-                                      {% for reply in comment.replies.all %}
-                                      <tr>
-                                        <td style="width: 50%;"><strong><span>{{ reply.username }}</span></strong></td>
-                                        <td class="text-right"><span>{{ reply.convert_jalali }}</span></td>
-                                      </tr>
-                                      <tr> 
-                                        <td colspan="2"><p>{{ reply.message }}</p></td>
-                                      </tr>
-                                      {% endfor %}
-                                    </tbody>
-                                  </table>
-                                  <h2>افزودن پاسخ جدید</h2> 
-                                  <form method="POST">
-                                    {% csrf_token %}       
-                                    {{form.as_p}}
-                                    <!-- <div class="form-group required">
-                                      <div class="col-sm-12">
-                                        <label for="input-name" class="control-label">نام شما</label>
-                                        {{ form.username }}
-                                      </div>
-                                    </div>
-                                    <div class="form-group required">
-                                      <div class="col-sm-12">
-                                        <label for="input-name" class="control-label">نام شما</label>
-                                        {{ form.message }}
-                                      </div>
-                                    </div> -->
-                                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
-                                    <div class="buttons">
-                                      <div class="pull-right">
-                                        <button class="btn btn-primary" id="button-review" type="submit">ارسال پاسخ</button>
-                                      </div>
-                                    </div>
-                                  </form>
-                                </div>
-                              </div>
-                            </td>  
-                          </tr>
-                          {% endfor %}
-                        </tbody>
-                      </table>
+                    <div class="qty">
+                      <label class="control-label" for="input-quantity">تعداد</label>
+                      <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
+                      <a href="{{ product.get_add_to_cart_url }}" class="qtyBtn plus"
+                        href="javascript:void(0);">+</a><br />
+                      <a class="qtyBtn mines" href="javascript:void(0);">-</a>
+                      <div class="clear"></div>
                     </div>
-                    <div class="text-right"></div>
+                    {% if product.label == 'ناموجود' %}
+                    <a class="btn disabled" href="{{ product.get_add_to_cart_url }}"><button type="button"
+                        id="button-cart" class="btn btn-primary btn-lg">افزودن به سبد</button></a>
+                    {% else %}
+                    <a href="{{ product.get_add_to_cart_url }}"><button type="button" id="button-cart"
+                        class="btn btn-primary btn-lg">افزودن به سبد</button></a>
+                    {% endif %}
                   </div>
-                  <h2>افزودن نظر جدید</h2> 
-                <form method="POST" class="form-horizontal">
-                    {% csrf_token %}       
-                    {{form}}
-                  <div class="buttons">
-                    <div class="pull-right">
-                      <button class="btn btn-primary" id="button-review" type="submit">ادامه</button>
-                    </div>
+                  <div>
+                    <a href="{{ product.get_add_to_wishlist_url }}"><button type="button" class="wishlist" onClick=""><i
+                          class="fa fa-heart"></i> افزودن به علاقه مندی ها</button></a>
+                    <br />
+                    <a href="{{ product.get_add_to_compare_url }}"><button type="button" class="wishlist" onClick=""><i
+                          class="fa fa-exchange"></i> مقایسه این محصول</button></a>
                   </div>
-                </form>
+                </div>
+              </div>
+              <div style="font-size: 20px;color: gray;">
+                {% ratings object %} {{ rating.average |floatformat:"-2" }} ({{ rating.count }})
+              </div>
+              <div class="rating" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                <a href="#preview"><span itemprop="reviewCount">{{ comments.count }} نظر</span></a> / <a
+                  href="#preview">افزودن نظر جدید</a>
+              </div>
+              <!-- <p>Views: {% get_hit_count for object %}</p> -->
+            </div>
+          </div>
+          <h3 class="subtitle">محصولات مرتبط</h3>
+          <div class="owl-carousel related_pro">
+            {% for item in object.subcategory.products.all %}
+            {% if item.id != object.id %}
+            <div class="product-thumb">
+              <div class="image"><a href="{{ item.get_absolute_url }}"><img src="{{ item.miniimage.url }}"
+                    alt="{{item.name}}" title="{{item.name}}" class="img-responsive" /></a></div>
+              <div class="caption">
+                <h4><a href="{{ item.get_absolute_url }}">{{item.name}}</a></h4>
+                <p class="price">
+                  {% if item.discount_price %}
+                  <span class="price-new">{{item.discount_price}} تومان</span>
+                  <span class="price-old">{{item.price}} تومان</span>
+                  <span class="saving">
+                    {{ item.save_percent }}%
+                  </span>
+                  {% else %}
+                  <li style="list-style-type: none;"><span class="price-new">قیمت :{{item.price}} تومان</span></li>
+                  <li style="list-style-type: none;"><br></li>
+                  {% endif %}
+                </p>
+                <div class="rating">{% ratings item %} </div>
+              </div>
+              <div class="button-group">
+                <a {% if item.label == 'ناموجود' %} class="btn disabled" {% endif %}
+                  href="{{ item.get_add_to_cart_url }}">
+                  <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
+                </a>
+                <div class="add-to-links">
+                  <a href="{{ item.get_add_to_wishlist_url }}"><button type="button" data-toggle="tooltip"
+                      title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button></a>
+                  <a href="{{ item.get_add_to_compare_url }}"><button type="button" data-toggle="tooltip"
+                      title="افزودن به مقایسه" onClick="{{ item.get_add_to_compare_url}}"><i
+                        class="fa fa-exchange"></i></button></a>
+                </div>
               </div>
             </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-description" data-toggle="tab">توضیحات</a></li>
+            <li><a href="#tab-specification" data-toggle="tab">مشخصات</a></li>
+            <li><a id="preview" href="#tab-review" data-toggle="tab">نظرات کاربران ({{ comments.count }})</a></li>
+          </ul>
+          <div class="tab-content pre-scrollable">
+            <div itemprop="description" id="tab-description" class="tab-pane active">
+              <div>
+                <p>{{ object.description }}</p>
+              </div>
             </div>
+            <div id="tab-specification" class="tab-pane">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <td colspan="2"><strong>حافظه</strong></td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>تست 1</td>
+                    <td>8gb</td>
+                  </tr>
+                </tbody>
+              </table>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <td colspan="2"><strong>پردازشگر</strong></td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>تعداد هسته</td>
+                    <td>1</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="tab-review" class="tab-pane">
+              <div>
+                <div>
+                  <table class="table table-striped table-bordered">
+                    <tbody>
+                      {% for comment in comments %}
+                      <tr>
+                        <td style="width: 50%;"><strong><span>{{ comment.username }}</span></strong></td>
+                        <td class="text-right"><span>{{ comment.convert_jalali }}</span></td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <p>{{ comment.message }}</p>
+                          <button style="margin: 10px;" class="btn btn-primary" type="button" data-toggle="collapse"
+                            data-target="#{{ comment.id }}" aria-expanded="false" aria-controls="collapseExample">
+                            پاسخ
+                          </button>
+                          <div class="collapse" id="{{ comment.id }}">
+                            <div class="card card-body" style="height: 100%;">
+                              <table class="table table-striped table-bordered"
+                                style="margin-right: 60px;max-width: 19cm;">
+                                <tbody>
+                                  {% for reply in comment.replies.all %}
+                                  <tr>
+                                    <td style="width: 50%;"><strong><span>{{ reply.username }}</span></strong></td>
+                                    <td class="text-right"><span>{{ reply.convert_jalali }}</span></td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="2">
+                                      <p>{{ reply.message }}</p>
+                                    </td>
+                                  </tr>
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                              <h2>افزودن پاسخ جدید</h2>
+                              <form method="POST">
+                                {% csrf_token %}
+                                {{form.as_p}}                     
+                                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                                <div class="buttons">
+                                  <div class="pull-right">
+                                    <button class="btn btn-primary" id="button-review" type="submit">ارسال پاسخ</button>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                <div class="text-right"></div>
+              </div>
+              <h2>افزودن نظر جدید</h2>
+              <form method="POST" class="form-horizontal">
+                {% csrf_token %}
+                {{form}}
+                <div class="buttons">
+                  <div class="pull-right">
+                    <button class="btn btn-primary" id="button-review" type="submit">ادامه</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        <!--Middle Part End -->
       </div>
+      <!--Middle Part End -->
     </div>
   </div>
-
-<script type="text/javascript">
-  // Elevate Zoom for Product Page image
-  $("#zoom_01").elevateZoom({
-    gallery:'gallery_01',
-    cursor: 'pointer',
-    galleryActiveClass: 'active',
-    imageCrossfade: true,
-    zoomWindowFadeIn: 200,
-    zoomWindowFadeOut: 200,
-    zoomWindowPosition : 11,
-    lensFadeIn: 500,
-    lensFadeOut: 500,
-    loadingIcon: 'image/progress.gif'
-    }); 
-  //////pass the images to swipebox
-  $("#zoom_01").bind("click", function(e) {
-    var ez =   $('#zoom_01').data('elevateZoom');
-    $.swipebox(ez.getGalleryList());
-    return false;
-  });
-  </script>
-
-<script>
-  // Initiate zoom effect:
-  imageZoom("myimage", "myresult");
-</script>
-<!-- JS Part End-->
+</div>
 
 {% endblock %}

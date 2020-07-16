@@ -1,0 +1,308 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load ratings %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div id="container">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/"><i class="fa fa-home"></i></a></li>
+            <li><a href="{% url 'blog:blog' %}">وبلاگ</a></li>
+            <li><a href="{% url 'blog:blog-detail' pk=object.id %}">{{ object.title }}</a></li>
+        </ul>
+        <div class="row">
+            <!-- Left Part Start-->
+            <aside id="column-left" class="col-sm-3 hidden-xs">
+                <h3 class="subtitle">دسته ها</h3>
+                <div class="box-category">
+                    <ul id="cat_accordion">
+                        {% for category in categories %}
+                        {% url 'product:category' pk=category.id slug=category.slug as the_url %}
+                        {% if request.get_full_path == the_url %}
+                        <li><a class="active" href="{{ category.get_absolute_url }}">{{ category.title }}</a> <span
+                                class="down"></span>
+                            <ul>
+                                {% for sub in category.subcategory.all %}
+                                <li><a href="{{ sub.get_absolute_url }}">{{ sub.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li><a href="{{ category.get_absolute_url }}">{{ category.title }}</a> <span
+                                class="down"></span>
+                            <ul>
+                                {% for sub in category.subcategory.all %}
+                                <li><a href="{{ sub.get_absolute_url }}">{{ sub.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <h3 class="subtitle">جدیدترین مطالب</h3>
+                <div class="side-item">
+                    {% for blog in blogs %}
+                    <div class="block-21 mb-4 d-flex">
+                        <a class="blog-img mr-4" style="background-image: url({% static 'image/product/1.png' %});"></a>
+                        <div class="text">
+                            <h3 class="heading"><a href="#">{{ blog.title }}</a></h3>
+                            <div class="meta">
+                                <div><a href="#"><span class="fa fa-calendar"
+                                            aria-hidden="true"></span>{{ blog.jalali_date }}</a></div>
+                                <div><a href="#"><span class="fa fa-user"
+                                            aria-hidden="true"></span>{{ blog.composer }}</a></div>
+                                <div><a href="#"><span class="fa fa-comment" aria-hidden="true"></span> ۱۹</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Archive -->
+                <h4 class="subtitle">آرشیو مطالب</h4>
+                <div class="side-item">
+                    <ul>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                آبان ۹۸
+                            </a>
+
+                            <span class="s-text13">
+                                (۹)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                June 2018
+                            </a>
+
+                            <span class="s-text13">
+                                (39)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                May 2018
+                            </a>
+
+                            <span class="s-text13">
+                                (29)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                April 2018
+                            </a>
+
+                            <span class="s-text13">
+                                (35)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                March 2018
+                            </a>
+
+                            <span class="s-text13">
+                                (22)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                February 2018
+                            </a>
+
+                            <span class="s-text13">
+                                (32)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                January 2018
+                            </a>
+
+                            <span class="s-text13">
+                                (21)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                December 2017
+                            </a>
+
+                            <span class="s-text13">
+                                (26)
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <h3 class="subtitle">تگ ها</h3>
+                <div class="tagcloud">
+                    <a href="#" class="tag-cloud-link">نمد</a>
+                    <a href="#" class="tag-cloud-link">چرم</a>
+                    <a href="#" class="tag-cloud-link">قالیبافی</a>
+                    <a href="#" class="tag-cloud-link">عسل</a>
+                </div>
+            </aside>
+            <div id='content' class="col-sm-9">
+                <div class="blog-post-area">
+                    <h2 class="title text-center">{{ object.title }}</h2>
+                    <div class="single-blog-post">
+                        <h3>{{ object.title }}</h3>
+                        <div class="post-meta">
+                            <ul>
+                                <li><i class="fa fa-user"></i> {{ object.composer }}</li>
+                                <li><i class="fa fa-clock-o"></i> {{ object.jalali_time }}</li>
+                                <li><i class="fa fa-calendar"></i> {{ object.jalali_date }}</li>
+                            </ul>
+                        </div>
+                        {% ratings object read_only=True %}
+                        <a href="">
+                            <img src="{{ object.blog_image.url }}" alt="">
+                        </a>
+                        <p>
+                            {{ object.blog_data | safe }}
+                        </p>
+                        <div class="pager-area">
+                            <ul class="pager pull-left">
+                                <li><a {% if object.previous %} href="{% url 'blog:blog-detail' pk=object.previous %}"
+                                        {% else %} class="btn disabled" {% endif %}>قبلی</a></li>
+                                <li><a {% if object.next %} href="{% url 'blog:blog-detail' pk=object.next %}"
+                                        {% else %} class="btn disabled" {% endif %}>بعـدی</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--/blog-post-area-->
+                <div class="rating-area">
+                    <ul class="ratings">
+                        <li class="color">( {{ rating.count }} نظـر )</li>
+                        <li class="rate-this">به این مطلب امتیـاز دهیـد :</li>
+                        {% ratings object%}
+                    </ul>
+                    <ul class="tag">
+                        <li>برچسب :</li>
+                        {% for tag in object.tags.all %}
+                        <li><a class="color" href="">{{ tag }}<span>/</span></a></li>
+                        {% endfor%}
+                    </ul>
+                </div>
+                <!--/rating-area-->
+
+                <!-- <div class="socials-share">
+                    <a href=""><img src="images/blog/socials.png" alt=""></a>
+                </div>/socials-share -->
+                <div class="media commnets">
+                    <a class="pull-right" href="#">
+                        <img class="media-object" src="{% static 'image/man.jpg' %}" alt="">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">{{ object.composer }}</h4>
+                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده ازلورملورم ایپسوم متن
+                            ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون
+                            بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و
+                            کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد.</p>
+                        <div class="blog-socials">
+                            <ul>
+                                <li><a href=""><i class="fa fa-facebook"></i></a></li>
+                                <li><a href=""><i class="fa fa-twitter"></i></a></li>
+                                <li><a href=""><i class="fa fa-dribbble"></i></a></li>
+                                <li><a href=""><i class="fa fa-google-plus"></i></a></li>
+                            </ul>
+                            <a class="btn btn-primary" href="">سایـر مطالب نویسنده</a>
+                        </div>
+                    </div>
+                </div>
+                <!--Comments-->
+                <div class="response-area pre-scrollable">
+                    <h2>پاسخ ها ({{ comments.count }})</h2>
+                    <ul class="media-list">
+                        {% for comment in comments %}
+                        <li class="media">
+                            <a class="pull-right" href="#">
+                                <img class="media-object" src="{% static 'image/man.jpg' %}" alt="">
+                            </a>
+                            <div class="media-body">
+                                <ul class="sinlge-post-meta">
+                                    <li><i class="fa fa-user"></i>{{ comment.username }}</li>
+                                    <li><i class="fa fa-clock-o"></i>{{ comment.jalali_time }}</li>
+                                    <li><i class="fa fa-calendar"></i>{{ comment.jalali_date }}</li>
+                                </ul>
+                                <p>
+                                    {{ comment.message }}
+                                </p>
+                                <a class="btn btn-primary" href=""><i class="fa fa-reply"></i>پاسـخ</a>
+                            </div>
+                        </li>
+                        {% for reply in comment.replies.all %}
+                        <li class="media second-media">
+                            <a class="pull-right" href="#">
+                                <img class="media-object" src="{% static 'image/man.jpg' %}" alt="">
+                            </a>
+                            <div class="media-body">
+                                <ul class="sinlge-post-meta">
+                                    <li><i class="fa fa-user"></i>{{ reply.username }}</li>
+                                    <li><i class="fa fa-clock-o"></i>{{ reply.jalali_time }}</li>
+                                    <li><i class="fa fa-calendar"></i>{{ reply.jalali_date }}</li>
+                                </ul>
+                                <p>
+                                    {{ reply.message }}
+                                </p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!--/Response-area-->
+                <div class="replay-box">
+                    <div class="row">
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ form }}
+                            <div class="buttons">
+                                <div class="pull-right">
+                                    <button class="btn btn-primary" id="button-review" type="submit">ارسال</button>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- <div class="col-sm-4">
+                            <h2>نظـر خود را بنویسیـد</h2>
+                            <form>
+                                <div class="blank-arrow">
+                                    <label>نام</label>
+                                </div>
+                                <span>*</span>
+                                {{ form.username}}
+                                <input type="text" placeholder="نام شما ...">
+                                <div class="blank-arrow">
+                                    <label>آدرس ایمیـل</label>
+                                </div>
+                                <span>*</span>
+                                {{ form.email }}
+                                <input type="email" placeholder="ایمیـل شما ...">
+                            </form>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="text-area">
+                                <div class="blank-arrow">
+                                    <label>متن پیام</label>
+                                </div>
+                                <span>*</span>
+                                {{ form.message }}
+                                <textarea name="message" rows="11" placeholder="نظر شما ..."></textarea>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <!--/Repaly Box-->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

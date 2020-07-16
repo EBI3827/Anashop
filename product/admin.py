@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (Category, Subcategory, Product, Images,
-                     Compare, CompareItem, Wishlist, WishItem, Contact, ProductComment)
+                     Compare, CompareItem, Wishlist, WishItem, Contact, ProductComment, Hit)
 # Register your models here.
 
 
@@ -47,3 +47,4 @@ class ProductCommentAdmin(admin.ModelAdmin):
 admin.site.register(Compare)
 admin.site.register(Wishlist)
 admin.site.register(Contact)
+admin.site.register(Hit)

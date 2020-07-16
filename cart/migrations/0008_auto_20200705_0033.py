@@ -9,7 +9,8 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('cart', '0007_auto_20200704_1523'),
+        ('cart', '0005_auto_20200703_1800'),
+
     ]
 
     operations = [

@@ -7,10 +7,8 @@ from django.contrib import messages
 from django.utils import timezone
 from .models import OrderItem, Order, Coupon, CheckoutInfo
 from product.models import Product
-from .forms import CouponForm, ProfileForm, CheckoutForm
-
-from dal import autocomplete
-from cities_light.models import City
+from .forms import CouponForm, CheckoutForm
+import datetime
 
 # Create your views here.
 
@@ -23,7 +21,6 @@ class CartView(LoginRequiredMixin, View):
                 'order': order,
                 'couponform': CouponForm(),
                 'DISPLAY_COUPON_FORM': True,
-                'ProfileForm': ProfileForm(),
             }
             return render(self.request, 'cart.html', context)
         except ObjectDoesNotExist:
@@ -158,6 +155,7 @@ class AddCouponView (View):
                 messages.success(self.request, "شما سفارش فعالی ندارید !")
                 return redirect("cart:cart")
 
+
 def is_valid_form(values):
     valid = True
     for field in values:
@@ -165,11 +163,12 @@ def is_valid_form(values):
             valid = False
     return valid
 
+
 class CheckoutView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
-            form=CheckoutForm()
+            form = CheckoutForm()
             context = {
                 'couponform': CouponForm(),
                 'form': form,
@@ -186,13 +185,14 @@ class CheckoutView(LoginRequiredMixin, View):
             return render(self.request, 'checkout.html', context)
         except ObjectDoesNotExist:
             messages.info(self.request, "شما سفارش فعالی ندارید .")
-            return redirect("cart:checkout")
+            return redirect(self.request.META.get('HTTP_REFERER'))
 
     def post(self, *args, **kwargs):
         form = CheckoutForm(self.request.POST or None)
         if form.is_valid():
             try:
-                order = Order.objects.get(user=self.request.user, ordered=False)
+                order = Order.objects.get(
+                    user=self.request.user, ordered=False)
                 use_default_info = form.cleaned_data.get('use_default_info')
                 if use_default_info:
                     info_qs = CheckoutInfo.objects.filter(
@@ -218,7 +218,7 @@ class CheckoutView(LoginRequiredMixin, View):
                     address = form.cleaned_data.get('address')
                     postal_code = form.cleaned_data.get('postal_code')
 
-                    if is_valid_form([first_name,last_name,email,phone,address,postal_code]):
+                    if is_valid_form([first_name, last_name, email, phone, address, postal_code]):
                         info = CheckoutInfo(
                             user=self.request.user,
                             first_name=first_name,
@@ -242,7 +242,6 @@ class CheckoutView(LoginRequiredMixin, View):
                         messages.info(
                             self.request, "Please fill in the required shipping address fields")
                         return redirect("cart:checkout")
-                        
 
                 payment_option = form.cleaned_data.get('payment_option')
 
@@ -258,10 +257,9 @@ class CheckoutView(LoginRequiredMixin, View):
                     return redirect('cart:checkout')
             except ObjectDoesNotExist:
                 messages.warning(self.request, "شما سفارش فعالی ندارید")
-                return redirect("cart:cart")
+                return redirect(self.request.META.get('HTTP_REFERER'))
         else:
             return render(self.request, 'checkout.html', context={'form': form})
-        
 
 
 class PaymentView (View):
@@ -278,23 +276,8 @@ class PaymentView (View):
             item.save()
 
         order.ordered = True
+        order.ordered_date = datetime.datetime.now()
         order.save()
 
         messages.success(self.request, "سفارش شما با موفیقت ثبت شد !")
         return redirect("/")
-    
-    
-
-
-# class CountryAutocomplete(autocomplete.Select2QuerySetView):
-#     def get_queryset(self):
-#         # Don't forget to filter out results depending on the visitor !
-#         if not self.request.user.is_authenticated:
-#             return City.objects.none()
-
-#         qs = City.objects.all()
-
-#         if self.q:
-#             qs = qs.filter(name__istartswith=self.q)
-
-#         return qs

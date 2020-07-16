@@ -1,0 +1,199 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load ratings %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div id="container">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/"><i class="fa fa-home"></i></a></li>
+            <li><a href="{% url 'blog:blog' %}">وبلاگ</a></li>
+        </ul>
+        <div class="row">
+            <!-- Left Part Start-->
+            <aside id="column-left" class="col-sm-3 hidden-xs">
+                <h3 class="subtitle">دسته ها</h3>
+                <div class="box-category">
+                    <ul id="cat_accordion">
+                        {% for category in categories %}
+                        {% url 'product:category' pk=category.id slug=category.slug as the_url %}
+                        {% if request.get_full_path == the_url %}
+                        <li><a class="active" href="{{ category.get_absolute_url }}">{{ category.title }}</a> <span
+                                class="down"></span>
+                            <ul>
+                                {% for sub in category.subcategory.all %}
+                                <li><a href="{{ sub.get_absolute_url }}">{{ sub.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li><a href="{{ category.get_absolute_url }}">{{ category.title }}</a> <span
+                                class="down"></span>
+                            <ul>
+                                {% for sub in category.subcategory.all %}
+                                <li><a href="{{ sub.get_absolute_url }}">{{ sub.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <h3 class="subtitle">جدیدترین مطالب</h3>
+                <div class="side-item">
+                    {% for blog in blogs %}
+                    <div class="block-21 mb-4 d-flex">
+                        <a class="blog-img mr-4" style="background-image: url({% static 'image/product/1.png' %});"></a>
+                        <div class="text">
+                            <h3 class="heading"><a href="#">{{ blog.title }}</a></h3>
+                            <div class="meta">
+                                <div><a href="#"><span class="fa fa-calendar"
+                                            aria-hidden="true"></span>{{ blog.jalali_date }}</a></div>
+                                <div><a href="#"><span class="fa fa-user"
+                                            aria-hidden="true"></span>{{ blog.composer }}</a></div>
+                                <div><a href="#"><span class="fa fa-comment" aria-hidden="true"></span> ۱۹</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Archive -->
+                <h4 class="subtitle">آرشیو مطالب</h4>
+                <div class="side-item">
+                    <ul>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                آبان ۹۸
+                            </a>
+
+                            <span class="s-text13">
+                                (۹)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                June 2018
+                            </a>
+
+                            <span class="s-text13">
+                                (39)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                May 2018
+                            </a>
+
+                            <span class="s-text13">
+                                (29)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                April 2018
+                            </a>
+
+                            <span class="s-text13">
+                                (35)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                March 2018
+                            </a>
+
+                            <span class="s-text13">
+                                (22)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                February 2018
+                            </a>
+
+                            <span class="s-text13">
+                                (32)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                January 2018
+                            </a>
+
+                            <span class="s-text13">
+                                (21)
+                            </span>
+                        </li>
+                        <li class="flex-sb-m">
+                            <a href="#" class="s-text13 p-t-5 p-b-5">
+                                December 2017
+                            </a>
+
+                            <span class="s-text13">
+                                (26)
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <h3 class="subtitle">تگ ها</h3>
+                <div class="tagcloud">
+                    {% for tag in tags %}
+                    <a href="#" class="tag-cloud-link">{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
+            </aside>
+            <!-- Left Part End-->
+            <div id="content" class="col-sm-9">
+                <div class="blog-post-area">
+                    {% for blog in page_obj %}
+                    <div class="single-blog-post">
+                        <h3>{{ blog.title }}</h3>
+                        <div class="post-meta">
+                            <ul>
+                                <li><i class="fa fa-user"></i> {{ blog.composer }}</li>
+                                <li><i class="fa fa-clock-o"></i> {{ blog.jalali_time }}</li>
+                                <li><i class="fa fa-calendar"></i> {{ blog.jalali_date }}</li>
+                            </ul>
+
+                        </div>
+                        {% ratings blog read_only=True %}
+
+                        <a href="">
+                            <img src="{{ blog.blog_image.url }}" alt="">
+                        </a>
+                        <p>
+                            {{ blog.short_desc }}
+                        </p>
+                        <a class="btn btn-primary" href="{% url 'blog:blog-detail' pk=blog.id %}">ادامـه مطلب</a>
+                    </div>
+                    {% endfor %}
+                    <div class="pagination-area">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page=1">اولین</a></li>
+                            <!-- <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">قبلی</a></li> -->
+                            <li class="page-item"><a class="page-link"
+                                    href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                            </li>
+                            {% endif %}
+                            <li class="page-item"><a class="page-link">{{ page_obj.number }}</a></li>
+                            {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link"
+                                    href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                            </li>
+                            <!-- <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">بعدی</a></li> -->
+                            <li class="page-item"><a class="page-link"
+                                    href="?page={{ page_obj.paginator.num_pages }}">آخرین</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

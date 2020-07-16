@@ -1,15 +1,6 @@
 {% extends 'base1.html' %}
 {% block title %}<title>تماس با ما</title>{% endblock %}
 {% block head %}
-<style>
-  /* Set the size of the div element that contains the map */
-  #map {
-    height: 400px;
-    /* The height is 400 pixels */
-    width: 100%;
-    /* The width is the width of the web page */
-  }
-</style>
 {% endblock %}
 {% block body %}
 <div id="container">
@@ -31,36 +22,20 @@
                 src="https://maps.google.com/maps?q=gorgan&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0"
                 scrolling="no" marginheight="0" marginwidth="0"></iframe>
             </div>
-            <style>
-              .mapouter {
-                position: relative;
-                text-align: right;
-                height: 400px;
-                width: 100%;
-              }
-
-              .gmap_canvas {
-                overflow: hidden;
-                background: none !important;
-                height: 400px;
-                width: 100%;
-              }
-            </style>
           </div>
-          <br><br>
           <!-- <div id="map"></div> -->
-          <div class="col-sm-3"><strong>قالب مارکت شاپ</strong><br />
+          <br><br>
+          <div class="col-sm-3"><strong>آدرس دفتر آنا شاپ</strong><br />
             <address>
               میدان مرکزی،<br />
               خیابان وینگ شماره 22،<br />
               نیویورک،<br />
               ایالات متحده </address>
           </div>
-          <div class="col-sm-3"><strong>شماره تلفن</strong><br>
-            +91 9898989898<br />
+          <div class="col-sm-3"><strong>شماره تلفن</strong>
+            <br>09918797376<br />
             <br />
-            <strong>فکس</strong><br>
-            +91 9898989898 </div>
+          </div>
           <div class="col-sm-3"> <strong>ساعات کار</strong><br />
             خدمات مشتریان 24x7<br />
             <br />
@@ -75,7 +50,8 @@
                 {% csrf_token %}
                 {{ form }}
                 <script src='https://www.google.com/recaptcha/api.js'></script>
-                <div class="g-recaptcha" data-sitekey="6LdyVacZAAAAAHTwTD2uUHMH2xXPLj1OzA9w6GMR"></div>
+                <div style="padding-top: 5px;" class="g-recaptcha"
+                  data-sitekey="6LdyVacZAAAAAHTwTD2uUHMH2xXPLj1OzA9w6GMR"></div>
               </div>
             </div>
           </fieldset>

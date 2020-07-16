@@ -5,131 +5,135 @@
 {% block title %}<title>محصولات</title>{% endblock %}
 {% block body %}
 <div id="container">
-    <div class="container">
-      <!-- Breadcrumb Start-->
-      <ul class="breadcrumb">
-        <li><a href="/"><i class="fa fa-home"></i></a></li>
-        <li><a href="{% url 'product:products' %}">همه محصولات</a></li>
-      </ul>
-      <!-- Breadcrumb End-->
-      <div class="row">
-        <!--Left Part Start -->
-        {% include 'includes/sidebar.html' %}
-        <!--Left Part End -->
-        <!--Middle Part Start-->
-        <div id="content" class="col-sm-9">
-          <h1 class="title">همه محصولات</h1>
-          <hr>
-          <div class="product-filter">
-            <div class="row">
-              <div class="col-md-4 col-sm-5">
-                <div class="btn-group">
-                  <button type="button" id="list-view" class="btn btn-default" data-toggle="tooltip" title="List"><i class="fa fa-th-list"></i></button>
-                  <button type="button" id="grid-view" class="btn btn-default" data-toggle="tooltip" title="Grid"><i class="fa fa-th"></i></button>
-                </div>
-                <a href="{% url 'product:compare' %}" id="compare-total">محصولات مقایسه ({{ request.user | compare_product_count }})</a> </div>
-              <form id="FORM_ID" method="GET" action="{% url 'product:products' %}">
+  <div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="breadcrumb">
+      <li><a href="/"><i class="fa fa-home"></i></a></li>
+      <li><a href="{% url 'product:products' %}">همه محصولات</a></li>
+    </ul>
+    <!-- Breadcrumb End-->
+    <div class="row">
+      <!--Left Part Start -->
+      {% include 'includes/sidebar.html' %}
+      <!--Left Part End -->
+      <!--Middle Part Start-->
+      <div id="content" class="col-sm-9">
+        <h1 class="title">همه محصولات</h1>
+        <hr>
+        <div class="product-filter">
+          <div class="row">
+            <div class="col-md-4 col-sm-5">
+              <div class="btn-group">
+                <button type="button" id="list-view" class="btn btn-default" data-toggle="tooltip" title="List"><i
+                    class="fa fa-th-list"></i></button>
+                <button type="button" id="grid-view" class="btn btn-default" data-toggle="tooltip" title="Grid"><i
+                    class="fa fa-th"></i></button>
+              </div>
+              <a href="{% url 'product:compare' %}" id="compare-total">محصولات مقایسه
+                ({{ request.user | compare_product_count }})</a>
+            </div>
+            <form id="FORM_ID" method="GET" action="{% url 'product:products' %}">
               <div class="col-sm-2 text-right">
                 <label class="control-label" for="input-sort">مرتب سازی :</label>
               </div>
               <div class="col-md-3 col-sm-3 text-right">
                 <select onchange="this.form.submit()" name="order" class="form-control">
-                  <option value="name"  {% if order == "name" %} selected {% endif %}>پیشفرض</option>
-                  <option value="name"  {% if order == "name" %} selected {% endif %}>نام (الف - ی)</option>
+                  <option value="name" {% if order == "name" %} selected {% endif %}>پیشفرض</option>
+                  <option value="name" {% if order == "name" %} selected {% endif %}>نام (الف - ی)</option>
                   <option value="-name" {% if order == "-name" %} selected {% endif %}>نام (ی - الف)</option>
-                  <option value="price"  {% if order == "price" %} selected {% endif %}>قیمت (کم به زیاد)</option></option>
-                  <option value="-price"  {% if order == "-price" %} selected {% endif %}>قیمت (زیاد به کم)</option>
-                  <option value="-added_date"  {% if order == "-added_date" %} selected {% endif %}>جدیدترین</option>
-                  <option value="added_date"  {% if order == "added_date" %} selected {% endif %}>قدیمی ترین</option>
+                  <option value="price" {% if order == "price" %} selected {% endif %}>قیمت (کم به زیاد)</option>
+                  </option>
+                  <option value="-price" {% if order == "-price" %} selected {% endif %}>قیمت (زیاد به کم)</option>
+                  <option value="-added_date" {% if order == "-added_date" %} selected {% endif %}>جدیدترین</option>
+                  <option value="added_date" {% if order == "added_date" %} selected {% endif %}>قدیمی ترین</option>
                 </select>
               </div>
-              </form>
-              <div class="col-sm-1 text-right">
-                <label class="control-label" for="input-limit">نمایش :</label>
-              </div>
-              <div class="col-sm-2 text-right">
-                <select id="input-limit" class="form-control" >
-                  <option value="" selected="selected">20</option>
-                  <option value="">25</option>
-                  <option value="">50</option>
-                  <option value="">75</option>
-                  <option value="">100</option>
-                </select>
-              </div>
+            </form>
+            <div class="col-sm-1 text-right">
+              <label class="control-label" for="input-limit">نمایش :</label>
+            </div>
+            <div class="col-sm-2 text-right">
+              <select id="input-limit" class="form-control">
+                <option value="" selected="selected">20</option>
+                <option value="">25</option>
+                <option value="">50</option>
+                <option value="">75</option>
+                <option value="">100</option>
+              </select>
             </div>
           </div>
-          <br />
-          <div class="row products-category">
-            {% for product in page_obj %}
-            <div class="product-layout product-list col-xs-12">
-              <div class="product-thumb">
-                <div class="image"><a href="{{ product.get_absolute_url }}"><img src="{{ product.miniimage.url }}" alt="{{product.name}}" title="{{product.name}}" class="img-responsive" /></a></div>
-                <div>
-                  <div class="caption">
-                    <h4><a href="{{ product.get_absolute_url }}"> کد محصول : {{product.id}}</a></h4>
-                    <h4><a href="{{ product.get_absolute_url }}"> نام محصول : {{product.name}} </a></h4>
-                    <p class="description"> توضیحات : {{ product.description }}</p>
-                    <p class="price">
-                      {% if product.discount_price %}
-                      <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.discount_price}} تومان</span></li>
-                      <li style="list-style-type: none;"><span class="price-old">قیمت :{{product.price}} تومان</span></li>
-                      <span class="saving">
+        </div>
+        <br />
+        <div class="row products-category">
+          {% for product in page_obj %}
+          <div class="product-layout product-list col-xs-12">
+            <div class="product-thumb">
+              <div class="image"><a href="{{ product.get_absolute_url }}"><img src="{{ product.miniimage.url }}"
+                    alt="{{product.name}}" title="{{product.name}}" class="img-responsive" /></a></div>
+              <div>
+                <div class="caption">
+                  <h4><a href="{{ product.get_absolute_url }}"> کد محصول : {{product.id}}</a></h4>
+                  <h4><a href="{{ product.get_absolute_url }}"> نام محصول : {{product.name}} </a></h4>
+                  <p class="description"> توضیحات : {{ product.description }}</p>
+                  <p class="price">
+                    {% if product.discount_price %}
+                    <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.discount_price}}
+                        تومان</span></li>
+                    <li style="list-style-type: none;"><span class="price-old">قیمت :{{product.price}} تومان</span></li>
+                    <span class="saving">
                       {{ product.save_percent }}%
-                      </span>
-                      {% else %}
-                      <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.price}} تومان</span></li>
-                      <li style="list-style-type: none;"><br></li>
-                      {% endif %}
-                      <span class="price-tax">بدون مالیات : 90000 تومان</span>
-                    </p>
-                  </div>
-                  <div class="button-group">
-                    <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
-                    <div class="add-to-links">
-                      <button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی ها" onClick=""><i class="fa fa-heart"></i> <span>افزودن به علاقه مندی ها</span></button>
-                      <button type="button" data-toggle="tooltip" title="مقایسه این محصول" onClick=""><i class="fa fa-exchange"></i> <span>مقایسه این محصول</span></button>
-                    </div>
+                    </span>
+                    {% else %}
+                    <li style="list-style-type: none;"><span class="price-new">قیمت :{{product.price}} تومان</span></li>
+                    <li style="list-style-type: none;"><br></li>
+                    {% endif %}
+                    <span class="price-tax">بدون مالیات : 90000 تومان</span>
+                  </p>
+                </div>
+                <div class="button-group">
+                  <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
+                  <div class="add-to-links">
+                    <button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی ها" onClick=""><i
+                        class="fa fa-heart"></i> <span>افزودن به علاقه مندی ها</span></button>
+                    <button type="button" data-toggle="tooltip" title="مقایسه این محصول" onClick=""><i
+                        class="fa fa-exchange"></i> <span>مقایسه این محصول</span></button>
                   </div>
                 </div>
               </div>
             </div>
-            {% endfor %}
           </div>
-          <div class="row">
-            <div class="col-sm-6 text-left">
+          {% endfor %}
+        </div>
+        <div class="row">
+          <div class="col-sm-6 text-left">
             <nav aria-label="Page navigation example">
               <ul class="pagination">
                 {% if page_obj.has_previous %}
                 <li class="page-item"><a class="page-link" href="?page=1">اولین</a></li>
                 <!-- <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">قبلی</a></li> -->
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&?order={{order}}">{{ page_obj.previous_page_number }}</a></li>
+                <li class="page-item"><a class="page-link"
+                    href="?page={{ page_obj.previous_page_number }}&?order={{order}}">{{ page_obj.previous_page_number }}</a>
+                </li>
 
                 {% endif %}
                 <li class="page-item active"><a class="page-link">{{ page_obj.number }}</a></li>
 
                 {% if page_obj.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&?order={{order}}">{{ page_obj.next_page_number }}</a></li>
+                <li class="page-item"><a class="page-link"
+                    href="?page={{ page_obj.next_page_number }}&?order={{order}}">{{ page_obj.next_page_number }}</a>
+                </li>
                 <!-- <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">بعدی</a></li> -->
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">آخرین</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">آخرین</a>
+                </li>
                 {% endif %}
               </ul>
             </nav>
-            <!-- از {{ page_obj.paginator.num_pages }}. -->
-              <!-- <ul class="pagination">
-                <li class="active"><span>1</span></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">&gt;</a></li>
-                <li><a href="#">&gt;|</a></li>
-              </ul> -->
-            </div>
-            <!-- <div class="col-sm-6 text-right">نمایش 1 تا 12 از 15 (مجموع 2 صفحه)</div> -->
           </div>
+          <!-- <div class="col-sm-6 text-right">نمایش 1 تا 12 از 15 (مجموع 2 صفحه)</div> -->
         </div>
-        <!--Middle Part End -->
       </div>
+      <!--Middle Part End -->
     </div>
+  </div>
 </div>
-<!-- <script type="text/javascript">
-  document.getElementById("FORM_ID").submit();
-</script> -->
 {% endblock %}

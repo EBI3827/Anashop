@@ -1,47 +1,57 @@
 {% extends 'base1.html' %} {% load static %} {% block body %}
-  <div id="container">
-    <div class="container">
-      <!-- Breadcrumb Start-->
-      <ul class="breadcrumb">
-        <li><a href="/"><i class="fa fa-home"></i></a></li>
-        <li><a href="#">حساب کاربری</a></li>
-        <li><a href="{% url 'product:wishlist' %}">لیست علاقه مندی من</a></li>
-      </ul>
-      <!-- Breadcrumb End-->
-      <div class="row">
-        <!--Middle Part Start-->
-        <div id="content" class="col-sm-12">
-          <h1 class="title">لیست آرزوی من</h1>
-          <div class="table-responsive">
-            <table class="table table-bordered table-hover">
-              <thead style="background-color: cadetblue; color: cornsilk;">
-                <tr>
-                  <td class="text-center">تصویر</td>
-                  <td class="text-left">نام محصول</td>
-                  <td class="text-left">کد محصول</td>
-                  <td class="text-right">موجودی</td>
-                  <td class="text-right">قیمت واحد</td>
-                  <td class="text-right">عملیات</td>
-                </tr>
-              </thead>
-              <tbody>
-                {% for item in object.products.all %}
-                <tr>
-                  <td style="vertical-align: middle;" class="text-center"><a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product.miniimage.url }}" alt="تبلت ایسر" title="تبلت ایسر" /></a></td>
-                  <td style="vertical-align: middle;" class="text-center"><a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a></td>
-                  <td style="vertical-align: middle;" class="text-center">{{ item.product.id }}</td>
-                  <td style="vertical-align: middle;" class="text-center">{{ item.product.label }}</td>
-                  <td style="vertical-align: middle;" class="text-center"><div class="price">{{ item.product.price }} تومان </div></td>
-                  <td style="vertical-align: middle;" class="text-center"><a href="{{ item.product.get_add_to_cart_url }}"><button class="btn btn-primary" title="" data-toggle="tooltip" onClick="cart.add('48');" type="button" data-original-title="افزودن به سبد"><i class="fa fa-shopping-cart"></i></button></a>
-                    <a class="btn btn-danger" title="" data-toggle="tooltip" href="{{ item.product.get_remove_from_wishlist_url }}" data-original-title="حذف"><i class="fa fa-times"></i></a></td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+<div id="container">
+  <div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="breadcrumb">
+      <li><a href="/"><i class="fa fa-home"></i></a></li>
+      <li><a href="#">حساب کاربری</a></li>
+      <li><a href="{% url 'product:wishlist' %}">لیست علاقه مندی من</a></li>
+    </ul>
+    <!-- Breadcrumb End-->
+    <div class="row">
+      <!--Middle Part Start-->
+      <div id="content" class="col-sm-12">
+        <h1 class="title">لیست آرزوی من</h1>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead style="background-color: cadetblue; color: cornsilk;">
+              <tr>
+                <td class="text-center">تصویر</td>
+                <td class="text-left">نام محصول</td>
+                <td class="text-left">کد محصول</td>
+                <td class="text-right">موجودی</td>
+                <td class="text-right">قیمت واحد</td>
+                <td class="text-right">عملیات</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in object.products.all %}
+              <tr>
+                <td style="vertical-align: middle;" class="text-center"><a
+                    href="{{ item.product.get_absolute_url }}"><img src="{{ item.product.miniimage.url }}"
+                      alt="تبلت ایسر" title="تبلت ایسر" /></a></td>
+                <td style="vertical-align: middle;" class="text-center"><a
+                    href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a></td>
+                <td style="vertical-align: middle;" class="text-center">{{ item.product.id }}</td>
+                <td style="vertical-align: middle;" class="text-center">{{ item.product.label }}</td>
+                <td style="vertical-align: middle;" class="text-center">
+                  <div class="price">{{ item.product.price }} تومان </div>
+                </td>
+                <td style="vertical-align: middle;" class="text-center"><a
+                    href="{{ item.product.get_add_to_cart_url }}"><button class="btn btn-primary" title=""
+                      data-toggle="tooltip" onClick="cart.add('48');" type="button"
+                      data-original-title="افزودن به سبد"><i class="fa fa-shopping-cart"></i></button></a>
+                  <a class="btn btn-danger" title="" data-toggle="tooltip"
+                    href="{{ item.product.get_remove_from_wishlist_url }}" data-original-title="حذف"><i
+                      class="fa fa-times"></i></a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
-        <!--Middle Part End -->
       </div>
+      <!--Middle Part End -->
     </div>
   </div>
+</div>
 {% endblock %}

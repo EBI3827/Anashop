@@ -1,238 +1,176 @@
 {% load static %}
-{% load i18n %}
-{% load crispy_forms_tags %}
-
 <!DOCTYPE html>
 <html dir="rtl">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="format-detection" content="telephone=no" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<link href="image/favicon.png" rel="icon" />
-{% block title%}{% endblock %}
-<meta name="description" content="Responsive and clean html template design for any kind of ecommerce webshop">
-<!-- CSS Part Start-->
-<link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap/css/bootstrap.min.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap/css/bootstrap-rtl.min.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome/css/font-awesome.min.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'css/stylesheet.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'css/owl.carousel.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'css/owl.transitions.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'css/responsive.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'css/stylesheet-rtl.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'css/responsive-rtl.css' %}" />
-<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans' type='text/css'>
-<!-- CSS Part End-->
-<link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
-{% block head %}{% endblock %}
-<style>
-  ul{
-    list-style-type: none;
-    padding: 0px;
-  }
-</style>
-<style>
-  * {
-    box-sizing: border-box;
-  }
-  
-  .zoom {
-    /* padding: 50px; */
-    transition: transform .2s;
-    width: 200px;
-    height: 200px;
-    margin: 0 auto;
-  }
-
-  .zoomm {
-    /* padding: 50px; */
-    transition: transform .2s;
-    /* width: 200px;
-    height: 200px; */
-    margin: 0 auto;
-  }
-  
-  .zoom:hover {
-    -ms-transform: scale(2); /* IE 9 */
-    -webkit-transform: scale(2); /* Safari 3-8 */
-    transform: scale(2); 
-  }
-
-  .zoomm:hover {
-    -ms-transform: scale(2); /* IE 9 */
-    -webkit-transform: scale(2); /* Safari 3-8 */
-    transform: scale(2); 
-  }
-</style>
-<script>
-  function imageZoom(imgID, resultID) {
-    var img, lens, result, cx, cy;
-    img = document.getElementById(imgID);
-    result = document.getElementById(resultID);
-    /*create lens:*/
-    lens = document.createElement("DIV");
-    lens.setAttribute("class", "img-zoom-lens");
-    /*insert lens:*/
-    img.parentElement.insertBefore(lens, img);
-    /*calculate the ratio between result DIV and lens:*/
-    cx = result.offsetWidth / lens.offsetWidth;
-    cy = result.offsetHeight / lens.offsetHeight;
-    /*set background properties for the result DIV:*/
-    result.style.backgroundImage = "url('" + img.src + "')";
-    result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
-    /*execute a function when someone moves the cursor over the image, or the lens:*/
-    lens.addEventListener("mousemove", moveLens);
-    img.addEventListener("mousemove", moveLens);
-    /*and also for touch screens:*/
-    lens.addEventListener("touchmove", moveLens);
-    img.addEventListener("touchmove", moveLens);
-    function moveLens(e) {
-      var pos, x, y;
-      /*prevent any other actions that may occur when moving over the image:*/
-      e.preventDefault();
-      /*get the cursor's x and y positions:*/
-      pos = getCursorPos(e);
-      /*calculate the position of the lens:*/
-      x = pos.x - (lens.offsetWidth / 2);
-      y = pos.y - (lens.offsetHeight / 2);
-      /*prevent the lens from being positioned outside the image:*/
-      if (x > img.width - lens.offsetWidth) {x = img.width - lens.offsetWidth;}
-      if (x < 0) {x = 0;}
-      if (y > img.height - lens.offsetHeight) {y = img.height - lens.offsetHeight;}
-      if (y < 0) {y = 0;}
-      /*set the position of the lens:*/
-      lens.style.left = x + "px";
-      lens.style.top = y + "px";
-      /*display what the lens "sees":*/
-      result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
-    }
-    function getCursorPos(e) {
-      var a, x = 0, y = 0;
-      e = e || window.event;
-      /*get the x and y positions of the image:*/
-      a = img.getBoundingClientRect();
-      /*calculate the cursor's x and y coordinates, relative to the image:*/
-      x = e.pageX - a.left;
-      y = e.pageY - a.top;
-      /*consider any page scrolling:*/
-      x = x - window.pageXOffset;
-      y = y - window.pageYOffset;
-      return {x : x, y : y};
-    }
-  }
-</script>
+  <meta charset="UTF-8" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link href="{% static 'image/favicon.png' %}" rel="icon" />
+  {% block title%}{% endblock %}
+  <meta name="description" content="Responsive and clean html template design for any kind of ecommerce webshop">
+  <!-- CSS Part Start-->
+  <link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'js/bootstrap/css/bootstrap-rtl.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome/css/font-awesome.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/stylesheet.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/owl.carousel.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/owl.transitions.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/responsive.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/stylesheet-rtl.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/responsive-rtl.css' %}" />
+  <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans' />
+  <!-- CSS Part End-->
+  <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}" />
+  {% block head %}{% endblock %}
 </head>
 
 <body>
-<div class="wrapper-wide">
-  {% include 'includes/navbar.html' %}
+  <div class="wrapper-wide">
+    {% include 'includes/navbar.html' %}
 
-  <div class="container">
+    {% include 'includes/messages.html' %}
 
-  {% if messages %}
-  {% for message in messages %}
-  {% if message.tags == 'info' %}
-  <div class="alert alert-success alert-dismissible" role="alert">
-    {{message}}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <i style="padding-left: 20px ;" class="fa fa-times" aria-hidden="true"></i>
-    </button>
+    {% block body%}
+    {% endblock %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% block extra_body %}
+    {% endblock %}
+
+    {% include 'includes/footer.html' %}
+    <!-- JS Part Start-->
+    <script type="text/javascript" src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.easing-1.3.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.dcjqaccordion.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+    <script type="text/javascript">
+      // Elevate Zoom for Product Page image
+      $("#zoom_01").elevateZoom({
+        gallery: 'gallery_01',
+        cursor: 'pointer',
+        galleryActiveClass: 'active',
+        imageCrossfade: true,
+        zoomWindowFadeIn: 500,
+        zoomWindowFadeOut: 500,
+        zoomWindowPosition: 11,
+        lensFadeIn: 500,
+        lensFadeOut: 500,
+        loadingIcon: 'image/progress.gif'
+      });
+      //////pass the images to swipebox
+      $("#zoom_01").bind("click", function (e) {
+        var ez = $('#zoom_01').data('elevateZoom');
+        $.swipebox(ez.getGalleryList());
+        return false;
+      });
+    </script>
+    <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+    <!-- JS Part End-->
+    <!-- map Part start-->
+    <script>
+      // Initialize and add the map
+      function initMap() {
+        // The location of Uluru
+        var uluru = { lat: 36.841644, lng: 54.432922 };
+        // The map, centered at Uluru
+        var map = new google.maps.Map(
+          document.getElementById('map'), { zoom: 10, center: uluru });
+        // The marker, positioned at Uluru
+        var marker = new google.maps.Marker({ position: uluru, map: map });
+      }
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjehoCr9wydGqevmijrbpzbJADj9bON-I&callback=initMap"></script>
+    <!-- map Part End-->
+    <script>
+      function imageZoom(imgID, resultID) {
+        var img, lens, result, cx, cy;
+        img = document.getElementById(imgID);
+        result = document.getElementById(resultID);
+        /*create lens:*/
+        lens = document.createElement("DIV");
+        lens.setAttribute("class", "img-zoom-lens");
+        /*insert lens:*/
+        img.parentElement.insertBefore(lens, img);
+        /*calculate the ratio between result DIV and lens:*/
+        cx = result.offsetWidth / lens.offsetWidth;
+        cy = result.offsetHeight / lens.offsetHeight;
+        /*set background properties for the result DIV:*/
+        result.style.backgroundImage = "url('" + img.src + "')";
+        result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+        /*execute a function when someone moves the cursor over the image, or the lens:*/
+        lens.addEventListener("mousemove", moveLens);
+        img.addEventListener("mousemove", moveLens);
+        /*and also for touch screens:*/
+        lens.addEventListener("touchmove", moveLens);
+        img.addEventListener("touchmove", moveLens);
+        function moveLens(e) {
+          var pos, x, y;
+          /*prevent any other actions that may occur when moving over the image:*/
+          e.preventDefault();
+          /*get the cursor's x and y positions:*/
+          pos = getCursorPos(e);
+          /*calculate the position of the lens:*/
+          x = pos.x - (lens.offsetWidth / 2);
+          y = pos.y - (lens.offsetHeight / 2);
+          /*prevent the lens from being positioned outside the image:*/
+          if (x > img.width - lens.offsetWidth) { x = img.width - lens.offsetWidth; }
+          if (x < 0) { x = 0; }
+          if (y > img.height - lens.offsetHeight) { y = img.height - lens.offsetHeight; }
+          if (y < 0) { y = 0; }
+          /*set the position of the lens:*/
+          lens.style.left = x + "px";
+          lens.style.top = y + "px";
+          /*display what the lens "sees":*/
+          result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+        }
+        function getCursorPos(e) {
+          var a, x = 0, y = 0;
+          e = e || window.event;
+          /*get the x and y positions of the image:*/
+          a = img.getBoundingClientRect();
+          /*calculate the cursor's x and y coordinates, relative to the image:*/
+          x = e.pageX - a.left;
+          y = e.pageY - a.top;
+          /*consider any page scrolling:*/
+          x = x - window.pageXOffset;
+          y = y - window.pageYOffset;
+          return { x: x, y: y };
+        }
+      }
+    </script>
+    <script type="text/javascript">
+      // Elevate Zoom for Product Page image
+      $("#zoom_01").elevateZoom({
+        gallery: 'gallery_01',
+        cursor: 'pointer',
+        galleryActiveClass: 'active',
+        imageCrossfade: true,
+        zoomWindowFadeIn: 200,
+        zoomWindowFadeOut: 200,
+        zoomWindowPosition: 11,
+        lensFadeIn: 500,
+        lensFadeOut: 500,
+        loadingIcon: 'image/progress.gif'
+      });
+      //////pass the images to swipebox
+      $("#zoom_01").bind("click", function (e) {
+        var ez = $('#zoom_01').data('elevateZoom');
+        $.swipebox(ez.getGalleryList());
+        return false;
+      });
+    </script>
+
+    <script>
+      // Initiate zoom effect:
+      imageZoom("myimage", "myresult");
+    </script>
   </div>
-  {% else %}
-  <div class="alert alert-warning alert-dismissible show" role="alert">
-      {{message}}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <i style="padding-left: 20px ;" class="fa fa-times" aria-hidden="true"></i>
-      </button>
-    </div>
-  {% endif %}
-  {% endfor %}
-  {% endif %}
-  </div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="logoutmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <strong><h4 class="modal-title" id="exampleModalLabel">خروج از حساب
-        <button class="close" data-dismiss="modal" aria-label="Close">
-          <i class="fa fa-times" aria-hidden="true"></i>
-        </button>
-        </h4></strong>
-      </div>
-      <div class="modal-body">
-        آیا از خروج اطمینان دارید ؟
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
-        <form method="post" action="{% url 'account_logout' %}">
-          {% csrf_token %}
-          {% if redirect_field_value %}
-          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-          {% endif %}
-          <button type="submit" class="btn btn-danger" style="font-weight: 500;width: 90px;">{% trans 'خروج از حساب' %}</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-{% block body%}
-{% endblock %}
-
-{% block content %}
-{% endblock %}
-
-{% block extra_body %}
-{% endblock %}
-
-{% include 'includes/footer.html' %}
-<!-- JS Part Start-->
-<script type="text/javascript" src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/bootstrap/js/bootstrap.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/jquery.easing-1.3.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/jquery.dcjqaccordion.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
-<script type="text/javascript">
-  // Elevate Zoom for Product Page image
-  $("#zoom_01").elevateZoom({
-    gallery:'gallery_01',
-    cursor: 'pointer',
-    galleryActiveClass: 'active',
-    imageCrossfade: true,
-    zoomWindowFadeIn: 500,
-    zoomWindowFadeOut: 500,
-    zoomWindowPosition : 11,
-    lensFadeIn: 500,
-    lensFadeOut: 500,
-    loadingIcon: 'image/progress.gif'
-    }); 
-  //////pass the images to swipebox
-  $("#zoom_01").bind("click", function(e) {
-    var ez =   $('#zoom_01').data('elevateZoom');
-    $.swipebox(ez.getGalleryList());
-    return false;
-  });
-</script>
-<script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
-<!-- JS Part End-->
-<script>
-  // Initialize and add the map
-  function initMap() {
-    // The location of Uluru
-    var uluru = {lat: -25.344, lng: 131.036};
-    // The map, centered at Uluru
-    var map = new google.maps.Map(
-        document.getElementById('map'), {zoom: 4, center: uluru});
-    // The marker, positioned at Uluru
-    var marker = new google.maps.Marker({position: uluru, map: map});
-  }
-</script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHQsaXvcM-TXJsZGuz2Y8KbUYcqYx7CDc&callback=initMap"></script>
-  
-</div>
 </body>
+
 </html>

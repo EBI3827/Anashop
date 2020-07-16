@@ -1,4 +1,4 @@
-from django.shortcuts import render,  redirect, get_object_or_404, reverse
+from django.shortcuts import render,  redirect, get_object_or_404, reverse, HttpResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import DetailView, ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,15 +10,23 @@ from django.db.models import Q
 from .forms import ContactForm, ProductCommentForm
 from .decorators import check_recaptcha
 from .models import (Product, Category, Subcategory, Compare,
-                     CompareItem, Wishlist, WishItem, Contact, ProductComment)
-
+                     CompareItem, Wishlist, WishItem, Contact, ProductComment, Hit)
+import datetime
+from django.contrib.contenttypes.models import ContentType
+from hitcount.views import HitCountDetailView
 # Create your views here.
 from star_ratings.models import Rating
 
 
+def render_to_response_hit_count(request, template_path, keys, response):
+    for key in keys:
+        for i in response[key]:
+            Hit(content_object=i).save()
+    return render(template_path, response)
+
+
 def home(request):
-    latest = Product.objects.all().order_by('-added_date')[:4]
-    return render(request, 'index.html', {'latest': latest})
+    return render(request, 'index.html', {})
 
 
 def productlist(request):
@@ -36,8 +44,8 @@ def productlist(request):
     except EmptyPage:
         page_obj = paginator.page(paginator.num_pages)
     context = {
-        'page_obj': page_obj,
         'order': order,
+        'page_obj': page_obj,
         'page_number': page_number
     }
 
@@ -46,8 +54,24 @@ def productlist(request):
 
 def product_category(request, pk, slug):
     qs = Category.objects.get(id=pk, slug=slug)
+    order = request.GET.get('order')
+    if order:
+        pcategory = qs.products.all().order_by(order)
+    else:
+        pcategory = qs.products.all()
+    paginator = Paginator(pcategory, 4)
+    page_number = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
     context = {
+        'order': order,
         'category': qs,
+        'page_obj': page_obj,
+        'page_number': page_number,
     }
     return render(request, 'pcat.html', context)
 
@@ -55,18 +79,35 @@ def product_category(request, pk, slug):
 def product_subcategory(request, category, pk, slug):
     qs = Subcategory.objects.get(id=pk)
     cqs = Category.objects.get(subcategory=qs)
+    order = request.GET.get('order')
+    if order:
+        pscategory = qs.products.all().order_by(order)
+    else:
+        pscategory = qs.products.all()
+    paginator = Paginator(pscategory, 4)
+    page_number = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
     context = {
         'category': cqs,
         'subcategory': qs,
+        'page_obj': page_obj,
+        'page_number': page_number,
+        'order': order,
     }
     return render(request, 'psub.html', context)
 
 
-class ProductDetailView(FormMixin, DetailView):
+class ProductDetailView(FormMixin, HitCountDetailView):
     model = Product
     query_pk_and_slug = True
     template_name = 'product.html'
     form_class = ProductCommentForm
+    count_hit = True
 
     def get_success_url(self):
         return reverse('product:product-detail', kwargs={'pk': self.object.id, 'slug': self.object.slug})
@@ -76,7 +117,8 @@ class ProductDetailView(FormMixin, DetailView):
         context['form'] = ProductCommentForm(initial={'product': self.object})
         context['comments'] = self.object.comments.filter(
             approved=True, parent=None).order_by('-date')
-        context['rating'] = Rating.objects.get(object_id=self.object.id)
+        context['rating'] = Rating.objects.get(
+            object_id=self.object.id, content_type__model='Product')
         return context
 
     def post(self, request, *args, **kwargs):
@@ -115,7 +157,7 @@ class CompareView(View):
         except ObjectDoesNotExist:
             messages.error(
                 self.request, 'شما محصولی در لیست مقایسه خود ندارید .')
-            return redirect("/")
+            return redirect(self.request.META.get('HTTP_REFERER'))
 
 
 def add_to_compare(request, pk):
@@ -180,7 +222,7 @@ class WishView(LoginRequiredMixin, View):
         except ObjectDoesNotExist:
             messages.error(
                 self.request, 'شما محصولی در لیست علاقه مندی خود ندارید .')
-            return redirect("/")
+            return redirect(self.request.META.get('HTTP_REFERER'))
 
 
 @login_required
@@ -248,7 +290,7 @@ def contact(request):
             # contact.email=request.POST.get('email')
             # contact.message=request.POST.get('message')
             # contact.save()
-            return redirect('/')
+            return redirect('product:contact-us')
         # else:
         #     print contact_form.errors
     else:
@@ -263,18 +305,71 @@ def about_us(request):
 def search(request):
     query = request.GET.get('q')
     cq = request.GET.get('category_title')
+    order = request.GET.get('order')
     if cq:
         try:
             cat = Category.objects.get(title=cq)
-            result = Product.objects.filter(
-                Q(category=cat), Q(name__icontains=query))
-            return render(request, 'search.html', {'search_result': result, 'query': query, 'current_title': cq})
+            if order:
+                result = Product.objects.filter(
+                    Q(category=cat), Q(name__icontains=query)).order_by(order)
+            else:
+                result = Product.objects.filter(
+                    Q(category=cat), Q(name__icontains=query))
+            paginator = Paginator(result, 4)
+            page_number = request.GET.get('page')
+            try:
+                results = paginator.page(page_number)
+            except PageNotAnInteger:
+                results = paginator.page(1)
+            except EmptyPage:
+                results = paginator.page(paginator.num_pages)
+            context = {
+                'order': order,
+                'search_result': results,
+                'query': query,
+                'current_title': cq
+            }
+            return render(request, 'search.html', context)
         except ObjectDoesNotExist:
-            result = Product.objects.filter(Q(name__icontains=query))
-            return render(request, 'search.html', {'search_result': result, 'query': query, 'current_title': cq})
+            if order:
+                result = Product.objects.filter(
+                    Q(name__icontains=query)).order_by(order)
+            else:
+                result = Product.objects.filter(Q(name__icontains=query))
+            paginator = Paginator(result, 4)
+            page_number = request.GET.get('page')
+            try:
+                results = paginator.page(page_number)
+            except PageNotAnInteger:
+                results = paginator.page(1)
+            except EmptyPage:
+                results = paginator.page(paginator.num_pages)
+            context = {
+                'order': order,
+                'search_result': results,
+                'query': query,
+                'current_title': cq
+            }
+            return render(request, 'search.html', context)
     else:
-        result = Product.objects.all()
-    return render(request, 'search.html', {'search_result': result})
+        if order:
+            result = Product.objects.all().order_by(order)
+        else:
+            result = Product.objects.all()
+        paginator = Paginator(result, 4)
+        page_number = request.GET.get('page')
+        try:
+            results = paginator.page(page_number)
+        except PageNotAnInteger:
+            results = paginator.page(1)
+        except EmptyPage:
+            results = paginator.page(paginator.num_pages)
+        context = {
+            'order': order,
+            'search_result': results,
+            'page_number': page_number,
+        }
+    return render(request, 'search.html', context)
 
 
 def sitemap(request):
