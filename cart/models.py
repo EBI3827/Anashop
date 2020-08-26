@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from product.models import Product
+from persiantools.jdatetime import JalaliDateTime
 
 
 class OrderItem(models.Model):
@@ -69,6 +70,8 @@ class Order(models.Model):
             total -= self.coupon.amount
         return total
 
+    def jalali_ordered_date(self):
+        return JalaliDateTime(self.ordered_date).strftime("%Y/%m/%d")
 
 class Coupon(models.Model):
     code = models.CharField(max_length=15)

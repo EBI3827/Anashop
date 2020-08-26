@@ -41,18 +41,12 @@
             <div id="content" class="col-sm-9">
                 <!-- Slideshow Start-->
                 <div class="slideshow single-slider owl-carousel">
+                    {%for category in categories%}
                     <div class="item">
-                        <a href="{% url 'product:category' pk=1 slug='محصولات-کشاورزی' %}"><img class="img-responsive"
-                                src="static/image/slider/k.jpg" alt="banner 1" /></a>
+                        <a href="{{ category.get_absolute_url }}"><img class="img-responsive"
+                                src="{{ category.image.url }}" alt="{{ category.title }}" /></a>
                     </div>
-                    <div class="item">
-                        <a href="{% url 'product:category' pk=2 slug='صنایع-دستی-سنتی' %}"><img class="img-responsive"
-                                src="static/image/slider/s.jpg" alt="banner 3" /></a>
-                    </div>
-                    <div class="item">
-                        <a href="{% url 'product:category' pk=3 slug='فرآورده-های-روستایی' %}"><img
-                                class="img-responsive" src="static/image/slider/f.jpg" alt="banner 2" /></a>
-                    </div>
+                    {% endfor %}
                 </div>
                 <!-- Slideshow End-->
                 <!-- Featured محصولات Start-->

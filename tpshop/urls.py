@@ -19,6 +19,7 @@ urlpatterns = [
     path('cart/',include('cart.urls'),name='cart'),
     path('api-auth/', include('rest_framework.urls')),
     path('blog/', include('blog.urls')),
+    path('profile/', include('userprofile.urls')),
     path('api/',TestView.as_view(),name='api'),
     path('captcha/', include('captcha.urls')),
     path('ratings/', include('star_ratings.urls', namespace='ratings')),

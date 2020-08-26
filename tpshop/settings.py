@@ -1,6 +1,6 @@
 
 import os
-from decouple import config
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -10,17 +10,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
-GOOGLE_RECAPTCHA_SECRET_KEY=config('GOOGLE_RECAPTCHA_SECRET_KEY')
+SECRET_KEY = 'w=v2lk^h44wlv2bo#d%9!@65h(s5qf%576x==*=ozix#te_0q*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool)
-TEMPLATE_DEBUG = DEBUG
+DEBUG = True
 
-ALLOWED_HOSTS = [
-        '127.0.0.1:8001',
-        '*',
-    ]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -49,6 +44,7 @@ INSTALLED_APPS = [
     'cart',
     'api',
     'blog',
+    'userprofile',
 ]
 
 
@@ -91,14 +87,15 @@ WSGI_APPLICATION = 'tpshop.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': '3306',
-    }
+'default': 
+{
+'ENGINE': 'django.db.backends.postgresql_psycopg2',
+'NAME': 'anadb',
+'USER': 'postgres',
+'PASSWORD': 'razi',
+'HOST': 'localhost',
+'PORT': '',
+}
 }
 
 # Password validation

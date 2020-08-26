@@ -34,6 +34,7 @@ class Category(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(null=True, blank=True,
                             default='test', allow_unicode=True)
+    image = models.ImageField(upload_to='category/',null=True)
 
     class Meta:
         verbose_name = "Category"

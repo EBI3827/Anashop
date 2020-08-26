@@ -34,8 +34,8 @@ class BlogDetailView(FormMixin, DetailView):
         context['form'] = BlogCommentForm(initial={'blog': self.object})
         context['comments'] = self.object.comments.filter(
             approved=True, parent=None).order_by('-date')
-        context['rating'] = Rating.objects.get(
-            object_id=self.object.id, content_type__model='‌Blog')
+        # context['rating'] = Rating.objects.get(
+        #     object_id=self.object.id)
         return context
 
     def post(self, request, *args, **kwargs):

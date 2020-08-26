@@ -1,0 +1,32 @@
+{% load static %}
+{#{% load render_partial %}#}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="#">
+    <meta name="author" content="">
+    <title>حساب کاربری</title>
+    {% include 'shared/_HeaderReferences.html' %}
+    {% block header_ref %}
+        <link href="{% static 'css/profile_page_styles.css' %}" rel="stylesheet">
+    {% endblock %}
+</head>
+
+<body>
+
+{% include 'profile_page_components/header_component.html'%}
+{#{% render_partial 'header' %}#}
+
+{% block content %}{% endblock %}
+
+{% include 'shared/Footer.html' %}
+{#{% render_partial 'footer' %}#}
+
+{% include 'shared/_FooterReferences.html' %}
+{% block footer_ref %}{% endblock %}
+
+</body>
+</html>

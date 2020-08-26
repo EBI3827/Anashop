@@ -118,7 +118,7 @@ class ProductDetailView(FormMixin, HitCountDetailView):
         context['comments'] = self.object.comments.filter(
             approved=True, parent=None).order_by('-date')
         context['rating'] = Rating.objects.get(
-            object_id=self.object.id, content_type__model='Product')
+            object_id=self.object.id)
         return context
 
     def post(self, request, *args, **kwargs):

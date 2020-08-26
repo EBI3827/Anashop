@@ -15,8 +15,8 @@ def nav(request, *args, **kwargs):
     products = Product.objects.all().order_by(order)
     latest = Product.objects.all().order_by('-added_date')[:6]
     blogs = Blog.objects.all().order_by('date')[:3]
-    popular_products = Product.objects.order_by(
-        '-hit_count_generic__hits')[:10]
+    #popular_products = Product.objects.order_by(
+     #   '-hit_count_generic__hits')[:10]
     featured = Product.objects.are_featured()
 
     navbar = {
@@ -25,7 +25,7 @@ def nav(request, *args, **kwargs):
         'order': order,
         'latest': latest,
         'blogs': blogs,
-        'popular_products': popular_products,
+      #  'popular_products': popular_products,
         'featured': featured,
     }
 

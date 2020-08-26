@@ -1,0 +1,87 @@
+{% extends 'base1.html' %}
+{% load static %}
+
+{% block head %}
+    <link href="{% static 'css/profile_page_styles.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row" style="margin-top: 40px;">
+
+                <div class="col-sm-3">
+                    <div>
+                        <img src="{{ current_user.userprofile.avatar.url }}" alt="image" class="profile-img">
+                        <p class="user">{{ current_user.userprofile.first_name }} {{ current_user.userprofile.last_name }}</p>
+
+                        {% include 'profile_page_components/profile_sidebar_component.html' %}
+
+                    </div>
+                </div>
+
+
+                <div class="col-sm-9">
+
+                    <table style="width:100%">
+                        <caption>اطلاعات شخصی</caption>
+                        <tr>
+                            <td class="col-one">نام و نام خانوادگی : <span
+                                    style="color: #2a6496">{{ current_user.userprofile.first_name }} {{ current_user.userprofile.last_name }}</span>
+                            </td>
+                            <td class="col-two">ایمیل : <span style="color: #2a6496;">{{ current_user.userprofile.email }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-one">شماره تلفن همراه : <span style="color: #2a6496;">
+                                {% if current_user.userprofile.phone_number is None %} &nbsp; {% else %}
+                                    {{ current_user.userprofile.phone_number }} {% endif %} </span>
+                            </td>
+
+                            <td class="col-two">تاریخ تولد : <span style="color: #2a6496;">
+                                {% if current_user.userprofile.jalali_date is None %} &nbsp; {% else %}
+                                    {{ current_user.userprofile.jalali_date }}{% endif %}</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="text-align: center;padding: 2rem;">
+                        <a href="" style="color: red;font-weight: bold;">
+                            <i class="fa fa-edit" style="font-size: 18px;color: red;"></i>
+                            ویرایش اطلاعات شخصی
+                        </a>
+                    </div>
+                    <table style="width:100%; margin-top: 50px;">
+                        <caption>لیست سفارشات</caption>
+                        <tr>
+                            <th class="num">#</th>
+                            <th class="order-num">شماره سفارش</th>
+                            <th class="order-date">تاریخ ثبت سفارش</th>
+                            <th class="paying-price">مبلغ قابل پرداخت</th>
+                            <th class="total-price">مبلغ کل</th>
+                            <th class="paying-status">عملیات پرداخت</th>
+                            <th class="details">جزییات</th>
+                        </tr>
+                        {% for order in orders%}
+                        <tr>
+                            <td class="num">{{ forloop.counter }}</td>
+                            <td class="order-num">{{ order.id }}</td>
+                            <td class="order-date">{{ order.jalali_ordered_date }}</td>
+                            <td class="paying-price">{{ order.get_total }}</td>
+                            <td class="total-price">{{ order.get_total_with_coupon }}</td>
+                            <td class="paying-status">{% if ordered %}پرداخت موفق {%else%} پرداخت ناموفق {%endif%}</td>
+                            <td class="details"><a href=""><i class="fa fa-hand-o-left"
+                                                              style="font-size: 20px;"></i></a></td>
+                        </tr>
+                        {% endfor %}
+
+                    </table>
+
+                    <div style="text-align: center;font-weight: bold;padding: 2rem;"><a style="color:#3e7cb4;">مشاهده تمام سفارشات</a></div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
