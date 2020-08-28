@@ -1,0 +1,31 @@
+{% extends 'base1.html' %}
+{% load static %}
+
+{% block head %}
+    <link href="{% static 'css/profile_page_styles.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row" style="margin-top: 40px;">
+                <div class="col-sm-3">
+                    <div>
+                        <img src="{{ request.user.userprofile.avatar.url }}" alt="image" class="profile-img">
+                        <p class="user">{{ request.user.userprofile.first_name }} {{ request.user.userprofile.last_name }}</p>
+    
+                        {% include 'profile_page_components/profile_sidebar_component.html' %}
+    
+                    </div>
+                </div>
+
+
+                <div class="col-sm-9">
+                    {% for info in infos %}
+                        {{ info.address }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

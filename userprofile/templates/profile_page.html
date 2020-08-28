@@ -9,38 +9,37 @@
     <section>
         <div class="container">
             <div class="row" style="margin-top: 40px;">
-
                 <div class="col-sm-3">
                     <div>
-                        <img src="{{ current_user.userprofile.avatar.url }}" alt="image" class="profile-img">
-                        <p class="user">{{ current_user.userprofile.first_name }} {{ current_user.userprofile.last_name }}</p>
-
+                        <img src="{{ request.user.userprofile.avatar.url }}" alt="image" class="profile-img">
+                        <p class="user">{{ request.user.userprofile.first_name }} {{ request.user.userprofile.last_name }}</p>
+    
                         {% include 'profile_page_components/profile_sidebar_component.html' %}
-
+    
                     </div>
                 </div>
 
 
                 <div class="col-sm-9">
 
-                    <table style="width:100%">
+                    <table class="table-bordered" style="width:100%">
                         <caption>اطلاعات شخصی</caption>
                         <tr>
                             <td class="col-one">نام و نام خانوادگی : <span
-                                    style="color: #2a6496">{{ current_user.userprofile.first_name }} {{ current_user.userprofile.last_name }}</span>
+                                    style="color: #2a6496">{{ request.user.userprofile.first_name }} {{ request.user.userprofile.last_name }}</span>
                             </td>
-                            <td class="col-two">ایمیل : <span style="color: #2a6496;">{{ current_user.userprofile.email }}</span>
+                            <td class="col-two">ایمیل : <span style="color: #2a6496;">{{ request.user.userprofile.email }}</span>
                             </td>
                         </tr>
                         <tr>
                             <td class="col-one">شماره تلفن همراه : <span style="color: #2a6496;">
-                                {% if current_user.userprofile.phone_number is None %} &nbsp; {% else %}
-                                    {{ current_user.userprofile.phone_number }} {% endif %} </span>
+                                {% if request.user.userprofile.phone_number is None %} &nbsp; {% else %}
+                                    {{ request.user.userprofile.phone_number }} {% endif %} </span>
                             </td>
 
                             <td class="col-two">تاریخ تولد : <span style="color: #2a6496;">
-                                {% if current_user.userprofile.jalali_date is None %} &nbsp; {% else %}
-                                    {{ current_user.userprofile.jalali_date }}{% endif %}</span>
+                                {% if request.user.userprofile.jalali_date is None %} &nbsp; {% else %}
+                                    {{ request.user.userprofile.jalali_date }}{% endif %}</span>
                             </td>
                         </tr>
                     </table>
@@ -50,7 +49,7 @@
                             ویرایش اطلاعات شخصی
                         </a>
                     </div>
-                    <table style="width:100%; margin-top: 50px;">
+                    <table class="mytable table-bordered" style="width:100%; margin-top: 50px;">
                         <caption>لیست سفارشات</caption>
                         <tr>
                             <th class="num">#</th>
@@ -61,7 +60,8 @@
                             <th class="paying-status">عملیات پرداخت</th>
                             <th class="details">جزییات</th>
                         </tr>
-                        {% for order in orders%}
+                        {% for order in orders %}
+                            {% if forloop.counter <= 3 %}
                         <tr>
                             <td class="num">{{ forloop.counter }}</td>
                             <td class="order-num">{{ order.id }}</td>
@@ -69,14 +69,15 @@
                             <td class="paying-price">{{ order.get_total }}</td>
                             <td class="total-price">{{ order.get_total_with_coupon }}</td>
                             <td class="paying-status">{% if ordered %}پرداخت موفق {%else%} پرداخت ناموفق {%endif%}</td>
-                            <td class="details"><a href=""><i class="fa fa-hand-o-left"
+                            <td class="details"><a href="{% url 'userprofile:order-detail' pk=order.id %}"><i class="fa fa-hand-o-left"
                                                               style="font-size: 20px;"></i></a></td>
                         </tr>
+                            {% endif %}
                         {% endfor %}
 
                     </table>
 
-                    <div style="text-align: center;font-weight: bold;padding: 2rem;"><a style="color:#3e7cb4;">مشاهده تمام سفارشات</a></div>
+                    <div style="text-align: center;font-weight: bold;padding: 2rem;"><a href="{% url 'userprofile:user-orders' %}" style="color:#3e7cb4;">مشاهده تمام سفارشات</a></div>
 
                 </div>
 

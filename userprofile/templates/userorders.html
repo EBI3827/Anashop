@@ -1,0 +1,53 @@
+{% extends 'base1.html' %}
+{% load static %}
+
+{% block head %}
+    <link href="{% static 'css/profile_page_styles.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container">
+        <div class="row" style="margin-top: 40px;">
+
+            <div class="col-sm-3">
+                <div>
+                    <img src="{{ request.user.userprofile.avatar.url }}" alt="image" class="profile-img">
+                    <p class="user">{{ request.user.userprofile.first_name }} {{ request.user.userprofile.last_name }}</p>
+
+                    {% include 'profile_page_components/profile_sidebar_component.html' %}
+
+                </div>
+            </div>
+
+            <div class="col-sm-9">
+                <table class="mytable table-bordered" style="width:100%; margin-top: 50px;">
+                    <caption>لیست سفارشات</caption>
+                    <tr>
+                        <th class="num">#</th>
+                        <th class="order-num">شماره سفارش</th>
+                        <th class="order-date">تاریخ ثبت سفارش</th>
+                        <th class="paying-price">مبلغ قابل پرداخت</th>
+                        <th class="total-price">مبلغ کل</th>
+                        <th class="paying-status">عملیات پرداخت</th>
+                        <th class="details">جزییات</th>
+                    </tr>
+                    {% for order in userorders %}
+                    <tr>
+                        <td class="num">{{ forloop.counter }}</td>
+                        <td class="order-num">{{ order.id }}</td>
+                        <td class="order-date">{{ order.jalali_ordered_date }}</td>
+                        <td class="paying-price">{{ order.get_total }}</td>
+                        <td class="total-price">{{ order.get_total_with_coupon }}</td>
+                        <td class="paying-status">{% if order.ordered %}پرداخت موفق {%else%} پرداخت ناموفق {%endif%}</td>
+                        <td class="details"><a href="{% url 'userprofile:order-detail' pk=order.id %}"><i class="fa fa-hand-o-left"
+                                                        style="font-size: 20px;"></i></a></td>
+                    </tr>
+                    {% endfor %}
+
+                </table>
+            </div> 
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -55,15 +55,33 @@
             </ul>
           </div>
         </div>
-        <div id="top-links" class="nav pull-right flip">
+        <div id="top-links" class="nav pull-right flip" style="border-right: none;">
           <ul>
             {% if not user.is_authenticated %}
-            <li><a href="{% url 'account_login' %}">ورود</a></li>
-            <li><a href="{% url 'account_signup' %}">ثبت نام</a></li>
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-2x fa-user" aria-hidden="true"></i>
+              <!-- <span class="caret"></span>-->
+              </button>
+              <ul class="dropdown-menu pull-right">
+                <li><a href="{% url 'account_login' %}">ورود</a></li>
+                <li><a href="{% url 'account_signup' %}">ثبت نام</a></li>
+              </ul>
+            </div>
             {% else %}
-            <li><a data-toggle="modal" data-target="#logoutmodal">
-                خروج از حساب کاربری
-              </a></li>
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-2x fa-user" aria-hidden="true"></i>
+              <!-- <span class="caret"></span>-->
+              </button>
+              <ul class="dropdown-menu pull-right">
+                <li><a href="{% url 'userprofile:userprofile' %}">{{user.username}}</a></li>
+                <li><a href="#">تغییر رمز عبور</a></li>
+                <li><a data-toggle="modal" data-target="#logoutmodal">
+                  خروج از حساب کاربری
+                </a></li>
+              </ul>
+            </div> 
+            
+
             {% endif %}
           </ul>
         </div>

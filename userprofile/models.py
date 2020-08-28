@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.shortcuts import reverse
 from persiantools.jdatetime import JalaliDate
 
 # Create your models here.
@@ -20,3 +21,6 @@ class UserProfile(models.Model):
 
     def jalali_date(self):
         return JalaliDate(self.birth_date).strftime("%Y/%m/%d")
+
+    def get_absulote_url (self):
+        return reverse('userprofile:userprofile')

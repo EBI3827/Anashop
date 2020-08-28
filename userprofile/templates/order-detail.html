@@ -1,0 +1,101 @@
+{% extends 'base1.html' %}
+{% load static %}
+
+
+{% block head %}
+    <link href="{% static 'css/profile_page_styles.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<section>
+    <div class="container">
+        <div class="row" style="margin-top: 40px;">
+
+            <div class="col-sm-3">
+                <div>
+                    <img src="{{ request.user.userprofile.avatar.url }}" alt="image" class="profile-img">
+                    <p class="user">{{ current_user.userprofile.first_name }} {{ current_user.userprofile.last_name }}</p>
+
+                    {% include 'profile_page_components/profile_sidebar_component.html' %}
+
+                </div>
+            </div>
+            
+            <div class="col-sm-9" style="padding-right: 5rem;">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <td class="d-flex">
+                                <div style="padding-left: 1rem;" onclick="window.history.back()"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
+                                <div style="padding-left: 4rem;font-weight: bold;font-size: larger;">
+                                    جزییات سفارش</div>
+                                <div > ۲۴ مرداد ۱۳۹۹</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex">
+                                <div style="padding-left: 4rem;">تحویل گیرنده : ابراهیم آرون</div>
+                                <div style="padding-left: 4rem;">شماره تماس : ۰۹۹۱۸۷۹۷۳۷۶</div>
+                                </div>
+                                <div style="padding-left: 4rem;padding-top: 2rem;"> آدرس : تهران خیابان آزادی خیابان جمالزاده</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="d-flex" style="border-bottom:1px solid #ddd;">
+                                <div style="padding-left: 5rem;"> مبلغ کل : ۲۸۶۰۰۰ تومان</div>
+                                <div> مبلغ تخفیف : ۲۸۶۰۰۰ تومان</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered ">
+                        <tr>
+                            <td>
+                                <div>مرسوله ۱ ارسال عادی</div>
+                                <div style="padding-top: 2rem;">تحویل: سه شنبه ۲۸ مرداد</div>
+                                <div style="padding-top: 2rem;">مبلغ کل این مرسوله : ۲۸۶۳۸۰ تومان</div>
+                            </td>
+                        </tr>
+                        <div class="row products-category">
+                                {% for item in orderitems %}
+                                <tr>
+                                    <td>
+                                        <div class="product-layout product-list col-xs-12">
+                                            <div class="product-thumb">
+                                                <div class="image" style="padding-right: 2rem;"><a href="{{ item.get_absolute_url }}"><img src="{{ item.product.miniimage.url }}"
+                                                    alt="{{item.product.name}}" title="{{product.name}}" class="img-responsive" /></a>
+                                                </div>
+                                                <div class="caption">
+                                                    <h4><a href="{{ product.get_absolute_url }}"> کد محصول : {{item.product.id}}</a></h4>
+                                                    <h4><a href="{{ product.get_absolute_url }}"> نام محصول : {{item.product.name}} </a></h4>
+                                                    <p class="price">
+                                                    {% if item.product.discount_price %}
+                                                    <li style="list-style-type: none;"><span class="price-new">قیمت :{{item.product.discount_price}}
+                                                        تومان</span></li>
+                                                    <li style="list-style-type: none;"><span class="price-old">قیمت :{{item.product.price}} تومان</span></li>
+                                                    <span class="saving">
+                                                        {{ item.product.save_percent }}%
+                                                    </span>
+                                                    {% else %}
+                                                    <li style="list-style-type: none;"><span class="price-new">قیمت :{{item.product.price}} تومان</span></li>
+                                                    <li style="list-style-type: none;"><br></li>
+                                                    {% endif %}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                        </div>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

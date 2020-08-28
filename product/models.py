@@ -198,6 +198,7 @@ class Contact(models.Model):
 
 
 class ProductComment(models.Model):
+    user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     username = models.CharField(max_length=200)
     message = models.TextField()
     product = models.ForeignKey(
