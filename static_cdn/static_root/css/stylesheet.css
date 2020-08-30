@@ -237,7 +237,7 @@ ul{
 	color:#333;
 	padding:7px 10px;
 	text-align:left;
-	font-size:12px;
+	font-size:17px;
 }
 #top .dropdown-menu li + li a, #currency ul li + li .currency-select, #language ul li + li .language-select { border-top:1px solid #eee; }
 #my_account:hover > a:after, #language:hover span:after, #currency:hover span:after, #header .links > ul > li.wrap_custom_block:hover > a:after {
@@ -295,12 +295,12 @@ ul{
 #header .links {
 	position: relative;
 	float:left;
-	border-right:1px dotted #5b9ad4;
+	/* border-right:1px dotted #5b9ad4; */
 }
 #header .links > ul > li {
 	float:left;
 	list-style-type:none;
-	border-left:1px dotted #5b9ad4;
+	/* border-left:1px dotted #5b9ad4; */
 }
 #header .links > ul > li.mobile, #header .links > ul > li.email { color:#fff; }
 #header .links > ul > li.mobile { padding:0 10px; }
@@ -308,7 +308,7 @@ ul{
 	padding:0px 10px;
 	color: #fff;
 	text-decoration: none;
-	font-size: 14px;
+	font-size: 17px;
 	position:relative;
 	display:block;
 }
@@ -336,11 +336,11 @@ ul{
 #header .links > ul > li.wrap_custom_block > div ul li { list-style-type:none; }
 #header #top-links {
 	color:#fff;
-	border-right:1px dotted #5b9ad4;
+	/* border-right:1px dotted #5b9ad4; */
 }
 #header #top-links > ul > li {
 	float:left;
-	border-left:1px dotted #5b9ad4;
+	/* border-left:1px dotted #5b9ad4; */
 }
 #header #top-links > ul > li > a {
 	color:#fff;
@@ -349,7 +349,7 @@ ul{
 	padding:0px 10px;
 }
 #header #top .links > ul > li, #header #top-links > ul > li, #language .btn-link span, #currency .btn-link span { line-height:35px; }
-#header #top-links > ul > li > a:hover, #header .links > ul > li > a:hover { text-decoration:underline; }
+#header #top-links > ul > li > a:hover, #header .links > ul > li > a:hover { text-decoration:none;color:lightgoldenrodyellow;font-weight: bold;}
 .wrapper-box #header #top-links { border-right:none; }
 .wrapper-box .htop .main-wrapper {
 	max-width:1220px;

@@ -1,0 +1,194 @@
+{% extends 'base1.html' %}
+{% load static %}
+{% load jalali_tags %}
+
+{% block head %}
+    <link href="{% static 'css/profile_page_styles.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row" style="margin-top: 40px;">
+                <div class="col-sm-3">
+                    <div>
+                        <a data-toggle="modal" data-target="#imagemodal">
+                        <img src="{{ request.user.userprofile.avatar.url }}" alt="image" class="profile-img"></a>
+                        <p class="user">{{ request.user.userprofile.first_name }} {{ request.user.userprofile.last_name }}</p>
+    
+                        {% include 'profile_page_components/profile_sidebar_component.html' %}
+    
+                    </div>
+                </div>
+
+
+                <div class="col-sm-9">
+                    <table class="table" style="width:100%">
+                        <caption style="border-bottom: 2px solid red;max-width: 120px;">اطلاعات شخصی</caption>
+                        <tr>
+                            <td class="col-one">نام و نام خانوادگی : <span
+                                    style="color: #2a6496;">{{ request.user.userprofile.first_name }} {{ request.user.userprofile.last_name }} </span>
+                                    <a data-toggle="modal" data-target="#namemodal"><i class="fa fa-edit" style="font-size: 18px;float: left;"></i></a>
+                            </td>
+                            <td class="col-two">ایمیل : <span style="color: #2a6496;">{{ request.user.userprofile.email }}</span>
+                                <a data-toggle="modal" data-target="#emailmodal"><i class="fa fa-edit" style="font-size: 18px;float: left;"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-one">شماره تلفن همراه : <span style="color: #2a6496;">
+                                {% if request.user.userprofile.phone_number is None %} &nbsp; {% else %}
+                                    {{ request.user.userprofile.phone_number }} {% endif %} </span>
+                                <a data-toggle="modal" data-target="#phonemodal"><i class="fa fa-edit" style="font-size: 18px;float: left;"></i></a>
+                                
+                            </td>
+
+                            <td class="col-two">تاریخ تولد : <span style="color: #2a6496;">
+                                {% if request.user.userprofile.jalali_date is None %} &nbsp; {% else %}
+                                    {{ request.user.userprofile.jalali_date }}{% endif %}</span>
+                                <a data-toggle="modal" data-target="#birthdatemodal"><i class="fa fa-edit" style="font-size: 18px;float: left;"></i></a>
+                                
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- NameModal -->
+            <div class="modal fade" id="namemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <strong>
+                    <h4 class="modal-title" id="exampleModalLabel">نام و نام خانوادگی
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </h4>
+                    </strong>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ name_form }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <button type="submit" class="btn btn-primary" style="font-weight: 500;width: 90px;">ویرایش</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+            </div>
+            <!-- EmailModal -->
+            <div class="modal fade" id="emailmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <strong>
+                    <h4 class="modal-title" id="exampleModalLabel">ایمیل
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </h4>
+                    </strong>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ email_form }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <button type="submit" class="btn btn-primary" style="font-weight: 500;width: 90px;">ویرایش</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+            </div>
+            <!-- PhoneModal -->
+            <div class="modal fade" id="phonemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <strong>
+                    <h4 class="modal-title" id="exampleModalLabel">شماره موبایل
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </h4>
+                    </strong>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ phone_form }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <button type="submit" class="btn btn-primary" style="font-weight: 500;width: 90px;">ویرایش</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+            </div>
+            <!-- BirthDateModal -->
+            <div class="modal fade" id="birthdatemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <strong>
+                    <h4 class="modal-title" id="exampleModalLabel">تاریخ تولد
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </h4>
+                    </strong>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ birth_date_form }} 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <button type="submit" class="btn btn-primary" style="font-weight: 500;width: 90px;">ویرایش</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+            </div>
+            <!-- BirthDateModal -->
+            <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <strong>
+                    <h4 class="modal-title" id="exampleModalLabel">تاریخ تولد
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </h4>
+                    </strong>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ image_form }} 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <button type="submit" class="btn btn-primary" style="font-weight: 500;width: 90px;">ویرایش</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+            </div>
+            {{ image_form }}
+        </div>
+    </section>
+{% endblock %}

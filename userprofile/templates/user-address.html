@@ -21,9 +21,41 @@
 
 
                 <div class="col-sm-9">
+                    <div style="padding-bottom: 2rem;"><span style="border-bottom: 2px solid red;max-width: 60px;">نشانی ها</span></div>
                     {% for info in infos %}
-                        {{ info.address }}
+                        <div style="font-weight: bold;padding-top: 2rem;">
+                            {{ info.address }}
+                            <span style="float: left;">
+                                <div class="dropdown">
+                                    <span class="dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-lg fa-ellipsis-v" aria-hidden="true"></i>
+                                    <!-- <span class="caret"></span>-->
+                                    </span>
+                                    <ul class="dropdown-menu pull-right">
+                                      <li><a style="color: red;font-weight: bold;font-size: larger;" href="#">حذف</a></li>
+                                    </ul>
+                                  </div>
+                            </span>
+                        </div>
+                        <div style="padding-top: 2rem;"> <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                            {{ info.postal_code }}</div>
+                        <div style="padding-top: 2rem;"> <i class="fa fa-phone" aria-hidden="true"></i>
+                            {{ info.phone }}</div>
+                        <div style="padding-top: 2rem;"><i class="fa fa-user" aria-hidden="true"></i>
+                            {{ info.first_name }} {{ info.last_name }}</div>
+                        <div style="padding-top: 3rem;">
+                            <a href="#">ویرایش نشانی  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <hr>
                     {% endfor %}
+
+                    <div style="padding-bottom: 3rem;">
+                        <a href="#"> 
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            اضافه کردن نشانی جدید 
+                            <span style="text-align-last: left;"><i  class="fa fa-angle-left" aria-hidden="true"></i></span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

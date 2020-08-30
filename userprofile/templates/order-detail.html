@@ -14,7 +14,7 @@
             <div class="col-sm-3">
                 <div>
                     <img src="{{ request.user.userprofile.avatar.url }}" alt="image" class="profile-img">
-                    <p class="user">{{ current_user.userprofile.first_name }} {{ current_user.userprofile.last_name }}</p>
+                    <p class="user">{{ request.user.userprofile.first_name }} {{ request.user.userprofile.last_name }}</p>
 
                     {% include 'profile_page_components/profile_sidebar_component.html' %}
 

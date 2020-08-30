@@ -23,7 +23,7 @@
     font-size: 15px;
 }
 
-table, th, td {
+.mytable {
     border: 1px solid black;
     border-collapse: collapse;
     direction: rtl;
@@ -37,8 +37,8 @@ caption {
 
 th {
     text-align: center;
-    background-color: darkslategray;
-    color: lightgray;
+    background-color: cadetblue;
+    color: cornsilk;
     padding: 10px;
 }
 
