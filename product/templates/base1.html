@@ -22,9 +22,6 @@
   <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans' />
   <!-- CSS Part End-->
   <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.min.css' %}" />
-
-  <!-- <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}"> -->
   {% block head %}{% endblock %}
 </head>
 
@@ -51,20 +48,6 @@
     <script type="text/javascript" src="{% static 'js/jquery.dcjqaccordion.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
-    <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-datepicker.fa.min.js' %}"></script>
-    <script>
-      $(document).ready(function() {
-
-        $("#datepicker4").datepicker({
-                    changeMonth: true,
-                    changeYear: true
-                });
-              });
-
-    </script>
-    <!-- <script src="{% static 'admin/js/django_jalali.min.js' %}"></script> -->
-
     <script type="text/javascript">
       // Elevate Zoom for Product Page image
       $("#zoom_01").elevateZoom({

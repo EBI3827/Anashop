@@ -1,0 +1,177 @@
+<!-- NameModal -->
+<div class="modal fade" id="namemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>
+        <h4 class="modal-title" id="exampleModalLabel">نام و نام خانوادگی
+            <button class="close" data-dismiss="modal" aria-label="Close">
+            <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+        </h4>
+        </strong>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %} {{ name_form }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="submit" class="btn btn-primary" style="font-weight: 500;width: 90px;">ویرایش</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- EmailModal -->
+<div class="modal fade" id="emailmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>
+        <h4 class="modal-title" id="exampleModalLabel">ایمیل
+            <button class="close" data-dismiss="modal" aria-label="Close">
+            <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+        </h4>
+        </strong>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %} {{ email_form }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="submit" class="btn btn-primary" style="font-weight: 500;width: 90px;">ویرایش</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- PhoneModal -->
+<div class="modal fade" id="phonemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>
+        <h4 class="modal-title" id="exampleModalLabel">شماره موبایل
+            <button class="close" data-dismiss="modal" aria-label="Close">
+            <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+        </h4>
+        </strong>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %} {{ phone_form }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="submit" class="btn btn-primary" style="font-weight: 500;width: 90px;">ویرایش</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- BirthDateModal -->
+<div class="modal fade" id="birthdatemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>
+        <h4 class="modal-title" id="exampleModalLabel">تاریخ تولد
+            <button class="close" data-dismiss="modal" aria-label="Close">
+            <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+        </h4>
+        </strong>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %} {{ birth_date_form }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="submit" class="btn btn-primary" style="font-weight: 500;width: 90px;">ویرایش</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ImageModal -->
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>
+<h4 class="modal-title" id="exampleModalLabel">تاریخ تولد
+<button class="close" data-dismiss="modal" aria-label="Close">
+<i class="fa fa-times" aria-hidden="true"></i>
+</button>
+</h4>
+</strong>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %} {{ image_form }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="submit" class="btn btn-primary" style="font-weight: 500;width: 90px;">ویرایش</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JobModal -->
+<div class="modal fade" id="jobmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>
+<h4 class="modal-title" id="exampleModalLabel">شغل
+<button class="close" data-dismiss="modal" aria-label="Close">
+<i class="fa fa-times" aria-hidden="true"></i>
+</button>
+</h4>
+</strong>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %} {{ job_form }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="submit" class="btn btn-primary" style="font-weight: 500;width: 90px;">ویرایش</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cardmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>
+<h4 class="modal-title" id="exampleModalLabel">شماره کارت
+<button class="close" data-dismiss="modal" aria-label="Close">
+<i class="fa fa-times" aria-hidden="true"></i>
+</button>
+</h4>
+</strong>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %} {{ card_form }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="submit" class="btn btn-primary" style="font-weight: 500;width: 90px;">ویرایش</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

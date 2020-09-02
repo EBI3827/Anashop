@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from cart.models import Order,OrderItem,CheckoutInfo
 from django.contrib.auth.decorators import login_required
 from product.models import ProductComment
-from .forms import FirstLastNameForm,EmailForm,PhoneForm,BirthDateForm,ImageForm
+from .forms import FirstLastNameForm,EmailForm,PhoneForm,BirthDateForm,ImageForm,JobForm,CardForm
 from .models import UserProfile
 # Create your views here.
 
@@ -56,34 +56,38 @@ def UserComments(request):
 @login_required
 def PersonalInfo(request):
     if request.method == "POST":
+        userprofile=UserProfile.objects.get(user=request.user)
         name_form = FirstLastNameForm(request.POST or None)
         email_form=EmailForm(request.POST or None)
         phone_form=PhoneForm(request.POST or None)
         birth_date_form=BirthDateForm(request.POST or None)
+        job_form=JobForm(request.POST or None)
+        card_form=CardForm(request.POST or None)
         image_form=ImageForm(request.POST ,request.FILES)
         if name_form.is_valid():
             first_name = name_form.cleaned_data.get('first_name')
             last_name=name_form.cleaned_data.get('last_name')
             if UserProfile.objects.filter(user=request.user).exists():
-                userprofile=UserProfile.objects.get(user=request.user)
                 userprofile.first_name=first_name
                 userprofile.last_name=last_name
                 userprofile.save()
         if email_form.is_valid():
-            userprofile=UserProfile.objects.get(user=request.user)
             userprofile.email = email_form.cleaned_data.get('email')
             userprofile.save() 
         if phone_form.is_valid():
-            userprofile=UserProfile.objects.get(user=request.user)
             userprofile.phone_number = phone_form.cleaned_data.get('phone_number')
             userprofile.save()
         if birth_date_form.is_valid():
-            userprofile=UserProfile.objects.get(user=request.user)
             userprofile.birth_date = birth_date_form.cleaned_data.get('birth_date')
             userprofile.save() 
         if image_form.is_valid():
-            userprofile=UserProfile.objects.get(user=request.user)
             userprofile.avatar = image_form.cleaned_data.get('image')
+            userprofile.save()
+        if job_form.is_valid():
+            userprofile.job = job_form.cleaned_data.get('job')
+            userprofile.save()
+        if card_form.is_valid():
+            userprofile.credit_card = card_form.cleaned_data.get('card')
             userprofile.save()
     else:
         name_form = FirstLastNameForm()
@@ -91,6 +95,9 @@ def PersonalInfo(request):
         phone_form=PhoneForm()
         birth_date_form=BirthDateForm()
         image_form=ImageForm()
+        job_form=JobForm()
+        card_form=CardForm()
+
     context={
         'name_form':FirstLastNameForm(initial={
             'first_name':request.user.userprofile.first_name,
@@ -104,6 +111,12 @@ def PersonalInfo(request):
         }),
         'birth_date_form':BirthDateForm(),
         'image_form':ImageForm(),
+        'job_form':JobForm(initial={
+            'job':request.user.userprofile.job,
+        }),
+        'card_form':CardForm(initial={
+            'card':request.user.userprofile.credit_card,
+        }),
     }
     return render(request,'personal-info.html',context)
 

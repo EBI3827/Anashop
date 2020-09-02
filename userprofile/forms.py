@@ -32,3 +32,8 @@ class BirthDateForm(forms.Form):
 class ImageForm(forms.Form):
     image=forms.ImageField(label='تصویر کابر')
 
+class JobForm(forms.Form):
+    job=forms.CharField(label='شغل')
+
+class CardForm(forms.Form):
+    card=forms.CharField(label='شماره کارت')

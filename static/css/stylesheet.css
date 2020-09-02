@@ -578,7 +578,7 @@ ul{
 	transition: all 0.3s ease-in-out;
 }
 #menu {
-	border-bottom:3px solid #d6d6d6;
+	border-bottom:1px solid #d6d6d6;
 	border-top:1px solid #d6d6d6;
 	border-right:0;
 	border-left:0;
