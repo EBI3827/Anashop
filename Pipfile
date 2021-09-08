@@ -39,7 +39,7 @@ sqlparse = "==0.3.1"
 swapper = "==1.1.2.post1"
 urllib3 = "==1.25.9"
 Django = "==3.0.6"
-Pillow = "==7.1.2"
+Pillow = "==8.3.2"
 Unidecode = "==1.1.1"
 psycopg2-binary = "*"
 
